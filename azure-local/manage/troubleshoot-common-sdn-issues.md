@@ -90,6 +90,22 @@ Here are the other datapoints recommended during reproduction of issue:
 - Network traces taken from source and destination.
 - IP address for source and destination.
 
+## Automated Data-Path Tracing
+
+The following command can be used to collect end-to-end trace files for troubleshooting related to a network interface. This command will automatically configure tracing on the appropriate SDN Gateways, SDN Hosts and SDN Load Balancer Muxes that the traffic may be flowing based on your current configuration. Follow the prompts and instructions displayed on screen.
+
+```powershell
+Get-SdnEnvironmentInfo -NetworkController 'nc01.contoso.com'
+$networkInterface = -NcUri $Global:SdnDiagnostics.EnvironmentInfo.NcUrl -ResourceRef '/networkInterfaces/{NAME}'
+if ($networkInterface) {
+    $networkInterface | Enable-SdnNetworkInterfaceTrace -NcUri $Global:SdnDiagnostics.EnvironmentInfo.NcUrl
+}
+```
+After you generate the network traces, you can pick them up automatically by running [Start-SdnDataCollection](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnDataCollection).
+
+> [!NOTE]
+> If you switched to a non-default directory for saving trace files, keep in mind that the traces files won’t be automatically picked up. You’ll need to manually collect them.
+
 ## Troubleshoot Virtual Gateway (L3/GRE/IPsec)
 
 This section addresses scenarios where you encounter the following issues:
@@ -101,23 +117,13 @@ Run the following command to collect trace files for troubleshooting Virtual Gat
 
 ```powershell
 Get-SdnEnvironmentInfo -NetworkController 'nc01.contoso.com'
-Start-SdnNetshTrace -ComputerName $Global:SdnDiagnostics.EnvironmentInfo.Gateway -Role Gateway
-
-# if using IPsec, also need to capture traffic on the MUXes
-# Start-SdnNetshTrace -ComputerName $Global:SdnDiagnostics.EnvironmentInfo.LoadBalancerMux -Role 'LoadBalancerMux'
-
-# perform a repro of the issue
-
-Stop-SdnNetshTrace -ComputerName $Global:SdnDiagnostics.EnvironmentInfo.Gateway
-# Stop-SdnNetshTrace -ComputerName $Global:SdnDiagnostics.EnvironmentInfo.LoadBalancerMux
+$networkConnection = Get-SdnResource -NcUri $Global:SdnDiagnostics.EnvironmentInfo.NcUrl -ResourceRef '/virtualGateways/{NAME}/networkConnections/{NAME}'
+if ($networkConnection) {
+    $networkConnection | Enable-SdnNetworkConnectionTrace -NcUri $Global:SdnDiagnostics.EnvironmentInfo.NcUrl
+}
 ```
 
 After you generate the network traces, you can pick them up automatically by running [Start-SdnDataCollection](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnDataCollection).
-
-```powershell
-# add LoadBalancerMux to -Role if using IPsec in previous step
-Start-SdnDataCollection -Role NetworkController,Gateway -IncludeLogs -FromDate (Get-Date).AddHours(-1)
-```
 
 > [!NOTE]
 > If you switched to a non-default directory for saving trace files, keep in mind that the traces files won’t be automatically picked up. You’ll need to manually collect them.
