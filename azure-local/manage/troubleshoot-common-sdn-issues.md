@@ -143,9 +143,9 @@ The [Enable-SdnVipTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Enable
 
 To automate enabling tracing on the datapath machines, run the following command:
 
-    ```powershell
-    Enable-SdnVipTrace -VirtualIP xx.xx.xx.xx -NcUri 'https://nc.contoso.com'
-    ```
+```powershell
+Enable-SdnVipTrace -VirtualIP xx.xx.xx.xx -NcUri 'https://nc.contoso.com'
+```
 
 Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs. Additionally, a `{VIP}_TraceMapping.json` file is generated under the working directory on your workstation the `Enable-SdnVipTrace` command was executed from. This file includes valuable information for analyzing the network traces that should be provided to Microsoft.
 
@@ -158,12 +158,12 @@ This section addresses scenarios where you encounter the following issues:
 
 Identify the Hyper-V host that the VMs you're troubleshooting are hosted on. Once you identify the Hyper-V hosts, perform network tracing using [Start-SdnNetshTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnNetshTrace) and [Stop-SdnNetshTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Stop-SdnNetshTrace):
 
-    ```powershell
-    Start-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com' -Role:Server
+```powershell
+Start-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com' -Role:Server
 
-    # repro your scenario
-    Stop-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com'
-    ```
+# repro your scenario
+Stop-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com'
+```
     
 Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs.
 
@@ -179,6 +179,7 @@ After the tracing has been completed in one of the scenarios above, you will wan
     # update the roles based on which components tracing was configured for. if unsure, collect for all of them
     Start-SdnDataCollection -Role [string[]]<NetworkController | Gateway | LoadBalancerMux | Server > -IncludeLogs -FromDate (Get-Date).AddHours(-1)
     ```
+    
 - Collect the traces and data by computer name:
     ```powershell
     # if you running on node that is not network controller, add '-NetworkController NC_VMName' 
