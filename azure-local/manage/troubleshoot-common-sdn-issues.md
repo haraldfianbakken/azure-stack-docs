@@ -90,7 +90,13 @@ Here are the other datapoints recommended during reproduction of issue:
 - Network traces taken from source and destination.
 - IP address for source and destination.
 
-## Automated Data-Path Tracing
+After you have captured this information, refer to one of the following scenarios to capture the SDN data path traces.
+- [Automated Data-Path Tracing](#automated-data-path-tracing) (**Recommended**)
+- [Troubleshoot Virtual Gateway (L3/GRE/IPsec)](#troubleshoot-virtual-gateway-l3greipsec)
+- [Troubleshoot Load Balancer VIP or Inbound/Outbound Network Address Translation (NAT)](#troubleshoot-load-balancer-vip-or-inboundoutbound-network-address-translation-nat)
+- [Troubleshoot East/West traffic flow](#troubleshoot-eastwest-traffic-flow)
+
+### Automated Data-Path Tracing
 
 The following command can be used to collect end-to-end trace files for troubleshooting related to a network interface. This command will automatically configure tracing on the appropriate SDN Gateways, SDN Hosts and SDN Load Balancer Muxes that the traffic may be flowing based on your current configuration. Follow the prompts and instructions displayed on screen.
 
@@ -101,12 +107,10 @@ if ($networkInterface) {
     $networkInterface | Enable-SdnNetworkInterfaceTrace -NcUri $Global:SdnDiagnostics.EnvironmentInfo.NcUrl
 }
 ```
-After you generate the network traces, you can pick them up automatically by running [Start-SdnDataCollection](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnDataCollection).
 
-> [!NOTE]
-> If you switched to a non-default directory for saving trace files, keep in mind that the traces files won’t be automatically picked up. You’ll need to manually collect them.
+Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs.
 
-## Troubleshoot Virtual Gateway (L3/GRE/IPsec)
+### Troubleshoot Virtual Gateway (L3/GRE/IPsec)
 
 This section addresses scenarios where you encounter the following issues:
 
@@ -123,10 +127,7 @@ if ($networkConnection) {
 }
 ```
 
-After you generate the network traces, you can pick them up automatically by running [Start-SdnDataCollection](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnDataCollection).
-
-> [!NOTE]
-> If you switched to a non-default directory for saving trace files, keep in mind that the traces files won’t be automatically picked up. You’ll need to manually collect them.
+Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs.
 
 ### Troubleshoot Load Balancer VIP or Inbound/Outbound Network Address Translation (NAT)
 
@@ -140,23 +141,13 @@ In these scenarios, traffic flow isn't expected to route through a Virtual Gatew
 
 The [Enable-SdnVipTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Enable-SdnVipTrace) automates the process of enabling tracing on the datapath machines that the traffic traverses. Once tracing is enabled, the cmdlet pauses to allow you to reproduce the issue. After you reproduce the issue, press any key to continue to disable the traces.
 
-Follow these steps to collect trace files for troubleshooting Load Balancer VIP or Inbound/Outbound NAT:
-
-1. To automate enabling tracing on the datapath machines, run the following command:
+To automate enabling tracing on the datapath machines, run the following command:
 
     ```powershell
     Enable-SdnVipTrace -VirtualIP xx.xx.xx.xx -NcUri 'https://nc.contoso.com'
     ```
 
-1. After the tracing completes, to manually retrieve trace files, use [Copy-SdnFileFromComputer](https://github.com/microsoft/SdnDiagnostics/wiki/Copy-SdnFileFromComputer). It copies the .etl files over to your workstation.
-
-    Alternatively, to automatically retrieve network traces, use [Start-SdnDataCollection](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnDataCollection), by running the following command:
-
-    ```powershell
-    Start-SdnDataCollection -Role NetworkController,LoadBalancerMux -IncludeLogs -FromDate (Get-Date).AddHours(-1)
-    ```
-
-    Additionally, a `{VIP}_TraceMapping.json` file is generated under the working directory on your workstation. This file includes valuable information for analyzing the network traces.
+Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs. Additionally, a `{VIP}_TraceMapping.json` file is generated under the working directory on your workstation the `Enable-SdnVipTrace` command was executed from. This file includes valuable information for analyzing the network traces that should be provided to Microsoft.
 
 ### Troubleshoot East/West traffic flow
 
@@ -165,9 +156,7 @@ This section addresses scenarios where you encounter the following issues:
 - Unable to access private IP address of VM deployed on the same Virtual Network or Logical Network.
 - Unable to access private IP address of VM deployed on separate Virtual Network or Logical Network.
 
-Follow these steps to collect trace files for troubleshooting East/West traffic flow:
-
-1. Identify the Hyper-V host that the VMs you're troubleshooting are hosted on. Once you identify the Hyper-V hosts, perform network tracing using [Start-SdnNetshTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnNetshTrace) and [Stop-SdnNetshTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Stop-SdnNetshTrace):
+Identify the Hyper-V host that the VMs you're troubleshooting are hosted on. Once you identify the Hyper-V hosts, perform network tracing using [Start-SdnNetshTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnNetshTrace) and [Stop-SdnNetshTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Stop-SdnNetshTrace):
 
     ```powershell
     Start-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com' -Role:Server
@@ -175,12 +164,25 @@ Follow these steps to collect trace files for troubleshooting East/West traffic 
     # repro your scenario
     Stop-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com'
     ```
+    
+Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs.
 
-1. After the tracing completes, to manually retrieve trace files, use [Copy-SdnFileFromComputer](https://github.com/microsoft/SdnDiagnostics/wiki/Copy-SdnFileFromComputer) to copy the .etl files over to your workstation.
+### Collect the data-path traces
 
-    Alternatively, to automatically retrieve network traces, use [Start-SdnDataCollection](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnDataCollection), by running the following command:
+After the tracing has been completed in one of the scenarios above, you will want to collect the data that can be provided to Microsoft for further support. You can leverage [Start-SdnDataCollection](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnDataCollection) which will automatically pick up the traces, in conjuction to configuration data points and log files generated on the systems.
+> [!NOTE]
+> If you set `-OutputDirectory` to non default directory for saving trace files, keep in mind that the traces files won’t be automatically picked up. Leverage [Copy-SdnFileFromComputer](https://github.com/microsoft/SdnDiagnostics/wiki/Copy-SdnFileFromComputer) to copy the .etl files over to your workstation.
 
+- Collect the traces and data by role:
     ```powershell
+    # if you running on node that is not network controller, add '-NetworkController NC_VMName'
+    # update the roles based on which components tracing was configured for. if unsure, collect for all of them
+    Start-SdnDataCollection -Role [string[]]<NetworkController | Gateway | LoadBalancerMux | Server > -IncludeLogs -FromDate (Get-Date).AddHours(-1)
+    ```
+- Collect the traces and data by computer name:
+    ```powershell
+    # if you running on node that is not network controller, add '-NetworkController NC_VMName' 
+    # add all the computers that tracing was captured for. diagnostics will automatically determine the role for each
     Start-SdnDataCollection -ComputerName 'machine01.contoso.com','machine02.contoso.com' -IncludeLogs -FromDate (Get-Date).AddHours(-1)
     ```
 
