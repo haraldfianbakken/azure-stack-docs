@@ -98,7 +98,7 @@ After you have collected the above information, refer to one of the following sc
 
 ### Automated Data-Path Tracing
 
-The following command can be used to collect end-to-end trace files for troubleshooting related to a network interface. This command will configure the tracing on the appropriate Gateways, Hosts, and LoadBalancerMuxes that the traffic can be flowing based on your current configuration. Follow the prompts and instructions displayed on screen.
+The following command can be used to collect end-to-end trace files for troubleshooting related to a network interface. This command will configure the tracing on the appropriate Gateways, Hosts, and LoadBalancerMuxes based on your current configuration. Follow the prompts and instructions displayed on screen.
 
 ```powershell
 $networkInterface = Get-SdnResource -NcUri 'https://nc.contoso.com' -ResourceRef '/networkInterfaces/{NAME}'
