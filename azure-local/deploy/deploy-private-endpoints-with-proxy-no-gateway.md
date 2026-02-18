@@ -1,6 +1,6 @@
 ---
-title: About Private Endpoints with Azure Local
-description: Review how Azure Private Endpoints can be used when deploying Azure Local, with and without Arc gateway, and with and without Proxy.
+title: Use Private Endpoints with Azure Local for Proxy without Arc Gateway
+description: Review how Azure Private Endpoints can be used when deploying Azure Local, with an enterprise proxy but without an Arc gateway.
 author: alkohli
 ms.author: alkohli
 ms.reviewer: alkohli
@@ -8,7 +8,7 @@ ms.date: 02/18/2026
 ms.topic: concept-article
 ---
 
-# Using private endpoints with Azure Local
+# Use private endpoints with Azure Local for proxy without Arc gateway scenario
 
 This article provides an overview of how you can integrate both existing and new Azure private endpoints with Azure Local. A private endpoint for Azure Local is a network interface that uses a private IP address from the virtual network associated with your Azure Local.
 
@@ -29,7 +29,7 @@ Each of these scenarios is described in the subsequent sections of this article.
 
 **Description:** Azure Local infrastructure runs with a proxy but no Arc gateway. When you use an enterprise proxy, you can control which endpoints use the proxy and which bypass it. Some endpoints require SSL inspection to be disabled, while local traffic - such as traffic between nodes, domains, clusters, and local subnets - should bypass the proxy. Add private endpoints to the bypass list for direct routing through the enterprise firewall/router and Azure ExpressRoute.
 
-:::image type="content" source="media/deploy-private-endpoints/image5.png" alt-text="Scenario with proxy but no Arc gateway."::: Outbound Connectivity for Azure Local hosts:
+:::image type="content" source="media/deploy-private-endpoints-with-proxy-no-gateway/image5.png" alt-text="Scenario with proxy but no Arc gateway."::: Outbound Connectivity for Azure Local hosts:
 
 **Diagram legend**:
 
@@ -47,7 +47,7 @@ Each of these scenarios is described in the subsequent sections of this article.
 
 - The enterprise firewall/router routes public endpoints to the internet and private endpoints over Azure ExpressRoute or S2S VPN.
 
-:::image type="content" source="media/deploy-private-endpoints/image6.png" alt-text="A blue and purple arrow pointing to a white background AI-generated content may be incorrect.":::Outbound Connectivity for Arc Resource Bridge VM:
+:::image type="content" source="media/deploy-private-endpoints-with-proxy-no-gateway/image6.png" alt-text="A blue and purple arrow pointing to a white background AI-generated content may be incorrect.":::Outbound Connectivity for Arc Resource Bridge VM:
 
 **Diagram legend**:
 
@@ -71,7 +71,7 @@ Each of these scenarios is described in the subsequent sections of this article.
 
 ### Outbound connectivity for AKS clusters control plane and worker VMs
 
-:::image type="content" source="media/deploy-private-endpoints/image7.png" alt-text="A blue and white rectangular object with arrows AI-generated content may be incorrect.":::
+:::image type="content" source="media/deploy-private-endpoints-with-proxy-no-gateway/image7.png" alt-text="A blue and white rectangular object with arrows AI-generated content may be incorrect.":::
 
 **Diagram legend**:
 
@@ -91,7 +91,7 @@ Each of these scenarios is described in the subsequent sections of this article.
 
 **  **
 
-:::image type="content" source="media/deploy-private-endpoints/image8.png" alt-text="A blue and purple text AI-generated content may be incorrect.":::Outbound Connectivity for Azure Local VMs:
+:::image type="content" source="media/deploy-private-endpoints-with-proxy-no-gateway/image8.png" alt-text="A blue and purple text AI-generated content may be incorrect.":::Outbound Connectivity for Azure Local VMs:
 
 **Diagram legend**:
 
