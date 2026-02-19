@@ -107,3 +107,11 @@ Azure Local needs a Key Vault for deployment, and it can use a private endpoint.
 
 Azure Local with two nodes requires a Storage Account for deployment. You can use a private endpoint for this Storage Account, but you must allow public access until the initial deployment is complete. Azure portal and HCI RP need to configure the cloud witness during deployment. Once deployment is completed, you can restrict Storage Account access to only allow private networks.
 
+## Next steps
+
+Learn more about using private endpoints with Azure Local in the following scenarios:
+
+- [Deploy Azure Local without an enterprise proxy and without an Arc gateway](./deploy-private-endpoints-no-proxy-no-gateway.md).
+- [Deploy Azure Local with an enterprise proxy but without an Arc gateway](./deploy-private-endpoints-with-proxy-no-gateway.md).
+- [Deploy Azure Local without an enterprise proxy but with an Arc gateway](./deploy-private-endpoints-no-proxy-with-gateway.md).
+- [Deploy Azure Local with both an enterprise proxy and an Arc gateway](./deploy-private-endpoints-with-proxy-with-gateway.md).
