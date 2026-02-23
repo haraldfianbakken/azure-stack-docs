@@ -88,7 +88,17 @@ For any subscriptions hosting resources used in migration, such as Azure Migrate
 
 ## Azure Migrate project requirements
 
-Existing Azure Migrate customers that have done VM discovery need to [create a new Azure Migrate project](migrate-hyperv-prerequisites.md#create-an-azure-migrate-project) for migration to Azure Local. You can't use existing Azure Migrate projects for migration.
+- If you have an existing Azure Migrate project with VM discovery complete, you need to [create a new Azure Migrate project](./migrate-vmware-prerequisites.md#create-an-azure-migrate-project) for migration to Azure Local. You can't use existing Azure Migrate projects for migration.
+
+- You must have only one source appliance per Azure Migrate project for Azure Local migrations. This means you can't use the same Azure Migrate project for both a VMware source and a Hyper-V source. Make sure to create a new project for each source you wish to migrate from.
+
+- You must have only one target appliance per Azure Migrate project for Azure Local migrations. This means you can't use the same Azure Migrate project for a single source appliance to migrate to multiple target appliances across different Azure Local instances.
+
+- In general, Azure Migrate projects must have a 1:1 pairing of only 1 source appliance and 1 target appliance per project.
+
+## Considerations for migrating Hyper-V VMs to Azure Local
+
+- Azure Migrate will retain the Hyper-V generation of the VM during migration. If the source Hyper-V VM is a Generation 1 VM, the migrated VM on Azure Local will also be a Generation 1 VM. If the source Hyper-V VM is a Generation 2 VM, the migrated VM on Azure Local will also be a Generation 2 VM. For more information on Generation 1 VM limitations, see [Azure Local VM management](https://learn.microsoft.com/azure/azure-local/manage/azure-arc-vm-management-overview).
 
 ## Next steps
 
