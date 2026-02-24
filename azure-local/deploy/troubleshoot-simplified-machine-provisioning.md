@@ -13,7 +13,7 @@ ms.subservice: hyperconverged
 
 [!INCLUDE [hci-preview](../includes/hci-preview.md)]
 
-You might need to collect the logs or diagnose the problems if you encounter any issues while configuring the machine. You can use the following resources to troubleshoot:
+This article describes how to troubleshoot simplified machine provisioning. You can use the following methods to troubleshoot:
 
 - Run diagnostic tests.
 - Collect a support package.
@@ -56,11 +56,11 @@ If you can access the app, follow the instructions in [Run diagnostic tests](#
 
 If Azure portal shows ready to connect in edge machine, select **Json view**:
 
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-1.png" alt-text="Screenshot showing TODO1" border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-1.png":::
+:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-1.png" alt-text="Screenshot 1 showing how to investigate a running system from the cloud." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-1.png":::
 
-Select **<ARC_MACHINE_RESOURCE_ID>** and then **Json view**:
+Open the URL in `arcMachineResourceId`, then select **Json view**:
 
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png" alt-text="Screenshot showing TODO1" border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png":::
+:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png" alt-text="Screenshot 2 showing how to investigate a running system from the cloud." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png":::
 
 If the client public key is present, it means TO1 is present, but Arc isn't connecting:
 
@@ -99,13 +99,13 @@ Disable the `Boot USB Devices First` BIOS option (or the equivalent setting, dep
 
 The following screenshot shows the correct configuration.
 
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-maintenance-environment-known-issues.png" alt-text="Screenshot showing TODO1" border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-maintenance-environment-known-issues.png":::
+:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-maintenance-environment-known-issues.png" alt-text="Screenshot showing a BIOS configuration with the Boot USB Devices First option disabled." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-maintenance-environment-known-issues.png":::
 
 ## Initial creation failure
 
 **Problem:** The **Image Url** drop down is empty.
 
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-1.png" alt-text="Screenshot showing TODO1" border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-1.png":::
+:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-1.png" alt-text="Screenshot 1 showing an empty Image Url drop down." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-1.png":::
 
 **Cause:** The resource provider registration for `Microsoft.AzureStackHCI` is missing.
 
@@ -115,7 +115,7 @@ The following screenshot shows the correct configuration.
 
 **Problem:** In site, configure new, resource group creation is failing.
 
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-2.png" alt-text="Screenshot showing TODO1" border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-2.png":::
+:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-2.png" alt-text="Screenshot showing a failed resource group creation." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-2.png":::
 
 **Cause:** You have a resource group policy that doesn't support simplified machine provisioning.
 
@@ -125,7 +125,7 @@ The following screenshot shows the correct configuration.
 
 **Problem:** ARM template validation fails.
 
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png" alt-text="Screenshot showing TODO1" border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png":::
+:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png" alt-text="Screenshot showing a failed ARM template validation." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png":::
 
 **Cause:** You're attempting this task for the first time in this tenant.
 
@@ -135,7 +135,7 @@ The following screenshot shows the correct configuration.
 
 **Problem:** Internal server error on site default
 
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png" alt-text="Screenshot showing TODO1" border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png":::
+:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png" alt-text="Screenshot showing an internal server error on site default." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png":::
 
 **Cause:** You have a resource group policy that doesn't support simplified machine provisioning.
 
@@ -159,7 +159,7 @@ If the policy concerns resource groups having tags or being created in a specifi
 **Cause:** You didn't register the `Microsoft.HybridCompute` resource provider.
 **Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
 
-For any of the previously described errors, or for other errors, delete the edge machine and try to create it again. If that doesn't work, contact support. When you contact support, please provide the activity log of the edge machine resource group and the managed resource group if possible.
+For any of the previously described errors, or for other errors, delete the edge machine and try to create it again. If that doesn't work, contact support. When you contact support, please provide the activity log of the edge machine resource group and the managed resource group if possible. For more information, see [Run diagnostic tests](#run-diagnostic-tests-from-the-configurator-app), [Collect a support package from the app](#collect-a-support-package-from-the-app) and [Collect logs from your Azure subscription](#collect-logs-from-your-azure-subscription).
 
 ## Reattempt a failed OS provisioning
 
@@ -175,9 +175,9 @@ To retry OS provisioning:
 
 1. Open **Json view** and record the Json.
 
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png" alt-text="Screenshot showing TODO1" border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png":::
+:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png" alt-text="Screenshot showing how to reattempt a failed OS provisioning." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png":::
 
-1. Make another `PUT` request with the URL. Replace the `<PLACEHOLDERS>` with your values.
+1. Make a `PUT` request with the modified URL. Replace the `<PLACEHOLDERS>` with your values.
 
 `PUT /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.AzureStackHCI/edgeMachines/<MACHINE_NAME>/jobs/ProvisionOs?api-version=2025-12-01-preview`
 
