@@ -211,9 +211,9 @@ In the content, copy only the `osProfile` and `userDetails` objects.
 
 ## Clean up resources
 
-You can attempt to delete the edge machine resource at any time and it delete related objects, such as resources under MRG.
+You can attempt to delete the edge machine resource at any time. Deleting the resource also deletes related objects, such as resources under MRG.
 
-Deleting an edge machine is only blocked when:
+Deleting an edge machine is blocked when:
 
 - The edge machine is part of a device pool that is part of an Azure Kubernetes Service (AKS) cluster.
 
