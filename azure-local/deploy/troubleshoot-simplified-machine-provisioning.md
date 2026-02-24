@@ -113,13 +113,17 @@ The following screenshot shows the correct configuration.
 
 ## Resource group creation fails
 
-**Problem:** In site, configure new, resource group creation is failing.
+**Problem:** Resource group creation fails.
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-2.png" alt-text="Screenshot showing a failed resource group creation." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-2.png":::
 
 **Cause:** You have a resource group policy that doesn't support simplified machine provisioning.
 
-**Recommendation:** Create the resource group in a subscription without a resource group policy.
+**Recommendation:**
+
+If the policy concerns naming conventions for resource groups, you can select **Configure** on sites to give a custom MRG name.
+
+If the policy concerns resource groups having tags or being created in a specific region, simplified machine provisioning doesn't currently support these scenarios.
 
 ## ARM template validation fails
 
@@ -131,9 +135,9 @@ The following screenshot shows the correct configuration.
 
 **Recommendation:** Wait 15 minutes and retry.
 
-## Internal server error on site default
+## Internal server error on deployment
 
-**Problem:** Internal server error on site default
+**Problem:** Internal server error on deployment
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png" alt-text="Screenshot showing an internal server error on site default." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png":::
 
