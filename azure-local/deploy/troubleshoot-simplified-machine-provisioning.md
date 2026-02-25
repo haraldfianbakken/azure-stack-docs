@@ -52,42 +52,48 @@ The logs are stored in the following locations:
 
 ## Investigate a running system from the cloud
 
-If the Azure portal shows that the edge machine has reached the `Ready to connect` stage, select **Json view**:
+1. In Azure portal, select **Azure Arc** > **Operations** > **Machine provisioning (preview)**.
+
+1. Select **Provisioned machines**.
+
+1. Select the provisioned machine you want to investigate. The **Overview** page appears:
+
+:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-view-provisioned-machine.png" alt-text="Screenshot showing the properties of a provisioned machine." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-view-provisioned-machine.png":::
+
+1. If the *Machine status* is `Ready to connect`, select **JSON View**:
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-1.png" alt-text="Screenshot 1 showing how to investigate a running system from the cloud." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-1.png":::
 
-Open the URL in `arcMachineResourceId`, then select **Json view**:
+1. Open the URL in `arcMachineResourceId`, then select **JSON View**:
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png" alt-text="Screenshot 2 showing how to investigate a running system from the cloud." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png":::
 
-TODO1: What is TO1? What should the user do if the client public key isn't present?
-If the client public key is present, it means TO1 is present. If Arc still isn't connecting:
+1. If Azure Arc connection isn't connecting, and the client public key is present, that means the device authenticated using the machine provisioning service.
 
 1. If the Azure portal shows the Arc connection is done and waiting for extension installation, you can see the status of the extension installation with one of the following methods:
 
-    - Select the edge machine and select **Json view**.
+    - Select the provisioned machine and select **JSON View**.
 
     - Select **Arc** and then the **Extension** tab.
 
 1. If the Azure portal shows that the extension installation succeeded, you can see the status of OS provisioning with the following URL. Replace the `<PLACEHOLDERS>` with your values.
 
-    `/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.AzureStackHCI/edgeMachines/<EDGE_MACHINE_ARM_ID>/jobs/ProvisionOs?api-version=2025-12-01-preview`
+    `/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.AzureStackHCI/edgeMachines/<PROVISIONED_MACHINE_ARM_ID>/jobs/ProvisionOs?api-version=2025-12-01-preview`
 
-1. If the Azure portal shows that provisioning has reached the `Downloading OS` stage, select the edge machine and look at the target Arc resource to see the same behaviors as in the previous steps.
+1. If the Azure portal shows that provisioning has reached the `Downloading OS` stage, select the provisioned machine and look at the target Arc resource to see the same behaviors as in the previous steps.
 
 ## Maintenance environment known issues
 
-**Problem:** The USB Boot enters an infinite USB boot sequence if the BIOS Settings `Boot USB Devices First` is set on the Next Unit of Computing (NUC).
+**Problem:** The USB Boot enters an infinite USB boot sequence if the BIOS Settings `Boot USB Devices First` is set on the machine.
 
 **Cause:**
 
-When the BIOS setting `Boot USB Devices First` is enabled on the NUC, the system enters an infinite USB boot cycle.
-This setting overrides the configured boot order and always prioritizes booting from any connected USB device. As a result, even after the remote operations environment (ROE) is successfully installed, subsequent reboots continue to boot from the USB media instead of the internal disk.
+When the BIOS setting `Boot USB Devices First` is enabled on the machine, the system enters an infinite USB boot cycle. This setting overrides the configured boot order and always prioritizes booting from any connected USB device. As a result, even after the maintenance environment is successfully installed, subsequent reboots continue to boot from the USB media instead of the internal disk.
 
 This behavior causes a continuous boot loop in which the device repeatedly:
 
 1. Boots from the USB device.
-1. Reinstalls Azure Linux.
+1. Reinstalls the maintenance environment.
 1. Reboots.
 
 From the customer’s perspective, the device appears to be in an infinite cycle of installation and reboot, which occurs approximately every 10 minutes.
@@ -96,13 +102,9 @@ From the customer’s perspective, the device appears to be in an infinite cycle
 
 Disable the `Boot USB Devices First` BIOS option (or the equivalent setting, depending on the hardware model and BIOS version).
 
-The following screenshot shows the correct configuration.
-
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-maintenance-environment-known-issues.png" alt-text="Screenshot showing a BIOS configuration with the Boot USB Devices First option disabled." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-maintenance-environment-known-issues.png":::
-
 ## Initial creation failure
 
-**Problem:** The **Image Url** drop down is empty.
+**Problem:** The **Image** drop down is empty.
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-1.png" alt-text="Screenshot 1 showing an empty Image Url drop down." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-1.png":::
 
@@ -126,7 +128,7 @@ If the policy concerns resource groups having tags or being created in a specifi
 
 ## ARM template validation fails
 
-**Problem:** ARM template validation fails.
+**Problem:** ARM template validation fails with the error message: `Deployment template validation failed: 'The value for the template parameter 'hciRPServiceprincipalID' at line '1' and column '10174' is not provided. Please see https://aka.ms/arm-create-parameter-file for usage details.'. (Code: InvalidTemplate)`
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png" alt-text="Screenshot showing a failed ARM template validation." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png":::
 
@@ -136,7 +138,7 @@ If the policy concerns resource groups having tags or being created in a specifi
 
 ## Internal server error on deployment
 
-**Problem:** Internal server error on deployment
+**Problem:** Deployment fails with the error message: `Failed to verify creation of MoboBroker resource. (Code: InternalServerError)`
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png" alt-text="Screenshot showing an internal server error on site default." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png":::
 
@@ -148,27 +150,25 @@ If the policy concerns naming conventions for resource groups, you can select **
 
 If the policy concerns resource groups having tags or being created in a specific region, simplified machine provisioning doesn't currently support these scenarios.
 
-## Edge machine creation fails
+## Provisioned machine creation fails with the error message `StorageAccountForbidden`
 
-- **Error:** `StorageAccountForbidden`
+**Cause:** Your storage account creation policy doesn't support simplified machine provisioning, or you didn't register the `Microsoft.Storage` resource provider.
 
-  **Cause:** Your storage account creation policy doesn't support simplified machine provisioning, or you didn't register the `Microsoft.Storage` resource provider.
+**Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
 
-  **Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
+## Provisioned machine creation fails with the error message `DeviceOnboardingConflict`
 
-- **Error:** `DeviceOnboardingConflict`
+**Cause:** The feature registration is missing, or you didn't register the `Microsoft.OnboardingService` resource provider.
 
-  **Cause:** The feature registration is missing, or you didn't register the `Microsoft.OnboardingService` resource provider.
+**Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
 
-  **Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
+## Provisioned machine creation fails with the error message `UpdateArcSettingDataFailed`
 
-- **Error:** `UpdateArcSettingDataFailed`
+**Cause:** You didn't register the `Microsoft.HybridCompute` resource provider.
 
-  **Cause:** You didn't register the `Microsoft.HybridCompute` resource provider.
+**Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
 
-  **Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
-
-For any of the previously described errors, or for other errors, delete the edge machine and try to create it again. If that doesn't work, contact support. When you contact support, please provide the activity log of the edge machine resource group and the managed resource group if possible. For more information, see [Run diagnostic tests](#run-diagnostic-tests-from-the-configurator-app), [Collect a support package from the app](#collect-a-support-package-from-the-app) and [Collect logs from your Azure subscription](#collect-logs-from-your-azure-subscription).
+For any of the previously described errors, or for other errors, delete the provisioned machine and try to create it again. If that doesn't work, contact Microsoft Support. When you contact Support, please provide the activity log of the provisioned machine resource group and the managed resource group if possible. For more information, see [Run diagnostic tests](#run-diagnostic-tests-from-the-configurator-app), [Collect a support package from the app](#collect-a-support-package-from-the-app) and [Collect logs from your Azure subscription](#collect-logs-from-your-azure-subscription).
 
 ## Reattempt a failed OS provisioning
 
@@ -178,9 +178,9 @@ For any of the previously described errors, or for other errors, delete the edge
 
 To retry OS provisioning:
 
-1. Open the edge machine and record the URL.
+1. Open the provisioned machine and record the URL.
 
-1. Open **Json view** and record the Json.
+1. Open **JSON View** and record the Json.
 
     :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png" alt-text="Screenshot showing how to reattempt a failed OS provisioning." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png":::
 
@@ -218,14 +218,10 @@ To retry OS provisioning:
 
 ## Clean up resources
 
-You can attempt to delete the edge machine resource at any time. Deleting the resource also deletes related objects, such as resources under MRG.
+You can attempt to delete the provisioned machine resource at any time. Deleting the resource also deletes related objects, such as resources under MRG.
 TODO1: What is MRG?
 
-Deleting an edge machine is blocked when:
-
-- The edge machine is part of a device pool that is part of an Azure Kubernetes Service (AKS) cluster.
-
-- The device is transitioning and not yet reached a stable state.
+Deleting a provisioned machine is blocked when the device is transitioning and not yet reached a stable state.
 
 In the resource group where you run simplified machine provisioning, there are two hidden resources: a configuration resource, and a resource called the `MOBO broker`. You can't delete the `MOBO broker` resource directly. If you delete the resource group, the `MOBO broker` resource is deleted with it. Also, if you delete the configuration resource, the `MOBO broker` resource is deleted with it.
 
