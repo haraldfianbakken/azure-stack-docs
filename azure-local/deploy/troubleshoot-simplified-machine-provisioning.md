@@ -180,17 +180,19 @@ To retry OS provisioning:
 
 1. Open the edge machine and record the URL.
 
-1. Add `/jobs/provisionos` to the URL.
-
 1. Open **Json view** and record the Json.
 
     :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png" alt-text="Screenshot showing how to reattempt a failed OS provisioning." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png":::
 
-1. Make a `PUT` request with the modified URL. Replace the `<PLACEHOLDERS>` with your values.
+1. Add `/jobs/ProvisionOs` to the URL you recorded previously, and send a `PUT` request with the modified URL, as follows:
+
+    TODO1: Can we assume users know how to do this with curl or similar tool?
+
+    Replace the `<PLACEHOLDERS>` with your values.
 
     `PUT /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.AzureStackHCI/edgeMachines/<MACHINE_NAME>/jobs/ProvisionOs?api-version=2025-12-01-preview`
 
-    In the content, copy only the `osProfile` and `userDetails` objects.
+    In the request body, copy only the `osProfile` and `userDetails` objects from the Json you recorded previously.
 
     ```json
     {
@@ -217,6 +219,7 @@ To retry OS provisioning:
 ## Clean up resources
 
 You can attempt to delete the edge machine resource at any time. Deleting the resource also deletes related objects, such as resources under MRG.
+TODO1: What is MRG?
 
 Deleting an edge machine is blocked when:
 
@@ -225,5 +228,6 @@ Deleting an edge machine is blocked when:
 - The device is transitioning and not yet reached a stable state.
 
 In the resource group where you run simplified machine provisioning, there are two hidden resources: a configuration resource, and a resource called the `MOBO broker`. You can't delete the `MOBO broker` resource directly. If you delete the resource group, the `MOBO broker` resource is deleted with it. Also, if you delete the configuration resource, the `MOBO broker` resource is deleted with it.
+TODO1: Is there any reason to delete the configuration resource? If not, can we omit this?
 
 Be careful when deleting the configuration resource. Deleting the configuration resource brings down devices that haven't yet reached the `Ready to cluster` stage. Deleting the configuration resource might also bring down running devices.
