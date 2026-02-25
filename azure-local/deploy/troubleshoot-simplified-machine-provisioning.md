@@ -228,6 +228,7 @@ Deleting an edge machine is blocked when:
 - The device is transitioning and not yet reached a stable state.
 
 In the resource group where you run simplified machine provisioning, there are two hidden resources: a configuration resource, and a resource called the `MOBO broker`. You can't delete the `MOBO broker` resource directly. If you delete the resource group, the `MOBO broker` resource is deleted with it. Also, if you delete the configuration resource, the `MOBO broker` resource is deleted with it.
-TODO1: Is there any reason to delete the configuration resource? If not, can we omit this?
+
+TODO1: Is there any reason to delete the configuration resource? If not, can we omit discussion of that?
 
 Be careful when deleting the configuration resource. Deleting the configuration resource brings down devices that haven't yet reached the `Ready to cluster` stage. Deleting the configuration resource might also bring down running devices.
