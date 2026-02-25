@@ -52,9 +52,9 @@ The logs are stored in the following locations:
 
 ## Investigate a running system from the cloud
 
-TODO1: Per anbacker, "After going through this section it isn't clear what is that customer gets out of it." This section came from one of the engineering TSG articles. It involves URL hacking and might be too complex for customers. Let me know if I should remove it.
+TODO1: Engineering: Per anbacker, "After going through this section it isn't clear what is that customer gets out of it." This section came from one of the engineering TSG articles. It involves URL hacking and might be too complex for customers. Let me know if I should just remove it. If we do keep it, can you please review it?
 
-TODO1: Note to self, if I do remove this, I need to move some of the screenshots elsewhere to show how to navigate to an edge machine.
+TODO1: If I do remove this, I need to move some of the screenshots elsewhere to show how to navigate to an edge machine.
 
 1. In Azure portal, select **Azure Arc** > **Operations** > **Machine provisioning (preview)**.
 
@@ -73,8 +73,6 @@ TODO1: If we keep this section, need to show the base URL (https://portal.azure.
 1. Open the URL. In the **Overview** page, select **JSON View**:
 
     :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png" alt-text="Screenshot 2 showing how to investigate a running system from the cloud." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png":::
-
-TODO1 If we keep this section, need clarification of this step - what does this tell the customer?
 
 1. If Azure Arc connection isn't connecting, and the client public key is present, that means the device authenticated using the machine provisioning service.
 
@@ -110,7 +108,7 @@ From the customer’s perspective, the device appears to be in an infinite cycle
 
 Disable the `Boot USB Devices First` BIOS option (or the equivalent setting, depending on the hardware model and BIOS version).
 
-TODO1 The BIOS screenshot provided in the engineering TSG is for SFF devices; can we get one for supported Azure Local hardware?
+TODO1: Engineering: The BIOS screenshot provided in the engineering TSG is for SFF devices; can we please get one for supported Azure Local hardware?
 
 ## Operating system image drop down is empty
 
@@ -124,7 +122,7 @@ TODO1 The BIOS screenshot provided in the engineering TSG is for SFF devices; ca
 
 ## When you create a new site, resource group creation fails
 
-TODO1 Review this section with engineering.
+TODO1: Engineering: Can you please verify this section is correct and let me know if anything is unclear?
 
 **Problem:** In Azure portal, select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. In the **Provision new machines** page, when you try to create a new site, you see the error message `Failed to create resource group due to - Invalid resource group location 'eastus'. The Resource group already exists in location 'canadacentral'.`
 
@@ -144,7 +142,7 @@ If your resource group policy concerns naming conventions for resource groups, w
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png" alt-text="Screenshot showing a failed ARM template validation." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png":::
 
-TODO1 Clarify with engineering.
+TODO1: Engineering: Can you please verify this cause is correct?
 
 **Cause:** You're attempting this task for the first time in the current tenant.
 
@@ -152,7 +150,7 @@ TODO1 Clarify with engineering.
 
 ## When you provision new machines, you receive an internal server error
 
-TODO1 Review this section with engineering.
+TODO1: Engineering: This section is similar to "When you create a new site, resource group creation fails." If the problem/cause/recommendation in this section are correct, I'll apply your comments there to this section also.
 
 **Problem:** In Azure portal, select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. In the **Provision new machines** page, when you select **Create**, you see the error messages `The resource write operation failed to complete successfully, because it reached terminal provisioning state 'Failed'.` and `Failed to verify creation of MoboBroker resource. (Code: InternalServerError)`
 
@@ -168,7 +166,7 @@ If your resource group policy concerns naming conventions for resource groups, w
 
 ## Provisioned machine creation fails with the error message `StorageAccountForbidden`
 
-TODO1 Need more details on storage account creation policy issues.
+TODO1: Engineering: Can you please provide more details on the potential issues with storage account creation policies?
 
 **Cause:** Your storage account creation policy doesn't support simplified machine provisioning, or you didn't register the `Microsoft.Storage` resource provider.
 
@@ -188,14 +186,13 @@ TODO1 Need more details on storage account creation policy issues.
 
 For any of the previously described errors, or for other errors, delete the provisioned machine and try to create it again.
 
-TODO1 This next paragraph came from the engineering TSG - does this apply to customers also?
-TODO1 Also, per anbaker: "This instruction needs to be rewritten for Azure Local (Azure Stack HCI). Need to work with engg to get the steps."
+TODO1: Engineering: per anbaker: "This instruction needs to be rewritten for Azure Local (Azure Stack HCI). Need to work with engg to get the steps." This came from the engineering TSG so I don't know if this even applies to customers. If not, I'll remove it.
 
 If that doesn't work, contact Microsoft Support. When you contact Support, please provide the activity log of the provisioned machine resource group and the managed resource group if possible. For more information, see [Run diagnostic tests](#run-diagnostic-tests-from-the-configurator-app), [Collect a support package from the app](#collect-a-support-package-from-the-app) and [Collect logs from your Azure subscription](#collect-logs-from-your-azure-subscription).
 
 ## Reattempt a failed OS provisioning
 
-TODO1: This came from the engineering TSG and might be too complex for customers; let me know if I should remove it.
+TODO1: Engineering: This came from the engineering TSG. It involves URL hacking and might be too complex for customers; let me know if I should remove it.
 
 **Problem:** Simplified machine provisioning currently doesn't support automatic retries from the service in case the OS installation fails.
 
@@ -251,7 +248,7 @@ To retry OS provisioning:
 
 You can attempt to delete the provisioned machine resource at any time. Deleting the resource also deletes related objects, such as resources under the managed resource group.
 
-TODO1 Clarify all the following with engineering. Is there any reason to delete the configuration resource? If not, can we omit discussion of that?
+TODO1: Engineering: Can you please review this section? Is this useful to customers? If not, I'll remove it.
 
 In the resource group where you run simplified machine provisioning, there are two hidden resources: a configuration resource, and a resource called the `MOBO broker`. You can't delete the `MOBO broker` resource directly. If you delete the resource group, the `MOBO broker` resource is deleted with it. Also, if you delete the configuration resource, the `MOBO broker` resource is deleted with it.
 
