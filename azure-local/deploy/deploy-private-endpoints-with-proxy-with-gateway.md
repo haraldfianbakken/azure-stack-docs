@@ -25,7 +25,7 @@ Currently, Azure Local offers the following distinct methods for outbound connec
 This article describes the scenario where Azure Local is deployed with both an enterprise proxy and an Arc gateway and private endpoints are used.
 
 
-## Scenario: Azure Local deployment with proxy and with Arc gateway
+## About Azure private endpoint scenario with proxy and with Arc gateway
 
 **Description:** Azure Local runs with an enterprise proxy and Arc gateway.
 
