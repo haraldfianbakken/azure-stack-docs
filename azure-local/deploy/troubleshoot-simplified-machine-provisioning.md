@@ -41,7 +41,7 @@ A log package is composed of all the relevant logs that can help Microsoft Suppo
 
 ## Collect logs from your Azure subscription
 
-If you can't access the machine using the Configurator app, you can get the app logs from the server. Access the logs by connecting with SSH for Azure Linux or PowerShell for Azure Stack HCI.
+If you can't access the machine using the Configurator app, you can get the app logs from the server. Access the logs by connecting with PowerShell.
 
 The logs are stored in the following locations:
 
@@ -49,44 +49,6 @@ The logs are stored in the following locations:
 |--|--|
 | Azure Stack HCI | `C:\Windows\System32\Bootstrap\Logs` |
 | Maintenance environment | `/var/log/bootstrap`<br>`/var/log/provisioningextension`<br>`/var/log/trident-full.log`<br>`/var/log/messages`<br>`/var/log/bootstraprestservice` |
-
-## Investigate a running system from the cloud
-
-TODO1: Engineering: Per anbacker, "After going through this section it isn't clear what is that customer gets out of it." This section came from one of the engineering TSG articles. It involves URL hacking and might be too complex for customers. Let me know if I should just remove it. If we do keep it, can you please review it?
-
-TODO1: If I do remove this, I need to move some of the screenshots elsewhere to show how to navigate to an edge machine.
-
-1. In Azure portal, select **Azure Arc** > **Operations** > **Machine provisioning (preview)**.
-
-1. Select **Provisioned machines**.
-
-1. Select the provisioned machine you want to investigate. In the **Overview** page, if the *Machine status* is `Ready to connect`, select **JSON View**.
-
-    :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-view-provisioned-machine.png" alt-text="Screenshot showing the properties of a provisioned machine." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-view-provisioned-machine.png":::
-
-1. Record the URL path in `arcMachineResourceId`.
-
-    :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-1.png" alt-text="Screenshot 1 showing how to investigate a running system from the cloud." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-1.png":::
-
-TODO1: If we keep this section, need to show the base URL (https://portal.azure.com/????) for them to append the URL path to.
-
-1. Open the URL. In the **Overview** page, select **JSON View**:
-
-    :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png" alt-text="Screenshot 2 showing how to investigate a running system from the cloud." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-investigate-running-system-from-cloud-2.png":::
-
-1. If Azure Arc connection isn't connecting, and the client public key is present, that means the device authenticated using the machine provisioning service.
-
-1. If the Azure portal shows the Arc connection is done and waiting for extension installation, you can see the status of the extension installation with one of the following methods:
-
-    - Select the provisioned machine as described previously and select **JSON View**.
-
-    - Select **Arc** and then the **Extension** tab.
-
-1. If the Azure portal shows that the extension installation succeeded, you can see the status of OS provisioning with the following URL. Replace the `<PLACEHOLDERS>` with your values.
-
-    `/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.AzureStackHCI/edgeMachines/<PROVISIONED_MACHINE_ARM_ID>/jobs/ProvisionOs?api-version=2025-12-01-preview`
-
-1. If the Azure portal shows that provisioning has reached the `Downloading OS` stage, select the provisioned machine and look at the target Arc resource to see the same behaviors as in the previous steps.
 
 ## Maintenance environment known issues
 
@@ -108,7 +70,7 @@ From the customer’s perspective, the device appears to be in an infinite cycle
 
 Disable the `Boot USB Devices First` BIOS option (or the equivalent setting, depending on the hardware model and BIOS version).
 
-TODO1: Engineering: The BIOS screenshot provided in the engineering TSG is for SFF devices; can we please get one for supported Azure Local hardware?
+TODO1: Engineering: The BIOS screenshot provided in the engineering TSG is for SFF devices; can we please get one for supported Azure Local hardware? dsarkar is working on this.
 
 ## Operating system image drop down is empty
 
@@ -120,75 +82,71 @@ TODO1: Engineering: The BIOS screenshot provided in the engineering TSG is for S
 
 **Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
 
-## When you create a new site, resource group creation fails
-
-TODO1: Engineering: Can you please verify this section is correct and let me know if anything is unclear?
-
-**Problem:** In Azure portal, select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. In the **Provision new machines** page, when you try to create a new site, you see the error message `Failed to create resource group due to - Invalid resource group location 'eastus'. The Resource group already exists in location 'canadacentral'.`
-
-:::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-2.png" alt-text="Screenshot showing a failed resource group creation." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-2.png":::
-
-**Cause:** You have a resource group policy that simplified machine provisioning doesn't support.
-
-**Recommendation:**
-
-In this preview release, only the `eastus` region supports provisioning resource. The Azure portal creates the resource group under the `eastus` region by default. Simplified machine provisioning does not support resource group policies that require resource groups to have tags or to be created in a specific region. If you want to create the resource group under a different region, see [Create resource groups](/azure/azure-resource-manager/management/manage-resource-groups-portal#create-resource-groups), and then select the created resource group when you create the new site.
-
-If your resource group policy concerns naming conventions for resource groups, when you create a new site, you can select **Configure** to provide a custom resource group name.
-
 ## When you provision new machines, ARM template validation fails
 
 **Problem:** In Azure portal, select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. In the **Provision new machines** page, when you select **Create**, you see the error messages `Arm template validation failed` and `Deployment template validation failed: 'The value for the template parameter 'hciRPServiceprincipalID' at line '1' and column '10174' is not provided. Please see https://aka.ms/arm-create-parameter-file for usage details.'. (Code: InvalidTemplate)`
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png" alt-text="Screenshot showing a failed ARM template validation." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-3.png":::
 
-TODO1: Engineering: Can you please verify this cause is correct?
-
-**Cause:** You're attempting this task for the first time in the current tenant.
+**Cause:** This issue can happen if you're using Azure Stack HCI for the first time in this subscription.
 
 **Recommendation:** Wait 15 minutes and retry.
 
 ## When you provision new machines, you receive an internal server error
 
-TODO1: Engineering: This section is similar to "When you create a new site, resource group creation fails." If the problem/cause/recommendation in this section are correct, I'll apply your comments there to this section also.
-
 **Problem:** In Azure portal, select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. In the **Provision new machines** page, when you select **Create**, you see the error messages `The resource write operation failed to complete successfully, because it reached terminal provisioning state 'Failed'.` and `Failed to verify creation of MoboBroker resource. (Code: InternalServerError)`
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png" alt-text="Screenshot showing an internal server error on site default." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png":::
 
-**Cause:** You have a resource group policy that simplified machine provisioning doesn't support.
+TODO1: anbacker: I reworded these but please feel free to reword further.
 
-**Recommendation:**
+**Causes:** This can have one of the following causes:
 
-In this preview release, only the `eastus` region supports provisioning resource. The Azure portal creates the resource group under the `eastus` region by default. Simplified machine provisioning does not support resource group policies that require resource groups to have tags or to be created in a specific region. If you want to create the resource group under a different region, see [Create resource groups](/azure/azure-resource-manager/management/manage-resource-groups-portal#create-resource-groups), and then select the created resource group when you create the new site.
+1. You have a resource group policy that requires resource groups to be created in a specific region. In this preview release, only the `eastus` region supports provisioning resource.
 
-If your resource group policy concerns naming conventions for resource groups, when you create a new site, you can select **Configure** to provide a custom resource group name.
+1. You have a resource group policy that automatically adds tags to newly created resource groups. Simplified machine provisioning doesn't currently support this.
+
+1. You have a resource group policy that enforces naming conventions.
+
+**Recommendations:**
+
+1. Remove the resource group policy that requires resource groups to be created in a specific region.
+
+1. Remove the resource group policy that automatically adds tags to newly created resource groups.
+
+1. When you create a new site, you can select **Configure** to provide a custom resource group name.
 
 ## Provisioned machine creation fails with the error message `StorageAccountForbidden`
 
-TODO1: Engineering: Can you please provide more details on the potential issues with storage account creation policies?
+TODO1: Engineering: Can you please provide more details on the potential issues with storage account creation policies? anbacker is working on this.
 
 **Cause:** Your storage account creation policy doesn't support simplified machine provisioning, or you didn't register the `Microsoft.Storage` resource provider.
 
-**Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
+**Recommendation:**
+
+1. Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
+
+1. Delete the provisioned machine and create it again.
 
 ## Provisioned machine creation fails with the error message `DeviceOnboardingConflict`
 
 **Cause:** You didn't register the `MachineProvision` feature or the `Microsoft.OnboardingService` resource provider.
 
-**Recommendation:** Register the `MachineProvision` feature and required resource providers as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
+**Recommendation:**
+
+1. Register the `MachineProvision` feature and required resource providers as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
+
+1. Delete the provisioned machine and create it again.
 
 ## Provisioned machine creation fails with the error message `UpdateArcSettingDataFailed`
 
 **Cause:** You didn't register the `Microsoft.HybridCompute` resource provider.
 
-**Recommendation:** Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
+**Recommendation:**
 
-For any of the previously described errors, or for other errors, delete the provisioned machine and try to create it again.
+1. Register the resource provider as described in the [prerequisites](simplified-machine-provisioning#azure-prerequisites).
 
-TODO1: Engineering: per anbaker: "This instruction needs to be rewritten for Azure Local (Azure Stack HCI). Need to work with engg to get the steps." This came from the engineering TSG so I don't know if this even applies to customers. If not, I'll remove it.
-
-If that doesn't work, contact Microsoft Support. When you contact Support, please provide the activity log of the provisioned machine resource group and the managed resource group if possible. For more information, see [Run diagnostic tests](#run-diagnostic-tests-from-the-configurator-app), [Collect a support package from the app](#collect-a-support-package-from-the-app) and [Collect logs from your Azure subscription](#collect-logs-from-your-azure-subscription).
+1. Delete the provisioned machine and create it again.
 
 ## Reattempt a failed OS provisioning
 
@@ -227,20 +185,20 @@ To retry OS provisioning:
       "properties": {
         "provisioningRequest": {
           "osProfile": {
-            "osName": "AzureLinux",
-            "osType": "AzureLinux",
-            "osVersion": "3.0",
-            "osImageLocation": "https://aka.ms/aep/sff/azurelinux/2602a",
+            "osType": "HCI",
+            "vsrVersion": "12.2601.1002.503",
+            "osImageLocation": "https://aka.ms/aep/hci/2601",
             "operationType": "Provision"
           },
           "userDetails": [
             {
-              "userName": "clouduser",
-              "secretType": "SshPubKey",
-              "sshPubKey": ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDmMokuQD0b4USnkLA9baVQftdpMKYDunqYiom6qeeNF6Ch2bdw458wKv7qIq4BWFJ5TVBSc2CRhQ2BC0WvokWMvEnOrsi1BLkX0toGBo+P7xTGPxZQrR8iFBkQqa0m1N/wCDMoaghDIdBQmGC6CVuheM5ZF3GDJ9GLzVXwTbhw4/bi9AhGyVyibL+9KjgXzZZOi4OpAxeZyu82ergbxK0Zxqj5dUdV9UeIb8BNEbl6gNP75Y9sysvfbSuomFyIUYb8gD1dCsDBZM54hLolQVF8EzAot1B+pNkDq51Dgos8Tyya94XFd6prCX+wAbRgDHIGN3OgpntQCxR5jseC5ZEBlRUUigl+XOcefAD/6ILc1V4/RV5hAdkK7dHh1IyfQM5sm3hrr/QloZ4a+5RHuuj5U/9sbKv5vLCLi0vcZjm3XrQOpsnvSVLuvpXjZV3LHiuL4W/1ATY+pncTOrwI1q0z5ccEAz1aFRUfjz9heLjBD2v4Ye/O7Lmalspt8lBNTA0= generated-by-azure"]
+              "userName": "admin",
+              "secretType": "KeyVault",
+              "secretLocation": "https://chinmaya-test-site-kv.vault.azure.net/secrets/chinmaya-site-hci-91771406594695"
             }
-          ],
+          ]
         }
+      }
     }
     ```
 
