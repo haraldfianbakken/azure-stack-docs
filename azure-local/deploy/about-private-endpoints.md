@@ -63,7 +63,8 @@ When deploying Arc Resource Bridge VM in Azure Local:
 
 - Keep in mind that the following IP ranges are reserved for Kubernetes pods and services.
 
-    | Subnet type | IP range || **Service** | **Designated IP range** |
+
+    | **Service** | **Designated IP range** |
     |----|----|
     | Arc resource bridge Kubernetes pods | 10.244.0.0/16 (from 10.244.0.1 to 10.244.255.254) |
     | Arc resource bridge Kubernetes services | 10.96.0.0/12 (from 10.96.0.1 to 10.111.255.54) |
@@ -80,7 +81,7 @@ When deploying Arc Resource Bridge VM in Azure Local:
 ## Related steps
 
 Learn how to deploy Azure private endpoints for Azure Local in the following scenarios:
-- [Deploy Azure Local with private endpoints, and without proxy, without Arc gateway](deploy-about-private-endpoints-no-proxy.md)
-- [Deploy Azure Local with private endpoints, and with proxy, without Arc gateway](deploy-about-private-endpoints-proxy.md)
-- [Deploy Azure Local with private endpoints and without proxy, with Arc gateway](deploy-about-private-endpoints-arc-gateway.md)
-- [Deploy Azure Local with private endpoints, with proxy, with Arc gateway](deploy-about-private-endpoints-proxy-arc-gateway.md)
+- [Deploy Azure Local with private endpoints, and without proxy, without Arc gateway](./deploy-private-endpoints-no-proxy-no-gateway.md)
+- [Deploy Azure Local with private endpoints, and with proxy, without Arc gateway](./deploy-private-endpoints-with-proxy-no-gateway.md)
+- [Deploy Azure Local with private endpoints and without proxy, with Arc gateway](./deploy-private-endpoints-no-proxy-with-gateway.md)
+- [Deploy Azure Local with private endpoints, with proxy, with Arc gateway](./deploy-private-endpoints-with-proxy-with-gateway.md)
