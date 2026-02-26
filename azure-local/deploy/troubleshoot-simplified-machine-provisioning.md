@@ -102,7 +102,7 @@ TODO1: anbacker: I reworded these but please feel free to reword further.
 
 **Causes:** This can have one of the following causes:
 
-1. You have a resource group policy that requires resource groups to be created in a specific region. In this preview release, only the `eastus` region supports provisioning resource.
+1. You have a resource group policy that requires resource groups to be created in a specific region. In this preview release, only the `eastus` region supports simplified machine provisioning.
 
 1. You have a resource group policy that automatically adds tags to newly created resource groups. Simplified machine provisioning doesn't currently support this.
 
@@ -116,7 +116,7 @@ TODO1: anbacker: I reworded these but please feel free to reword further.
 
 1. When you create a new site, you can select **Configure** to provide a custom resource group name.
 
-## Provisioned machine creation fails with the error message `StorageAccountForbidden`
+## Provisioned machine creation fails with the error message "StorageAccountForbidden"
 
 TODO1: Engineering: Can you please provide more details on the potential issues with storage account creation policies? anbacker is working on this.
 
@@ -128,7 +128,7 @@ TODO1: Engineering: Can you please provide more details on the potential issues 
 
 1. Delete the provisioned machine and create it again.
 
-## Provisioned machine creation fails with the error message `DeviceOnboardingConflict`
+## Provisioned machine creation fails with the error message "DeviceOnboardingConflict"
 
 **Cause:** You didn't register the `MachineProvision` feature or the `Microsoft.OnboardingService` resource provider.
 
@@ -138,7 +138,7 @@ TODO1: Engineering: Can you please provide more details on the potential issues 
 
 1. Delete the provisioned machine and create it again.
 
-## Provisioned machine creation fails with the error message `UpdateArcSettingDataFailed`
+## Provisioned machine creation fails with the error message "UpdateArcSettingDataFailed"
 
 **Cause:** You didn't register the `Microsoft.HybridCompute` resource provider.
 
@@ -172,7 +172,7 @@ To retry OS provisioning:
 
 1. Send a `PUT` request to the modified URL, as follows:
 
-    TODO1: Is this meant to be done with cURL or some similar tool?
+    TODO1: Engineering: Is this meant to be done with cURL or some similar tool?
 
     Replace the `<PLACEHOLDERS>` with your values.
 
