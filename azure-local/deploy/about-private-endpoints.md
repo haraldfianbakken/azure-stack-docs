@@ -75,8 +75,7 @@ When deploying Arc Resource Bridge VM in Azure Local:
 
 ## Unsupported scenarios
 
-> [!NOTE]
-> Azure Local doesn't support Azure Arc Private Link for all the tabulated scenarios, and Azure Local infrastructure (nodes and Arc resource bridge VM) must use public Arc endpoints.
+Azure Local doesn't support Azure Arc Private Link for all the scenarios. Azure Local infrastructure (nodes and Arc resource bridge VM) must use public Arc endpoints.
 
 ## Related steps
 
