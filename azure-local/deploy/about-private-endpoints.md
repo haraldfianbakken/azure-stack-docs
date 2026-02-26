@@ -30,7 +30,8 @@ If you intend to use private endpoints for services such as Key Vaults, Storage 
 
 Although Azure Local nodes and Arc Resource Bridge VM don't support Arc private link, you can use Arc Private Link inside Azure Local VMs if the DNS servers in use aren't the same as those used for the Azure Local infrastructure (Azure Local infrastructure DNS servers must not resolve Arc private endpoints). 
 
-To enable Arc Private Link on existing Azure Local VMs, follow [Use Azure Private Link to Connect Servers to Azure Arc by Using a private endpoint - Azure Arc \| Microsoft Learn](/azure/azure-arc/servers/private-link-security#configure-an-existing-azure-arc-enabled-server). For new Azure Local VMs, you can't enable Arc Private Link during deployment yet. This feature will be enabled in upcoming releases.
+- To enable Arc Private Link on existing Azure Local VMs, follow [Use Azure Private Link to Connect Servers to Azure Arc by Using a private endpoint](/azure/azure-arc/servers/private-link-security#configure-an-existing-azure-arc-enabled-server).
+- For new Azure Local VMs, you can't enable Arc Private Link during deployment yet. 
 
 ## Arc resource bridge and AKS reserved network subnets coexistence with private endpoints
 
@@ -43,17 +44,17 @@ For example, if your private endpoint has an IP from an Azure subnet 10.244.1.0/
 | Arc resource bridge Kubernetes pods | 10.244.0.0/16 (from 10.244.0.1 to 10.244.255.254) |
 | Arc resource bridge Kubernetes services | 10.96.0.0/12 (from 10.96.0.1 to 10.111.255.54) |
 
-This table summarizes key points for using supported private endpoints with Azure Local.
+The following table summarizes key points for using supported private endpoints with Azure Local.
 
 > [!NOTE]
-> Azure Local doesn't support Azure Arc Private Link for all the tabulated scenarios, and Azure Local infrastructure (nodes and Arc resource bridge VM) must use public Arc endpoints. 
+> Azure Local doesn't support Azure Arc Private Link for all the tabulated scenarios, and Azure Local infrastructure (nodes and Arc resource bridge VM) must use public Arc endpoints.
 
 | Scenario | Private endpoint outbound path | Supported private endpoint types | Key requirements or limitations |
 |----|----|:--:|:--:|----|
-| **1. No Proxy, no Arc Gateway** | Direct. Routed via Express Route or S2S VPN | Storage, SQL, Key Vault, Azure Container Registry and other PaaS services supporting Private Link | Configure routing and DNS for private endpoints; no proxy bypass needed |
-| **2. With proxy, no Arc Gateway** | Proxy bypassed. Routed via Express Route or S2S VPN | Storage, SQL, Key Vault, Azure Container Registry and other PaaS services supporting Private Link | Configure routing, DNS and proxy bypass list for private endpoint FQDNs |
-| **3. No Proxy, with Arc Gateway** | AKS Cluster IP Proxy bypassed. Routed via Express Route or S2S VPN | Storage, SQL, Key Vault, Azure Container Registry and other PaaS services supporting Private Link | Configure routing, DNS and environment variables for AKS/Arc resource bridge after Arc registration to bypass private endpoint FQDNs |
-| **4. With proxy, with Arc Gateway** | Proxy bypassed. Routed via Express Route or S2S VPN | Storage, SQL, Key Vault, Azure Container Registry and other PaaS services supporting Private Link | Configure routing, DNS and proxy bypass for private endpoint FQDNs |
+| **1. No proxy, no Arc gateway** | Direct. <br> Routed via Express Route or S2S VPN | Storage, SQL, Key Vault, Azure Container Registry and other PaaS services supporting Private Link | Configure routing and DNS for private endpoints; no proxy bypass needed |
+| **2. With proxy, no Arc gateway** | Proxy bypassed. <br> Routed via Express Route or S2S VPN | Storage, SQL, Key Vault, Azure Container Registry and other PaaS services supporting Private Link | Configure routing, DNS and proxy bypass list for private endpoint FQDNs |
+| **3. No proxy, with Arc gateway** | AKS cluster IP proxy bypassed. <br> Routed via Express Route or S2S VPN | Storage, SQL, Key Vault, Azure Container Registry and other PaaS services supporting Private Link | Configure routing, DNS and environment variables for AKS/Arc resource bridge after Arc registration to bypass private endpoint FQDNs |
+| **4. With proxy, with Arc gateway** | Proxy bypassed. <br> Routed via Express Route or S2S VPN | Storage, SQL, Key Vault, Azure Container Registry and other PaaS services supporting Private Link | Configure routing, DNS and proxy bypass for private endpoint FQDNs |
 
 ## Related steps
 
