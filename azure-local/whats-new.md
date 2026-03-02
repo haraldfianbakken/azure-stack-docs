@@ -17,7 +17,7 @@ This article lists the features and improvements that are available in hyperconv
 
 ## Features and improvements in 2602
 
-The February 2026 release of hyperconverged deployments of Azure Local is version **12.2602.1007.7**. For more information, see [Release information summary](./release-information-23h2.md).
+The February 2026 release of hyperconverged deployments of Azure Local is version **12.2602.1002.7**. For more information, see [Release information summary](./release-information-23h2.md).
 
 This release includes various reliability improvements and other bug fixes.
 
@@ -38,6 +38,10 @@ This release includes various reliability improvements and other bug fixes.
     - Support for [Windows Server 2019 SKU for node pools](https://techcommunity.microsoft.com/blog/containers/announcing-the-3-year-retirement-of-windows-server-2019-on-azure-kubernetes-serv/3777341) ends in March 2026.
 
     Ensure your AKS clusters are on a supported Kubernetes version before upgrading Azure Local. For more information, see [What's new in AKS enabled by Azure Arc on Azure Local](/azure/aks/aksarc/aks-whats-new-local#release-2510).
+
+- **Enhanced update workflow from the Azure portal**: Starting with this release, the update workflow from the Azure portal now provides richer, more detailed information.
+
+- **End of Windows Server Subscription and Extended Security Updates (ESU) purchases for OS version 20349.xxxx (22H2)**: If running OS version 20349.xxxx (version 22H2), you can no longer purchase Windows Server Subscription or ESU.
 
 ::: moniker-end
 
