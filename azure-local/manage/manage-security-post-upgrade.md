@@ -54,19 +54,70 @@ A new deployment of Azure Local introduces two baselines documents injected by t
     > [!NOTE]
     > Microsoft tests and vaildates the Azure Local security settings. We strongly recommend that you keep these settings. Use of custom settings can potentially lead to system instability, incompatibility with new product scenarios, and could require extensive testing and troubleshooting on your part.
 
+# [Version 23H2](#tab/23h2)
+
 1. When running the following commands, you'll find the documents aren't in place. These cmdlets won't return any output.
 
-   ```powershell
-   Get-ASOSConfigSecuredCoreDoc
-   Get-ASOSConfigSecuritySettingsDoc
-   ```
+    ```powershell
+    Get-ASOSConfigSecuredCoreDoc
+    Get-ASOSConfigSecuritySettingsDoc
+    ```
 
 1. To enable the baselines, go to each of the nodes you upgraded. Run the following commands locally or remotely using a privileged administrator account:
 
-   ```powershell
-   Start-AzSSecuritySettingsConfiguration
-   Start-AzSSecuredCoreConfiguration
-   ```
+    ```powershell
+    Start-AzSSecuritySettingsConfiguration
+    Start-AzSSecuredCoreConfiguration
+    ```
+
+# [Version 24H2](#tab/24h2)
+
+1. Run the following commands.
+
+    ```powershell
+    Get-ASOSConfigSecuredCoreDoc
+    Get-ASOSConfigSecuritySettingsDoc
+    Get-AzSOSConfigDefenderAVDoc
+    ```
+
+    TODO1 This paragraph needs reviewing.
+
+    These commands return the OS configuration documents for `securitysettings`, `securedcore`, and `defenderav` in 24H2 format. If there are no configuration documents, these commands return empty values.
+
+    The following table shows a partial example output from `Get-AzSOSConfigSecuritySettingsDoc`.
+
+    |Name|Value|
+    |--|--|
+    |AfdDisableAddressSharing|`1`|
+    |AllowAnonymousSIDOrNameTranslation|`0`|
+    |AllowCustomSSPAPIntoLSASS|`1`|
+    |AllowedToFormatAndEjectRemovableMedia|`0`|
+
+    The following table shows a partial example output from `Get-AzSOSConfigSecuredCoreDoc`.
+
+    |Name|Value|
+    |--|--|
+    |ConfigureSystemGuardLaunch|`2`|
+    |EnableVirtualizationBasedSecurity|`1`|
+    |HypervisorEnforcedCodeIntegrity|`0`|
+
+    The following table shows a partial example output from `Get-AzSOSConfigDefenderAVDoc`.
+
+    |Name|Value|
+    |--|--|
+    |AllowDatagramProcessingOnWinServer|`0`|
+    |AllowNetworkProtectionOnWinServer|`1`|
+    |ASRBlockAbuseOfExploitedVulnerableSignedDrivers|`1`|
+
+1. To enable the baselines, go to each of the nodes you upgraded. Run the following commands locally or remotely using a privileged administrator account:
+
+    ```powershell
+    Start-AzSSecuritySettingsConfiguration
+    Start-AzSSecuredCoreConfiguration
+    Start-AzSDefenderAntivirusConfiguration
+    ```
+
+---
 
 1. Reboot the nodes in a proper sequence for the new settings to become effective.
 
