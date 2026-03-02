@@ -150,57 +150,106 @@ TODO1: Engineering: Can you please provide more details on the potential issues 
 
 ## Reattempt a failed OS provisioning
 
-TODO1: Engineering: This came from the engineering TSG. It involves URL hacking and might be too complex for customers; let me know if I should remove it.
-
 **Problem:** Simplified machine provisioning currently doesn't support automatic retries from the service in case the OS installation fails.
 
 **Recommendation:**
 
 To retry OS provisioning:
 
-1. In Azure portal, select **Azure Arc** > **Operations** > **Machine provisioning (preview)**.
+1. Browse to [Azure Cloud shell](https://shell.azure.com).
 
-1. Select **Provisioned machines**.
+1. Azure prompts you to choose Bash or PowerShell if you haven’t selected a default yet. It might also prompt you to create or select a storage account to persist your Cloud Shell files.
 
-1. Select the provisioned machine you want to investigate.
+TODO1: Engineering: Does the typical customer know to open a text editor like nano, paste this in, edit it, save the file, and run it with `bash` or else set execute permissions on it? Also note we don't actually take command line arguments like that usage string implies, so we might want to instead say "please set these variables"?
 
-1. In the **Overview** page, add `/jobs/ProvisionOs` to the URL.
+1. Create and run the following Bash script. Replace the `<PLACEHOLDERS>` with your values.
 
-1. Open **JSON View** and record the Json.
+    ```bash
+    #!/bin/bash
+    set -e
 
-    :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png" alt-text="Screenshot showing how to reattempt a failed OS provisioning." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-reattempt-failed-os-provisioning.png":::
+    # Script to retry OS provisioning on an edge machine by resubmitting the ProvisionOS job
+    # Performs a reput with osProfile and userDetails
 
-1. Send a `PUT` request to the modified URL, as follows:
+    # Input parameters
+    SUBSCRIPTION_ID=<subscription-id> 
+    RESOURCE_GROUP=<resource-group>
+    PROVISIONED_MACHINE_NAME=edge-machine-name>
 
-    TODO1: Engineering: Is this meant to be done with cURL or some similar tool?
+    # Validate inputs
+    if [ -z "$SUBSCRIPTION_ID" ] || [ -z "$RESOURCE_GROUP" ] || [ -z "$PROVISIONED_MACHINE_NAME" ]; then
+        echo "Usage: $0 <subscription-id> <resource-group> <edge-machine-name>"
+        exit 1
+    fi
 
-    Replace the `<PLACEHOLDERS>` with your values.
+    echo "Subscription ID: $SUBSCRIPTION_ID"
+    echo "Resource Group: $RESOURCE_GROUP"
+    echo "Edge Machine Name: $PROVISIONED_MACHINE_NAME"
 
-    `PUT /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.AzureStackHCI/edgeMachines/<PROVISIONED_MACHINE_NAME>/jobs/ProvisionOs?api-version=2025-12-01-preview`
+    # Set the subscription
+    echo "Setting subscription..."
+    az account set --subscription "$SUBSCRIPTION_ID"
 
-    In the request body, copy only the `osProfile` and `userDetails` objects from the Json you recorded previously.
+    # Construct the ProvisionOS job endpoint
+    PROVISION_OS_URL="/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.AzureStackHCI/edgeMachines/$PROVISIONED_MACHINE_NAME/jobs/ProvisionOs"
+    EDGE_MACHINE_URL="/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.AzureStackHCI/edgeMachines/$PROVISIONED_MACHINE_NAME"
+    API_VERSION="2025-12-01-preview"
 
-    ```json
-    {
-      "properties": {
-        "provisioningRequest": {
-          "osProfile": {
-            "osType": "HCI",
-            "vsrVersion": "12.2601.1002.503",
-            "osImageLocation": "https://aka.ms/aep/hci/2601",
-            "operationType": "Provision"
-          },
-          "userDetails": [
-            {
-              "userName": "admin",
-              "secretType": "KeyVault",
-              "secretLocation": "https://chinmaya-test-site-kv.vault.azure.net/secrets/chinmaya-site-hci-91771406594695"
+    echo "Getting edge machine configuration..."
+    # GET the edge machine to extract userDetails
+    EDGE_MACHINE_CONFIG=$(az rest \
+        --method GET \
+        --url "https://management.azure.com${EDGE_MACHINE_URL}?api-version=${API_VERSION}" \
+        --output json)
+
+    echo "Edge machine configuration retrieved"
+
+    # Extract userDetails and osProfile from edge machine
+    USER_DETAILS=$(echo "$EDGE_MACHINE_CONFIG" | jq '.properties.provisioningDetails.userDetails')
+    OS_PROFILE=$(echo "$EDGE_MACHINE_CONFIG" | jq '.properties.provisioningDetails.osProfile')
+    SITE_RESOURCE_ID=$(echo "$EDGE_MACHINE_CONFIG" | jq -r '.properties.siteDetails.siteResourceId')
+
+    if [ "$USER_DETAILS" == "null" ] || [ "$OS_PROFILE" == "null" ]; then
+        echo "Error: Could not extract userDetails or osProfile from the edge machine configuration"
+        echo "Edge machine config: $EDGE_MACHINE_CONFIG"
+        exit 1
+    fi
+
+    # Hardcode target and jobType
+    TARGET="HCI"
+    JOB_TYPE="ProvisionOs"
+
+    echo "Extracted osProfile and userDetails from edge machine; using hardcoded target: $TARGET and jobType: $JOB_TYPE"
+
+    # Create the PUT body with osProfile, userDetails, target, and jobType
+    PUT_BODY=$(jq -n \
+        --argjson osProfile "$OS_PROFILE" \
+        --argjson userDetails "$USER_DETAILS" \
+        --arg target "$TARGET" \
+        --arg jobType "$JOB_TYPE" \
+        '{
+            properties: {
+                jobType: $jobType,
+                provisioningRequest: {
+                    osProfile: $osProfile,
+                    userDetails: $userDetails,
+                    target: $target
+                }
             }
-          ]
-        }
-      }
-    }
+        }')
+
+    echo "Performing reput to retry OS provisioning..."
+    # PUT the configuration back to trigger a retry
+    az rest \
+        --method PUT \
+        --url "https://management.azure.com${PROVISION_OS_URL}?api-version=${API_VERSION}" \
+        --body "$PUT_BODY" \
+        --output json
+
+    echo "ProvisionOS retry submitted successfully"
     ```
+
+1. It takes up to 30 minutes for the retry to complete.
 
 ## Clean up resources
 
