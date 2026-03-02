@@ -44,6 +44,8 @@ A new deployment of Azure Local introduces two baselines documents injected by t
 > [!IMPORTANT]
 > After you apply the security baseline documents, a new mechanism is used to apply and maintain [Security baseline settings](https://aka.ms/hci-securitybase).
 
+# [Version 23H2](#tab/23h2)
+
 1. If your servers inherit baseline settings through mechanisms such as GPO, DSC, or scripts, we recommend that you:
 
     - Remove these duplicate settings from such mechanisms.
@@ -53,8 +55,6 @@ A new deployment of Azure Local introduces two baselines documents injected by t
 
     > [!NOTE]
     > Microsoft tests and vaildates the Azure Local security settings. We strongly recommend that you keep these settings. Use of custom settings can potentially lead to system instability, incompatibility with new product scenarios, and could require extensive testing and troubleshooting on your part.
-
-# [Version 23H2](#tab/23h2)
 
 1. When running the following commands, you'll find the documents aren't in place. These cmdlets won't return any output.
 
@@ -70,7 +70,19 @@ A new deployment of Azure Local introduces two baselines documents injected by t
     Start-AzSSecuredCoreConfiguration
     ```
 
+1. Reboot the nodes in a proper sequence for the new settings to become effective.
+
 # [Version 24H2](#tab/24h2)
+
+1. If your servers inherit baseline settings through mechanisms such as GPO, DSC, or scripts, we recommend that you:
+
+    - Remove these duplicate settings from such mechanisms.
+    - Alternatively, after you apply the security baseline, [Disable the drift control mechanism](./manage-secure-baseline.md).
+
+    The new security posture of your servers combines previous settings, new settings, and overlapping settings with updated values.
+
+    > [!NOTE]
+    > Microsoft tests and vaildates the Azure Local security settings. We strongly recommend that you keep these settings. Use of custom settings can potentially lead to system instability, incompatibility with new product scenarios, and could require extensive testing and troubleshooting on your part.
 
 1. Run the following commands.
 
@@ -80,9 +92,7 @@ A new deployment of Azure Local introduces two baselines documents injected by t
     Get-AzSOSConfigDefenderAVDoc
     ```
 
-    TODO1 This paragraph needs reviewing.
-
-    These commands return the OS configuration documents for `securitysettings`, `securedcore`, and `defenderav` in 24H2 format. If there are no configuration documents, these commands return empty values.
+    These commands return the OS configuration documents for `DefenderAntivirus`, `SecuredCore`, and `SecurityBaseline`, in 24H2 format. If there are no configuration documents, these commands return empty values.
 
     The following table shows a partial example output from `Get-AzSOSConfigSecuritySettingsDoc`.
 
@@ -117,9 +127,9 @@ A new deployment of Azure Local introduces two baselines documents injected by t
     Start-AzSDefenderAntivirusConfiguration
     ```
 
----
-
 1. Reboot the nodes in a proper sequence for the new settings to become effective.
+
+---
 
 ### Confirm the status of the security baselines
 
