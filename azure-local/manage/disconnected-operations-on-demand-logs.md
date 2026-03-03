@@ -294,14 +294,12 @@ Before you collect logs in a disconnected operations scenario, make sure you:
 
     This command collects host node and the VM appliance logs, including system level and cluster level diagnostics. For more information, see [Invoke-AzureLocalDisconnectedLogCollection](#invoke-azurelocaldisconnectedlogcollection).
 
-1. Upload logs by using the **standalone observability tool**.
+1. After collection, review the logs locally or upload them to Microsoft by using the **standalone observability tool**.
 
     After you save logs from both the appliance and host nodes to a shared location, upload them with the standalone observability tool. There are product specific wrappers around **Microsoft.AzureStack.Observability.Standalone**.
 
-    - Appliance logs: Upload logs collected from the appliance VM by using the `Send-DiagnosticData` cmdlet from the disconnected operations for Azure Local PowerShell module.
+    - Appliance logs: Upload logs collected from the appliance VM by using the [`Send-DiagnosticData`](#send-diagnosticdata) cmdlet from the disconnected operations for Azure Local PowerShell module.
     - Host node logs: Upload logs collected from the Azure Local host nodes by using the `Send-AzStackHciDiagnosticData` cmdlet. For more information, see [Get support for Azure Local deployment issues](../manage/get-support-for-deployment-issues.md).
-
-1. After collection, review the logs locally or upload them to Microsoft with the [`Send-DiagnosticData`](#send-diagnosticdata) cmdlet.
 
 1. Optional. If the `Send-DiagnosticData` command fails or is interrupted, use the [`Clear-DiagnosticPipeline`](#clear-diagnosticpipeline) cmdlet.
 
