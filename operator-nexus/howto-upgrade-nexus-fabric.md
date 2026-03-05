@@ -1,5 +1,5 @@
 ---
-title: How to upgrade Network Fabric for Azure Operator Nexus
+title: Upgrade Network Fabric for Azure Operator Nexus
 description: Learn the process for upgrading Network Fabric for Azure Operator Nexus, including required and recommended prevalidations.
 author: RaghvendraMandawale 
 ms.author: rmandawale
@@ -11,11 +11,11 @@ ms.custom: template-how-to, devx-track-azurecli
 
 # Network Fabric runtime upgrade
 
-This guide outlines which preupgrade validations are required for a successful Network Fabric runtime upgrade and which validations are recommended. Required prevalidation checks lead to an upgrade failure if conditions of the validations aren't met. Recommended prevalidation checks help ensure consistency of the release. 
+This guide outlines which pre-upgrade validations are required for a successful Network Fabric runtime upgrade and which validations are recommended. Required prevalidation checks lead to an upgrade failure if conditions of the validations aren't met. Recommended prevalidation checks help ensure consistency of the release.
 
 ## Overview
 
-**Runtime bundle components**: These components require operator consent for upgrades that may affect traffic behavior or necessitate device reboots. The network fabric's design allows for updates to be applied while maintaining continuous data traffic flow.
+**Runtime bundle components**: These components require operator consent for upgrades that might affect traffic behavior or necessitate device reboots. The network fabric's design allows for updates to be applied while maintaining continuous data traffic flow.
 
 Runtime changes are categorized as follows:
 
@@ -29,12 +29,12 @@ By following this guide, users can ensure a consistent, scalable, and secure app
 
 ## Required Preupgrade Validations
 
-Before initiating the **Network Fabric (NF) Runtime Upgrade** process, it's **required** that users validate these resource states prior to triggering the upgrade. These proactive validation steps help prevent upgrade failures and avoid service interruption challenges. If the required resource states aren't met, NNF upgrade process should be stopped.
+Before you initiate the **Network Fabric (NF) Runtime Upgrade** process, you *must* validate these resource states before you trigger the upgrade. These proactive validation steps help prevent upgrade failures and avoid service interruption challenges. If the required resource states aren't met, NNF upgrade process should be stopped.
 
 | **Check** | **Expectation** | **Post Upgrade Check Applicable?** | **Impacted RT Upgrade Step (if prevalidation Fails)** |
 | --- | --- | --- | --- |
 | Check for NFC provisioning state | Provisioning state must be in "Succeeded" | No | Fabric upgrade start step fails |
-| Check for Administrative lock status of Network Fabric resource | Must be in unlocked state - [Azure Operator Nexus - How to Use Administrative Lock or Unlock Network fabric - Operator Nexus](./howto-set-administrative-lock-or-unlock-for-network-fabric.md) | No | Fabric upgrade start step fails |
+| Check for Administrative lock status of Network Fabric resource | Must be in unlocked state - [Azure Operator Nexus - Use Administrative Lock or Unlock Network fabric - Operator Nexus](./howto-set-administrative-lock-or-unlock-for-network-fabric.md) | No | Fabric upgrade start step fails |
 | Network Fabric resource state checks | Resource states must be validated:<br/>• Administrative state is "Enabled" <br/>• Provisioning state is "Succeeded" <br/>• Configuration state is "Provisioned" | Yes | Fabric upgrade start command fails |
 | Fabric Devices - NPB, TOR, CE, Mgmt switch | Resource states must be validated:<br/>• Administrative state is "Enabled" <br/>• Provisioning state is "Succeeded" <br/>• Configuration state is in "Succeeded" or "Deferred Control" state. | Yes | Device upgrade command fails for corresponding device |
 | NNF device disk space | Minimum 3 GB of free space within /mnt directory of all the network devices that are getting upgraded | No | Device upgrade command fails for corresponding device |
@@ -98,10 +98,10 @@ Within this step, Nexus Network Fabric customer triggers upgrade POST actions on
 
 #### Sample az CLI command 
 
-`az networkfabric device upgrade --version 7.1.0 -g xxxx --resource-name xxx-CompRack1-TOR1 --debug` 
+`az networkfabric device upgrade --version 7.1.0 -g xxxx --resource-name xxx-CompRack1-TOR1 --debug`
 
 #### Per Device Prevalidation 
-Each of the NNF device resource state must be validated before (via Azure portal or Azure CLI) to be in following state: 
+Each of the NNF device resource state must be validated before (via the Azure portal or the Azure CLI) to be in following state: 
 
 | Check | Expectation | Outcome/Guidance |
 | --- | --- | --- |
@@ -135,7 +135,7 @@ Each of the NNF device resource state must be validated before (via Azure portal
 
 **Step 2.14**: Perform Mid Validations on the Aggregate Rack Management Switches to validate upgrade succeeded
 
-#### Mid Validation 
+#### Mid Validation
 
 | Check | Expectation | Outcome/Guidance |
 | --- | --- | --- |
@@ -145,10 +145,9 @@ Each of the NNF device resource state must be validated before (via Azure portal
 | Validate status of BGP sessions (applicable to CE & TOR) | All BGP sessions are expected to be in the Established state | Device Upgrade step considered failed. Engage MSFT support to diagnose & resolve |
 | Telemetry accuracy for Azure connectivity. | Device CPU Metrics should be received in Azure monitoring. | Device Upgrade step considered failed. Engage MSFT support to diagnose & resolve |
 
-
 ### Step 3: Complete Upgrade
 
-Once all the NNF devices are successfully upgraded to the latest version, that is, 7.1.0, Nexus Network Fabric customer runs the following command to take the network fabric out of maintenance state and complete the upgrade procedure.
+After all the NNF devices are successfully upgraded to the latest version, that is, 7.1.0, Nexus Network Fabric customer runs the following command to take the network fabric out of maintenance state and complete the upgrade procedure.
 
 #### Sample az CLI command
 
@@ -156,13 +155,13 @@ Once all the NNF devices are successfully upgraded to the latest version, that i
 
 Beginning with Network Fabric (NF) version 7.1.0, Network Device certificate (gNMI certificate) rotation is now an automated step integrated into the Network Fabric Runtime upgrade workflow. This enhancement ensures that all NF upgrades to version 7.1.0 and above include certificate lifecycle management step without requiring separate manual operations.
 
-With the introduction of the above automated step, the Network Fabric Upgrade Complete phase may increase the upgrade cycle by 45–60 minutes to finish. This extended duration is expected and reflects the time required to safely rotate certificates across all network devices.
+With the introduction of the above automated step, the Network Fabric Upgrade Complete phase might increase the upgrade cycle by 45–60 minutes to finish. This extended duration is expected and reflects the time required to safely rotate certificates across all network devices.
 
 If any issue occurs during certificate rotation:
 - The error details will be surfaced in the operationStatus of the Network Fabric Upgrade Complete operation.
 - When performing the upgrade via CLI, error messages will also be displayed directly in the terminal. These messages appear only when errors occur.
 
-Once the Fabric upgrade is done, we can verify the status of the network fabric by executing the following az cli commands:
+After the Fabric upgrade is done, we can verify the status of the network fabric by executing the following az cli commands:
 
 `az networkfabric fabric show -g <resource-group> --resource-name <fabric-name>
 az networkfabric fabric list -g xxxxx --query "[].{name:name,fabricVersion:fabricVersion,configurationState:configurationState,provisioningState:provisioningState}" -o table`
