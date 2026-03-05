@@ -432,7 +432,7 @@ This cmdlet:
 
 #### Clear-DiagnosticPipeline cmdlet examples
 
-Here are some supported authentication methods:
+**Supported authentication methods**:
 
 - Device code authentication:
 
@@ -454,7 +454,7 @@ Here are some supported authentication methods:
     Clear-DiagnosticPipeline -RegistrationWithCredential $credential
     ```
 
-Here are some available options:
+**Available options**:
 
 - Preserve pre-existing Arc agent connection:
 
