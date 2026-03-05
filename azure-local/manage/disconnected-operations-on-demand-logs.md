@@ -297,20 +297,20 @@ Before you collect logs in a disconnected operations scenario, make sure you:
 
     Log locations and upload commands:
 
-    - Appliance logs - Logs collected from the appliance VM are saved to:
+    - Appliance logs:
 
     ```
-    # Logs from Azure Local host nodes
+    # Logs from disconnected operations appliance for Azure Local infrastructure
 
     <SaveToPath>\ALDO
     ```
 
     Upload logs collected from the appliance VM by using the [`Send-DiagnosticData`](#send-diagnosticdata) cmdlet from the disconnected operations for Azure Local PowerShell module.
 
-    - Host node logs - Logs collected from the Azure Local host nodes (cluster nodes) are saved to:
+    - Host node (cluster nodes) logs:
 
     ```
-    #Logs from disconnected operations for Azure Local infrastructure
+    # Logs from Azure Local host nodes
 
     <SaveToPath>\AzureLocal
     ```
