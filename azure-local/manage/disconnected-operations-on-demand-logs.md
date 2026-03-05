@@ -70,7 +70,7 @@ For a list of unsupported features in disconnected mode, see [Unsupported featur
 
 ## Disconnected operations for Azure Local when the appliance VM is connected to Azure
 
-When the appliance VM is connected to Azure, you can upload host node logs the same way you do in the disconnected operations scenario. For control plane logs, send them directly by using `Invoke-ApplianceLogCollection`. You don't need to save them locally.
+When the appliance VM is connected to Azure, send control plane logs directly using the `Invoke-ApplianceLogCollection` cmdlet. You don't need to save them locally. For host node logs, use the `Invoke-AzureLocalDisconnectedLogCollection` cmdlet to copy the logs, and then send them to Microsoft using the `Send-AzStackDiagnosticData` cmdlet.
 
 The following diagram shows the key components for log collection in disconnected operations for Azure Local when the appliance VM is connected to Azure:
 
@@ -275,49 +275,12 @@ Before you collect logs in a disconnected operations scenario, make sure you:
     $shareCredential = New-Object System.Management.Automation.PSCredential ($user, $sec)
     ```
 
-1. Collect control plane logs. Run this command on a system that can access the appliance VM (usually the same Hyper-V host):
-
-    ```PowerShell
-    Invoke-AzureLocalDisconnectedLogCollection
-    ```
-
-    This command gathers logs from the appliance VM and saves them to the shared folder you specify.
+1. Collect control plane and host node logs. Run this command on a system that can access the appliance VM (usually the same Hyper-V host):
 
     Example:
 
     ```PowerShell
-    # Replace with your actual values
-    $fromDate = (Get-Date).AddMinutes(-30)
-    $toDate = (Get-Date)
-    $operationId = Invoke-AzureLocalDisconnectedLogCollection -FromDate $fromDate -ToDate $toDate `
-    -LogOutputShareFolderPath "<File Share Path>" -ShareFolderUsername "<Username>" -ShareFolderPassword (ConvertTo-SecureString "<Share Folder Password>" -AsPlainText -Force)
-    ```
-
-    Example output:
-
-    ```console
-    PS C:\Users\administrator.s46r2004\Documents> $operationId = Invoke-AzureLocalDisconnectedLogCollection -FromDate $fromDate -ToDate $toDate -LogOutputShareFolderPath "\\<IP or Hostname>\<share-name or LogShareName>" -ShareFolderUsername "<Username>" -ShareFolderPassword (ConvertTo-SecureString "<Password>" -AsPlainText -Force)  
-        
-    VERBOSE: [2023-04-09 22:34:28Z] [Invoke-AzureLocalDisconnectedLogCollection] Trigger log collections with parameters:  
-    https://<IP address>/logs/logCollectionIndirectJob  
-    VERBOSE: [2023-04-09 22:34:28Z] [Invoke-ScriptsWithRetry] Executing 'Trigger log collection ...' with timeout 600 seconds ...  
-    VERBOSE: [2023-04-09 22:34:28Z] [Invoke-ScriptsWithRetry] [CHECK] [Attempt 0] for task 'Trigger log collection ...' ...  
-    VERBOSE: [2023-04-09 22:34:28Z] [Invoke-ScriptsWithRetry] Task 'Trigger log collection ...' succeeded.  
-    VERBOSE: [2023-04-09 22:34:28Z] [Invoke-AzureLocalDisconnectedLogCollection] Log collections trigger result: "<Instance Id>"  
-    
-    PS C:\Users\administrator.s46r2004\Documents> $onDemandRequestBody  
-    Name        Value  
-    ----        -----  
-    SaveToPath  \\<IP address>\Arc\LogsShare1  
-    FromDate    2025-04-09T21:26:51.8237434+00:00  
-    UserName    masd.stbtest.microsoft.com\administrator  
-    ToDate      2025-04-10T21:56:50.7453871+00:00  
-    UserPassword <Password>
-    ```
-
-1. Collect host node and VM appliance logs.
-
-    ```PowerShell
+    #replace with your actual values
     Invoke-AzureLocalDisconnectedLogCollection -FromDate (Get-Date).AddHours(-2) `
     -ToDate (Get-Date) `
     -AzureLocalNodeNames @("ALNode01", "ALNode02", "ALNode03") `
@@ -326,14 +289,33 @@ Before you collect logs in a disconnected operations scenario, make sure you:
     -ShareCredential (Get-Credential -UserName "fileuser" -Message "Enter SMB share credentials")
     ```
 
-    This command collects host node and the VM appliance logs, including system level and cluster level diagnostics. For more information, see [Invoke-AzureLocalDisconnectedLogCollection](#invoke-azurelocaldisconnectedlogcollection).
+    This command also includes system level and cluster level diagnostics. For more information, see [Invoke-AzureLocalDisconnectedLogCollection](#invoke-azurelocaldisconnectedlogcollection).
 
-1. After collection, review the logs locally or upload them to Microsoft by using the **standalone observability tool**.
+1. After collection, review the logs locally or upload them to Microsoft by using the **standalone observability tool**. There are product specific wrappers around **Microsoft.AzureStack.Observability.Standalone**.
 
-    After you save logs from both the appliance and host nodes to a shared location, upload them with the standalone observability tool. There are product specific wrappers around **Microsoft.AzureStack.Observability.Standalone**.
+    When you collect logs using `Invoke-AzureLocalDisconnectedLogCollection`, logs from the host nodes and appliance are saved to separate subfolders under the same `<SaveToPath>` location. These cmdlets must be uploaded using different cmdlets.
 
-    - Appliance logs: Upload logs collected from the appliance VM by using the [`Send-DiagnosticData`](#send-diagnosticdata) cmdlet from the disconnected operations for Azure Local PowerShell module.
-    - Host node logs: Upload logs collected from the Azure Local host nodes by using the `Send-AzStackHciDiagnosticData` cmdlet. For more information, see [Get support for Azure Local deployment issues](../manage/get-support-for-deployment-issues.md).
+    Log locations and upload commands:
+
+    - Appliance logs - Logs collected from the appliance VM are saved to:
+
+    ```
+    # Logs from Azure Local host nodes
+
+    <SaveToPath>\ALDO
+    ```
+
+    Upload logs collected from the appliance VM by using the [`Send-DiagnosticData`](#send-diagnosticdata) cmdlet from the disconnected operations for Azure Local PowerShell module.
+
+    - Host node logs - Logs collected from the Azure Local host nodes (cluster nodes) are saved to:
+
+    ```
+    #Logs from disconnected operations for Azure Local infrastructure
+
+    <SaveToPath>\AzureLocal
+    ```
+
+    Upload logs collected from the Azure Local host nodes by using the `Send-AzStackHciDiagnosticData` cmdlet. For more information, see [Get support for Azure Local deployment issues](../manage/get-support-for-deployment-issues.md).
 
 1. Optional. If the `Send-DiagnosticData` command fails or is interrupted, use the [`Clear-DiagnosticPipeline`](#clear-diagnosticpipeline) cmdlet.
 
@@ -379,15 +361,6 @@ Capabilities:
 - Saves logs locally only when you use the `-SaveToPath` parameter.
   - Appliance logs are saved to `<SaveToPath>\ALDO`.
   - Host node logs are saved to `<SaveToPath>\AzureLocal`.
-  
-    Example of the log output structure:
-
-    ```
-    <SaveToPath>\
-    ├── AzureLocal\    # Logs from Azure Local cluster nodes
-    └── ALDO\    # Logs from disconnected operations for Azure Local infrastructure
-    ```
-
 - Uses the `SkipAldoLogCollection` parameter to collect logs only from Azure Local host nodes and skip the disconnected operations control plane.
 - Supports secure credentials to save logs to a network share.
 
