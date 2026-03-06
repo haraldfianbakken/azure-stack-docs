@@ -1,26 +1,26 @@
 ---
-title: About Private Endpoints with Azure Local
+title: About using Private Endpoints to Connect with Azure Local
 description: Review how Azure Private Endpoints can be used when deploying Azure Local, with and without Arc gateway, and with and without Proxy.
 author: alkohli
 ms.author: alkohli
 ms.reviewer: alkohli
-ms.date: 02/26/2026
+ms.date: 03/06/2026
 ms.topic: concept-article
 ---
 
-# About Azure private endpoints on Azure Local
+# Use Azure private endpoints to connect to Azure Local
 
-This article provides an overview of Azure private endpoints on Azure Local and the supported scenarios. 
+This article provides an overview of Azure private endpoints on Azure Local including the supported and unsupported scenarios, and key requirements for successful connectivity.
 
-## About private endpoints for Azure Local
+## About private endpoints
 
-A private endpoint for Azure Local is a network interface that uses a private IP address from the virtual network associated with your Azure Local. Private endpoints enable Azure services to be accessed over a private network connection rather than the public internet
+A private endpoint is a network interface that uses a private IP address from the virtual network. Private endpoints enable Azure services to be accessed over a private network connection rather than the public internet. This guidance is intended to help you understand how to connect from Azure Local to different Azure PaaS services such as Azure Storage, Azure Key Vault, Azure SQL Database and Azure Container Registry, using private endpoints.
 
 ## Supported private endpoint scenarios
 
-Azure Local infrastructure (including the nodes and the Arc resource bridge VM) supports many [Azure private endpoint types](/azure/private-link/private-endpoint-overview), but Azure Arc Private Link is not supported. Because of this, Azure Local always registers with Azure Arc using public Arc endpoints. 
+Azure Local infrastructure (including the nodes and the Arc resource bridge VM) supports many [Azure private endpoint types](/azure/private-link/private-endpoint-overview), but Azure Arc Private Link is not supported. Because of this, Azure Local always registers with Azure Arc using public Arc endpoints.
 
-For more information, see [Use Azure Private Link to Connect Servers to Azure Arc by Using a private endpoint](/azure/azure-arc/servers/private-link-security) and [Troubleshoot Azure Arc resource bridge issues]().
+For more information, see [Use Azure Private Link to connect machines to Azure Arc by Using a private endpoint](/azure/azure-arc/servers/private-link-security) and [Troubleshoot Azure Arc resource bridge issues]().
 
 The following table summarizes key points for using supported private endpoints with Azure Local.
 
@@ -50,12 +50,6 @@ Azure Local infrastructure must always resolve Azure Arc endpoints to public IP 
         -  To the public internet for public endpoints.
         -  Through Azure ExpressRoute/Site-to-Site (S2S) VPN for private endpoints.
 
-### Support for Azure Local VMs and Arc Private Link
-
-Although Azure Local nodes and Arc Resource Bridge VM don't support Arc private link, you can use Arc Private Link inside Azure Local VMs if the DNS servers in use aren't the same as those used for the Azure Local infrastructure (Azure Local infrastructure DNS servers must not resolve Arc private endpoints).
-
-- To enable Arc Private Link on existing Azure Local VMs, follow [Use Azure Private Link to Connect Servers to Azure Arc by Using a private endpoint](/azure/azure-arc/servers/private-link-security#configure-an-existing-azure-arc-enabled-server).
-- For new Azure Local VMs, you can't enable Arc Private Link during deployment yet.
 
 ### Arc resource bridge and AKS reserved network subnets with private endpoints
 
@@ -75,7 +69,7 @@ When deploying Arc Resource Bridge VM in Azure Local:
 
 ## Unsupported scenarios
 
-Azure Local doesn't support Azure Arc Private Link for all the scenarios. Azure Local infrastructure (nodes and Arc resource bridge VM) must use public Arc endpoints.
+Azure Local VMs and AKS don't support Azure Arc Private Link in Azure Local.
 
 ## Related steps
 

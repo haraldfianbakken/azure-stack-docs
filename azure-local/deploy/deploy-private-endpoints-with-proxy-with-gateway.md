@@ -4,13 +4,13 @@ description: Review how Azure Private Endpoints can be used when deploying Azure
 author: alkohli
 ms.author: alkohli
 ms.reviewer: alkohli
-ms.date: 02/18/2026
+ms.date: 03/06/2026
 ms.topic: concept-article
 ---
 
-# Use private endpoints with Azure Local for proxy with Arc gateway scenario
+# Use private endpoints to connect to Azure Local for proxy with Arc gateway scenario
 
-This article provides an overview of how you can integrate both existing and new Azure private endpoints with Azure Local. A private endpoint for Azure Local is a network interface that uses a private IP address from the virtual network associated with your Azure Local.
+This article describes the scenario where Azure Local is deployed with both an enterprise proxy and an Arc gateway and private endpoints are used.
 
 Currently, Azure Local offers the following distinct methods for outbound connectivity:
 
@@ -21,8 +21,6 @@ Currently, Azure Local offers the following distinct methods for outbound connec
 - Deploy Azure Local without an enterprise proxy but with an Arc gateway.
 
 - Deploy Azure Local with both an enterprise proxy and an Arc gateway.
-
-This article describes the scenario where Azure Local is deployed with both an enterprise proxy and an Arc gateway and private endpoints are used.
 
 
 ## About Azure private endpoint scenario with proxy and with Arc gateway
