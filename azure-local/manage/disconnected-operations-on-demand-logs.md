@@ -433,7 +433,7 @@ This cmdlet:
 - Uses the same authentication method as the original `Send-DiagnosticData` call for uninstallation.
 
 > [!NOTE]
-> If you have an Arc for Server agent connected before running `Send-DiagnosticData`, use the `-SkipArcForServer` parameter to preserve your pre-existing Arc connection.
+> If you have an Arc for Server agent connected before running `Send-DiagnosticData`, use the `-SkipArcForServer` parameter to preserve your preexisting Arc connection.
 
 #### Clear-DiagnosticPipeline cmdlet examples
 
@@ -461,7 +461,7 @@ This cmdlet:
 
 **Available options**:
 
-- Preserve pre-existing Arc agent connection:
+- Preserve preexisting Arc agent connection:
 
     ```PowerShell
     Clear-DiagnosticPipeline `
