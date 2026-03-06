@@ -134,11 +134,11 @@ Before you collect logs in a disconnected operations scenario, make sure you:
     - Identify the management client certificate used to authenticate with the disconnected operations for Azure Local management endpoint.
     - Set up the management endpoint client context. Run this script:
 
-    ```PowerShell
-    # Replace with your actual values
-    $certPassword = Read-Host -AsSecureString "Management endpoint client certificate password"
-    $context = Set-DisconnectedOperationsClientContext -ManagementEndpointClientCertificatePath "<Management Endpoint Client Cert Path>" -ManagementEndpointClientCertificatePassword $certPassword -ManagementEndpointIpAddress "<Management Endpoint IP address>"
-    ```
+        ```PowerShell
+        # Replace with your actual values
+        $certPassword = Read-Host -AsSecureString "Management endpoint client certificate password"
+        $context = Set-DisconnectedOperationsClientContext -ManagementEndpointClientCertificatePath "<Management Endpoint Client Cert Path>" -ManagementEndpointClientCertificatePassword $certPassword -ManagementEndpointIpAddress "<Management Endpoint IP address>"
+        ```
 
 1. Collect control plane logs. Run this command on a system that can access the appliance VM (usually the same Hyper-V host):
 
