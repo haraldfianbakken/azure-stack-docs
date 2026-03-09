@@ -160,7 +160,7 @@ Follow these steps to create Azure Local VMs running disconnected operations.
 
     :::image type="content" source="./media/disconnected-operations/arc-vms/create-arc-vms.png" alt-text="Screenshot showing how to create an Azure Local VM from the portal." lightbox="./media/disconnected-operations/arc-vms/create-arc-vms.png":::
 
-    Here's an example script for VM creation.
+    Here's an example script to create a VM.
 
     ```azurecli
     az stack-hci-vm create `
@@ -178,7 +178,7 @@ Follow these steps to create Azure Local VMs running disconnected operations.
         --enable-agent true
     ```
 
-    Here's an example script for trusted launch.
+    Here's an example script to create a VM with trusted launch enabled.
 
     ```azurecli
     az stack-hci-vm create `
