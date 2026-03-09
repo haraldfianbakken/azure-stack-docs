@@ -47,7 +47,7 @@ This proxy and bypass list configuration in Environment Variables is used to con
 
 ### Outbound connectivity for Azure Local hosts
 
-:::image type="content" source="media/deploy-private-endpoints-with-proxy-with-gateway/image12.png" alt-text="Scenario with proxy and with Arc gateway.":::
+:::image type="content" source="media/deploy-private-endpoints-with-proxy-with-gateway/image12.png" alt-text="A diagram of a company network showing how outbound connectivity works for Azure Local hosts with proxy and with Arc gateway." lightbox="media/deploy-private-endpoints-with-proxy-with-gateway/image12.png":::
 
 **Diagram legend**:
 
@@ -62,7 +62,7 @@ This proxy and bypass list configuration in Environment Variables is used to con
 
 ### Outbound connectivity for Arc resource bridge VM
 
-:::image type="content" source="media/deploy-private-endpoints-with-proxy-with-gateway/image13.png" alt-text="A diagram of a flowchart AI-generated content may be incorrect.":::
+:::image type="content" source="media/deploy-private-endpoints-with-proxy-with-gateway/image13.png" alt-text="A diagram of a company network showing how outbound connectivity works for Arc resource bridge with proxy and with Arc gateway." lightbox="media/deploy-private-endpoints-with-proxy-with-gateway/image13.png":::
 
 **Diagram legend**:
 
@@ -84,7 +84,7 @@ This proxy and bypass list configuration in Environment Variables is used to con
 
 ### Outbound connectivity for AKS clusters control plane and worker VMs
 
-:::image type="content" source="media/deploy-private-endpoints-with-proxy-with-gateway/image14.png" alt-text="A diagram of a diagram AI-generated content may be incorrect.":::
+:::image type="content" source="media/deploy-private-endpoints-with-proxy-with-gateway/image14.png" alt-text="A diagram of a company network showing how outbound connectivity works for AKS clusters control plane and worker VMs with proxy and with Arc gateway." lightbox="media/deploy-private-endpoints-with-proxy-with-gateway/image14.png":::
 
 **Diagram legend**:
 - 10.0.0.0/16 is just an example of a private network where you can configure the private endpoint.

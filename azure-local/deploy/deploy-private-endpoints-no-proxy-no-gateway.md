@@ -11,7 +11,6 @@ ms.topic: concept-article
 # Use Azure private endpoints to connect to Azure Local for no proxy and no Arc gateway scenario
 
 This article provides an overview of how you can integrate both Azure private endpoints with Azure Local in a scenario without an enterprise proxy and without an Arc gateway.
-
 For more information about Azure private endpoints on Azure Local and the supported scenarios, see [About Azure private endpoints on Azure Local](./about-private-endpoints.md).
 
 
@@ -22,7 +21,7 @@ For more information about Azure private endpoints on Azure Local and the suppor
 
 ### Outbound connectivity for Azure Local hosts
 
-:::image type="content" source="media/deploy-private-endpoints-no-proxy-no-gateway/image1.png" alt-text="Scenario with no proxy and no Arc gateway.":::Outbound Connectivity for Azure Local hosts:
+:::image type="content" source="media/deploy-private-endpoints-no-proxy-no-gateway/image1.png" alt-text="A diagram of a company network showing how outbound connectivity works for Azure Local hosts where there is no proxy and no Arc gateway." lightbox="media/deploy-private-endpoints-no-proxy-no-gateway/image1.png":::Outbound Connectivity for Azure Local hosts:
 
 **Diagram legend**:
 
@@ -34,7 +33,7 @@ For more information about Azure private endpoints on Azure Local and the suppor
 
 ### Outbound connectivity for Arc resource bridge VM
 
-:::image type="content" source="media/deploy-private-endpoints-no-proxy-no-gateway/image2.png" alt-text="A blue and purple rectangle with text AI-generated content may be incorrect.":::Outbound Connectivity for Arc Resource Bridge VM:
+:::image type="content" source="media/deploy-private-endpoints-no-proxy-no-gateway/image2.png" alt-text="A diagram of a company network showing how outbound connectivity works for Arc resource bridge VM where there is no proxy and no Arc gateway." lightbox="media/deploy-private-endpoints-no-proxy-no-gateway/image2.png":::Outbound Connectivity for Arc Resource Bridge VM:
 
 **Diagram legend**:
 
@@ -46,7 +45,7 @@ For more information about Azure private endpoints on Azure Local and the suppor
 
 ### Outbound connectivity for AKS clusters and worker VMs
 
-:::image type="content" source="media/deploy-private-endpoints-no-proxy-no-gateway/image3.png" alt-text="A blue and purple text and a white rectangle AI-generated content may be incorrect.":::Outbound Connectivity for AKS clusters control plane and worker VMs:
+:::image type="content" source="media/deploy-private-endpoints-no-proxy-no-gateway/image3.png" alt-text="A diagram of a company network showing how outbound connectivity works for AKS cluster and worker VM withno proxy and no Arc gateway." lightbox="media/deploy-private-endpoints-no-proxy-no-gateway/image3.png":::Outbound Connectivity for AKS clusters control plane and worker VMs:
 
 **Diagram legend**:
 
@@ -59,7 +58,7 @@ For more information about Azure private endpoints on Azure Local and the suppor
 
 ### Outbound connectivity for Azure Local VMs
 
-:::image type="content" source="media/deploy-private-endpoints-no-proxy-no-gateway/image4.png" alt-text="A blue and purple line with words AI-generated content may be incorrect.":::Outbound Connectivity for Azure Local VMs:
+:::image type="content" source="media/deploy-private-endpoints-no-proxy-no-gateway/image4.png" alt-text="A diagram of a company network showing how outbound connectivity works for Azure Local VMs with no proxy and no Arc gateway." lightbox="media/deploy-private-endpoints-no-proxy-no-gateway/image4.png":::Outbound Connectivity for Azure Local VMs:
 
 **Diagram legend**:
 
