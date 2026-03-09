@@ -193,7 +193,7 @@ Follow these steps to create Azure Local VMs running disconnected operations.
       --admin-password "example" `
       --image "test-gallery-image" `
       --name "test-vm" `
-      --security-type TrustedLaunch `
+      --security-type "TrustedLaunch" `
       --enable-secure-boot true `
       --enable-vtpm true `
       --enable-agent true
