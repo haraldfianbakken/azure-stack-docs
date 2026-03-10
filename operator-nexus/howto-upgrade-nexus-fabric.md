@@ -29,7 +29,7 @@ Runtime changes are categorized as follows:
 
 Follow these instructions for a consistent, scalable, and secure approach to upgrading your network fabric components.
 
-## Required pre-upgrade validations
+## <a name = "required-preupgrade-validations"></a> Required pre-upgrade validations
 
 Before you initiate the Network Fabric runtime upgrade process, validate these resource states. These proactive validation steps help prevent upgrade failures and avoid service interruption challenges. If the required resource states aren't met, stop the upgrade process.
 

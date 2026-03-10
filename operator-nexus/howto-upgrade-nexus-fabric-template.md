@@ -160,13 +160,13 @@ If you experience any failures, open a support request. Report the values for `<
 
 3. Check the Fabric instance's network packet broker (NPB) for any orphaned network taps in the Azure portal.
 
-   * Select **Network Fabrics** under **Azure Services** and then select <NF_NAME>.
-   * Select the appropriate resource group for the Fabric.
+   * Select **Network Fabric** under **Azure Services** and then select **<NF_NAME>**.
+   * Select the appropriate resource group for the Fabric instance.
    * In the **Resources** list, use the **Network Packet Broker** filter.
    * Select the appropriate **Network Packet Broker** name in the list.
    * Select the **Network Taps** tab on the **Overview** screen.
-   * All `Network Taps` should have a status of **Succeeded** for **Configuration State** and **Provisioning State**.
-   * Look for any Taps with a red X, and a status of **Not Found**, **Failed**, or **Error**.
+   * All network taps should have a status of **Succeeded** for **Configuration State** and **Provisioning State**.
+   * Look for any taps with a red X, and a status of **Not Found**, **Failed**, or **Error**.
 
    >[!NOTE]
    > If any Taps show a status of **Not Found**, **Failed**, or **Error**, stop the upgrade until you clear these problems. Provide this information to Microsoft Support when you open a support ticket for Tap problems.
