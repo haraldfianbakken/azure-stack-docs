@@ -3,7 +3,7 @@ title: Connect to VM Serial Console Using Azure CLI on Azure Local
 description: Learn how to connect to the serial console of an Azure Local Multi Rack VM using Azure Command-line Interface (CLI).
 author: alkohli
 ms.author: alkohli
-ms.date: 03/05/2026
+ms.date: 03/11/2026
 ms.topic: how-to
 ms.service: azure-local
 #customer intent: As an Azure Local administrator, I want to connect to a VM serial console using Azure CLI so that I can troubleshoot and manage VM boot and console issues.
@@ -26,39 +26,42 @@ Serial console provides access to a text-based console for VMs running Linux or 
 
 - Azure RBAC role assignments for your Microsoft Entra entity on the Azure Local multi-rack cluster's Arc-connected Kubernetes resource. Get the object ID for your Microsoft Entra entity, then create the required role assignments.
 
-   Get the Microsoft Entra entity ID:
+   1. Get the Microsoft Entra entity ID:
 
-   For a Microsoft Entra group:
+      **For a Microsoft Entra group:**
 
-   ```azurecli
-   AAD_ENTITY_ID=$(az ad group show --group <group-name> --query id -o tsv)
-   ```
+       ```azurecli
+       AAD_ENTITY_ID=$(az ad group show --group <group-name> --query id -o tsv)
+       ```
 
-   For a single user account (gets the user principal name):
+      **For a single user account (gets the user principal name):**
 
-   ```azurecli
-   AAD_ENTITY_ID=$(az ad signed-in-user show --query userPrincipalName -o tsv)
-   ```
+       ```azurecli
+       AAD_ENTITY_ID=$(az ad signed-in-user show --query userPrincipalName -o tsv)
+       ```
 
-   For a Microsoft Entra application:
+       **For a Microsoft Entra application:**
 
-   ```azurecli
-   AAD_ENTITY_ID=$(az ad sp show --id <id> --query id -o tsv)
-   ```
+       ```azurecli
+       AAD_ENTITY_ID=$(az ad sp show --id <id> --query id -o tsv)
+       ```
 
-   Create the role assignments:
+   2. Create the role assignments:
 
-   ```azurecli
-   az role assignment create --role "Azure Arc Kubernetes Viewer" --assignee $AAD_ENTITY_ID --scope $ARM_ID_CLUSTER
-   az role assignment create --role "Azure Arc Enabled Kubernetes Cluster User Role" --assignee $AAD_ENTITY_ID --scope $ARM_ID_CLUSTER
-   ```
+       ```azurecli
+       az role assignment create --role "Azure Arc Kubernetes Viewer" --assignee $AAD_ENTITY_ID --scope $ARM_ID_CLUSTER
+       az role assignment create --role "Azure Arc Enabled Kubernetes Cluster User Role" --assignee $AAD_ENTITY_ID --scope $ARM_ID_CLUSTER
+       ```
 
-Replace `$ARM_ID_CLUSTER` with the ARM resource ID of your Azure Local multi-rack cluster's Arc-connected Kubernetes resource (for example, `/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Kubernetes/connectedClusters/<cluster-name>`).
+   3. Replace `$ARM_ID_CLUSTER` with the ARM resource ID of your Azure Local multi-rack cluster's Arc-connected Kubernetes resource (for example, `/subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Kubernetes/connectedClusters/<cluster-name>`).
 
-> [!IMPORTANT]
-> You must have access to the VM serial console. If you don't already have access, open a support ticket with Microsoft Support and provide the VM name and either your Microsoft Entra group ID (recommended, so you can manage access by changing group membership) or your user Microsoft Entra ID.
+    > [!IMPORTANT]
+    > You must have access to the VM serial console. Serial console access requires your Microsoft Entra identity to be explicitly granted permission on the VM serial console. 
+   To get access, open a support ticket with Microsoft Support and provide:
+    - The VM name.
+    - Your Microsoft Entra group ID (recommended, so you can manage access by changing group membership) or your user Microsoft Entra object ID.
 
-### Install or verify Azure CLI extensions
+## Install or verify Azure CLI extensions
 
 The commands in this workflow use these Azure CLI extensions:
 
@@ -94,7 +97,7 @@ The commands in this workflow use these Azure CLI extensions:
    az login --use-device-code
    ```
 
-## Start the proxy
+## Start the proxy session
 
 To connect to a VM serial console, start a proxy session to your Azure Local multi-rack cluster's Arc-connected Kubernetes resource.
 
