@@ -5,7 +5,7 @@ author: eak13
 ms.author: ekarandjeff
 ms.service: azure-operator-nexus
 ms.topic: how-to
-ms.date: 2/13/2025
+ms.date: 03/12/2026
 ms.custom: template-how-to, devx-track-azurecli
 ---
 
@@ -94,13 +94,13 @@ In the response, the operation performs asynchronously and returns an HTTP statu
 
 ### <a name = "hardware-support-data-collection"></a> The hardware-support-data-collection command
 
-The following example runs the `hardware-support-data-collection` command and gets `SysInfo` and `TTYLog` logs from the Dell server. The script runs a `racadm supportassist collect` command on the designated bare-metal machine. The resulting tar.gz file contains the file outputs of the extract command in the ZIP file `hardware-support-data-<timestamp>.zip`.
+The following example runs the `hardware-support-data-collection` command and gets `SysInfo`, `TTYLog`, and `Debug` logs from the Dell server. The script runs a `racadm supportassist collect` command on the designated bare-metal machine. The resulting tar.gz file contains the file outputs of the extract command in the ZIP file `hardware-support-data-<timestamp>.zip`.
 
 ```azurecli
 az networkcloud baremetalmachine run-data-extract --name "bareMetalMachineName" \
   --resource-group "cluster_MRG" \
   --subscription "subscription" \
-  --commands '[{"arguments":["SysInfo", "TTYLog"],"command":"hardware-support-data-collection"}]' \
+  --commands '[{"arguments":["SysInfo", "TTYLog","Debug"],"command":"hardware-support-data-collection"}]' --limit-time-seconds 1000 \
   --limit-time-seconds 600
 ```
 
@@ -109,7 +109,7 @@ az networkcloud baremetalmachine run-data-extract --name "bareMetalMachineName" 
 ```azurecli
 ====Action Command Output====
 Executing hardware-support-data-collection command
-Getting following hardware support logs: SysInfo,TTYLog
+Getting following hardware support logs: SysInfo,TTYLog,Debug
 Job JID_814372800396 is running, waiting for it to complete ...
 Job JID_814372800396 Completed.
 ---------------------------- JOB -------------------------
