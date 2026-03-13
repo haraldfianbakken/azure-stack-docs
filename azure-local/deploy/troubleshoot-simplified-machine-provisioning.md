@@ -5,7 +5,7 @@ ms.author: alkohli
 author: alkohli
 ms.reviewer: alkohli
 ms.topic: how-to
-ms.date: 02/23/2026
+ms.date: 03/13/2026
 ms.subservice: hyperconverged
 ---
 
@@ -50,7 +50,7 @@ The logs are stored in the following locations:
 | Azure Stack HCI | `C:\Windows\System32\Bootstrap\Logs` |
 | Maintenance environment | `/var/log/bootstrap`<br>`/var/log/provisioningextension`<br>`/var/log/trident-full.log`<br>`/var/log/messages`<br>`/var/log/bootstraprestservice` |
 
-## Maintenance environment known issues
+## USB boot loop issue with maintenance environment
 
 **Problem:** The USB Boot enters an infinite USB boot sequence if the BIOS Settings `Boot USB Devices First` is set on the machine.
 
@@ -68,9 +68,7 @@ From the customer’s perspective, the device appears to be in an infinite cycle
 
 **Recommendation:**
 
-Disable the `Boot USB Devices First` BIOS option (or the equivalent setting, depending on the hardware model and BIOS version).
-
-TODO1: dsarkar is working on getting a BIOS screenshot for supported Azure Local hardware. For now, leave screenshot out.
+You only need to boot from a USB device once to install the maintenance environment. After that, you should configure the machine to boot from the internal disk. For more information, see [Prepare machines](simplified-machine-provisioning.md#step-2-prepare-machines). For instructions on accessing the boot menu or changing the boot order for your machine, check the documentation that came with your machine or go to the manufacturer's website.
 
 ## Operating system image drop down is empty
 
@@ -90,7 +88,13 @@ TODO1: dsarkar is working on getting a BIOS screenshot for supported Azure Local
 
 **Cause:** This issue can happen if you're using Azure Stack HCI for the first time in this subscription.
 
-**Recommendation:** Wait 15 minutes and retry.
+**Recommendation:**
+
+1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
+
+1. Wait 15 minutes.
+
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## When you provision new machines, you receive an internal server error
 
@@ -98,35 +102,55 @@ TODO1: dsarkar is working on getting a BIOS screenshot for supported Azure Local
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png" alt-text="Screenshot showing an internal server error on site default." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png":::
 
-TODO1: anbacker: I reworded these but please feel free to reword further when you have time.
+**Causes:** Your administrator has set up an [Azure Policy](/azure/governance/policy/overview) that requires one or more of the following:
 
-**Causes:** This can have one of the following causes:
+- Resource groups must be created in a specific region. In this preview release, only the `eastus` region supports simplified machine provisioning.
 
-1. You have a resource group policy that requires resource groups to be created in a specific region. In this preview release, only the `eastus` region supports simplified machine provisioning.
+- Resource groups must be created using a specific naming convention.
 
-1. You have a resource group policy that automatically adds tags to newly created resource groups. Simplified machine provisioning doesn't currently support this.
-
-1. You have a resource group policy that enforces naming conventions.
+- Resources must have [Azure Resource Manager tags](/azure/azure-resource-manager/management/tag-resources). Simplified machine provisioning doesn't currently support this.
 
 **Recommendations:**
 
-1. Remove the resource group policy that requires resource groups to be created in a specific region.
+1. In Azure Portal, browse to the resource group where you are trying to provision new machines and select **Monitor** > **Activity log**. You can use the activity log to investigate the provisioning error and determine which Azure Policy is restricting resource creation. For more information see [/azure/azure-monitor/platform/activity-log.md](Activity log in Azure Monitor).
 
-1. Remove the resource group policy that automatically adds tags to newly created resource groups.
+1. Add an [Azure Policy exemption](/azure/governance/policy/concepts/exemption-structure) for the policy that conflicts with simplified machine provisioning.
 
-1. When you create a new site, you can select **Configure** to provide a custom resource group name.
+1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
+
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## Provisioned machine creation fails with the error message "StorageAccountForbidden"
 
-TODO1: anbarker will provide more details on the potential issues with storage account creation policies when time permits.
+This error has the following possible causes.
 
-**Cause:** Your storage account creation policy doesn't support simplified machine provisioning, or you didn't register the `Microsoft.Storage` resource provider.
+**Cause:** Your administrator has set up an [Azure Policy](/azure/governance/policy/overview) that requires one or more of the following:
+
+- Resource groups must be created in a specific region. In this preview release, only the `eastus` region supports simplified machine provisioning.
+
+- Resource groups must be created using a specific naming convention.
+
+- Resources must have [Azure Resource Manager tags](/azure/azure-resource-manager/management/tag-resources). Simplified machine provisioning doesn't currently support this.
+
+**Recommendation:**
+
+1. In Azure Portal, browse to the resource group where you are trying to provision new machines and select **Monitor** > **Activity log**. You can use the activity log to investigate the provisioning error and determine which Azure Policy is restricting resource creation. For more information see [/azure/azure-monitor/platform/activity-log.md](Activity log in Azure Monitor).
+
+1. Add an [Azure Policy exemption](/azure/governance/policy/concepts/exemption-structure) for the policy that conflicts with simplified machine provisioning.
+
+1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
+
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
+
+**Cause:** You didn't register the `Microsoft.Storage` resource provider.
 
 **Recommendation:**
 
 1. Register the resource provider as described in the [prerequisites](simplified-machine-provisioning.md#azure-prerequisites).
 
-1. Delete the provisioned machine and create it again.
+1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
+
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## Provisioned machine creation fails with the error message "DeviceOnboardingConflict"
 
@@ -136,7 +160,9 @@ TODO1: anbarker will provide more details on the potential issues with storage a
 
 1. Register the `MachineProvision` feature and required resource providers as described in the [prerequisites](simplified-machine-provisioning.md#azure-prerequisites).
 
-1. Delete the provisioned machine and create it again.
+1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
+
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](./simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## Provisioned machine creation fails with the error message "UpdateArcSettingDataFailed"
 
@@ -146,11 +172,13 @@ TODO1: anbarker will provide more details on the potential issues with storage a
 
 1. Register the resource provider as described in the [prerequisites](simplified-machine-provisioning.md#azure-prerequisites).
 
-1. Delete the provisioned machine and create it again.
+1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
+
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## Reattempt a failed OS provisioning
 
-**Problem:** Simplified machine provisioning currently doesn't support automatic retries from the service in case the OS installation fails.
+**Problem:** If the OS installation fails, the deployments page shows the error messages `Your deployment failed` and `The resource write operation failed to complete successfully, because it reached terminal provisioning state 'Failed'.` Simplified machine provisioning currently doesn't support automatic retries from the service in case the OS installation fails.
 
 **Recommendation:**
 
@@ -249,12 +277,3 @@ To retry OS provisioning:
 
 1. It takes up to 30 minutes for the retry to complete.
 
-## Clean up resources
-
-You can attempt to delete the provisioned machine resource at any time. Deleting the resource also deletes related objects, such as resources under the managed resource group.
-
-TODO1: Engineering: Can you please review this section? Is this useful to customers? If not, I'll remove it. For now I could just remove it and we could revise later.
-
-In the resource group where you run simplified machine provisioning, there are two hidden resources: a configuration resource, and a resource called the `MOBO broker`. You can't delete the `MOBO broker` resource directly. If you delete the resource group, the `MOBO broker` resource is deleted with it. Also, if you delete the configuration resource, the `MOBO broker` resource is deleted with it.
-
-Be careful when deleting the configuration resource. Deleting the configuration resource brings down devices that haven't yet reached the `Ready to cluster` stage.
