@@ -94,7 +94,7 @@ You only need to boot from a USB device once to install the maintenance environm
 
 1. Wait 15 minutes.
 
-1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information, see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## When you provision new machines, you receive an internal server error
 
@@ -102,45 +102,45 @@ You only need to boot from a USB device once to install the maintenance environm
 
 :::image type="content" source="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png" alt-text="Screenshot showing an internal server error on site default." border="false" lightbox="media/simplified-machine-provisioning/troubleshooting-initial-creation-failure-4.png":::
 
-**Causes:** Your administrator has set up an [Azure Policy](/azure/governance/policy/overview) that requires one or more of the following:
+**Causes:** Your administrator has set up an [Azure Policy](/azure/governance/policy/overview) that includes one or more of the following requirements:
 
 - Resource groups must be created in a specific region. In this preview release, only the `eastus` region supports simplified machine provisioning.
 
 - Resource groups must be created using a specific naming convention.
 
-- Resources must have [Azure Resource Manager tags](/azure/azure-resource-manager/management/tag-resources). Simplified machine provisioning doesn't currently support this.
+- Resources must have [Azure Resource Manager tags](/azure/azure-resource-manager/management/tag-resources). Simplified machine provisioning doesn't currently support this requirement.
 
 **Recommendations:**
 
-1. In Azure Portal, browse to the resource group where you are trying to provision new machines and select **Monitor** > **Activity log**. You can use the activity log to investigate the provisioning error and determine which Azure Policy is restricting resource creation. For more information see [/azure/azure-monitor/platform/activity-log.md](Activity log in Azure Monitor).
+1. In Azure portal, browse to the resource group where you're trying to provision new machines and select **Monitor** > **Activity log**. You can use the activity log to investigate the provisioning error and determine which Azure Policy is restricting resource creation. For more information, see [Activity log in Azure Monitor](/azure/azure-monitor/platform/activity-log.md).
 
 1. Add an [Azure Policy exemption](/azure/governance/policy/concepts/exemption-structure) for the policy that conflicts with simplified machine provisioning.
 
 1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
 
-1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information, see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## Provisioned machine creation fails with the error message "StorageAccountForbidden"
 
 This error has the following possible causes.
 
-**Cause:** Your administrator has set up an [Azure Policy](/azure/governance/policy/overview) that requires one or more of the following:
+**Cause:** Your administrator has set up an [Azure Policy](/azure/governance/policy/overview) that includes one or more of the following requirements:
 
 - Resource groups must be created in a specific region. In this preview release, only the `eastus` region supports simplified machine provisioning.
 
 - Resource groups must be created using a specific naming convention.
 
-- Resources must have [Azure Resource Manager tags](/azure/azure-resource-manager/management/tag-resources). Simplified machine provisioning doesn't currently support this.
+- Resources must have [Azure Resource Manager tags](/azure/azure-resource-manager/management/tag-resources). Simplified machine provisioning doesn't currently support this requirement.
 
 **Recommendation:**
 
-1. In Azure Portal, browse to the resource group where you are trying to provision new machines and select **Monitor** > **Activity log**. You can use the activity log to investigate the provisioning error and determine which Azure Policy is restricting resource creation. For more information see [/azure/azure-monitor/platform/activity-log.md](Activity log in Azure Monitor).
+1. In Azure portal, browse to the resource group where you're trying to provision new machines and select **Monitor** > **Activity log**. You can use the activity log to investigate the provisioning error and determine which Azure Policy is restricting resource creation. For more information, see [Activity log in Azure Monitor](/azure/azure-monitor/platform/activity-log.md).
 
 1. Add an [Azure Policy exemption](/azure/governance/policy/concepts/exemption-structure) for the policy that conflicts with simplified machine provisioning.
 
 1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
 
-1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information, see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 **Cause:** You didn't register the `Microsoft.Storage` resource provider.
 
@@ -150,7 +150,7 @@ This error has the following possible causes.
 
 1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
 
-1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information, see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## Provisioned machine creation fails with the error message "DeviceOnboardingConflict"
 
@@ -162,7 +162,7 @@ This error has the following possible causes.
 
 1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
 
-1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](./simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information, see [Provision machines from Azure](./simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## Provisioned machine creation fails with the error message "UpdateArcSettingDataFailed"
 
@@ -174,7 +174,7 @@ This error has the following possible causes.
 
 1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
 
-1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
+1. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Get started** > **Provision**. Upload the voucher and provision the machine again. For more information, see [Provision machines from Azure](simplified-machine-provisioning.md#step-3-provision-machines-from-azure).
 
 ## Reattempt a failed OS provisioning
 
