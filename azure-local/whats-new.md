@@ -5,7 +5,7 @@ ms.topic: overview
 author: alkohli
 ms.author: alkohli
 ms.service: azure-local
-ms.date: 03/02/2026
+ms.date: 03/16/2026
 ms.subservice: hyperconverged
 ---
 
@@ -23,9 +23,9 @@ This release includes various reliability improvements and bug fixes.
 
 - **OS changes**:
 
-    - In 2603 release, all the new and existing deployments of Azure Local run the new OS version **26100.32520** (download from the Azure portal).
+    - In 2603 release, all the new and existing deployments of Azure Local run the new OS version **26100.32522** (download from the Azure portal).
 
-    - You also need a driver that's compatible with OS version **26100.32520** or Windows Server 2025.
+    - You also need a driver that's compatible with OS version **26100.32522** or Windows Server 2025.
 
     - For Integrated System or Premier solution hardware from the [Azure Local Catalog](https://aka.ms/AzureStackHCICatalog), the OS is preinstalled. Work with your Original Equipment Manufacturer (OEM) to get a compatible OS image and a compatible driver.
 
@@ -33,7 +33,7 @@ This release includes various reliability improvements and bug fixes.
 
 - **AKS enabled by Azure Arc changes**:
 
-    - This release supports the following Kubernetes versions: 1.30.13, 1.30.14, 1.31.9, 1.31.10, 1.32.5, 1.32.6.
+    - This release supports the following Kubernetes versions: 1.31.12, 1.31.13, 1.32.8, 1.32.9, 1.33.4, 1.33.5. Kubernetes version 1.30 is no longer supported.
     - KMS v1 will be deprecated soon. KMS v2 is included in this Azure Local release. Plan on redeploying your clusters by using KMS v2.
     - Support for [Windows Server 2019 SKU for node pools](https://techcommunity.microsoft.com/blog/containers/announcing-the-3-year-retirement-of-windows-server-2019-on-azure-kubernetes-serv/3777341) ends in March 2026.
 
