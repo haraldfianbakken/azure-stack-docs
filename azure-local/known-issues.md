@@ -28,10 +28,10 @@ For the 2603 release of Azure Local, Microsoft released the following update:
 
 | Solution version  | OS build  |
 |---------|---------|---------|
-| 12.2603.1002.15 | 26100.32520 |
+| 12.2603.1002.15 | 26100.32522 |
 
 > [!IMPORTANT]
-> The new deployments of this software use the **12.2602.1002.501** build.
+> The new deployments of this software use the **12.2603.1002.15** build.
 Release notes for this version include the issues fixed in this release, known issues in this release, and known issues carried over from previous versions.
 
 > [!NOTE]
@@ -47,7 +47,7 @@ The following table lists the fixed issues in this release:
 | Azure Local VMs <!--36958790--> | Fixed issue where the L4* GPU wasn't functional.  | |
 | Deployment <!--35378770--> | Fixed issue in deployment wizard where key vault creation during extension installation was blocking forward navigation.  | |
 | Deployment <!--35380820--> | Fixed issue where retrying deployment via the Azure portal would fail.  | |
-| Deployment <!--36430065--> | Added end-of-support banner messages to "Get started" tab for Azure Local instances on OS version 22H2.  | |
+| Deployment <!--36430065--> | Added end-of-support banner messages to the **Get started** tab for Azure Local instances on OS version 22H2.  | |
 
 ## Known issues
 
