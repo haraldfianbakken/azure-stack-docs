@@ -59,7 +59,7 @@ The following diagram illustrates the feature builds, cumulative updates, and up
 ## End of support for Azure Local versions
 
 > [!IMPORTANT]
-> Versions not updated within six months are no longer supported. Running an unsupported version may expose your environment to security vulnerabilities, compliance issues, or regulatory requirements associated with using an unsupported version. Microsoft doesn't guarantee or provide remediation for risks resulting from the continued use of unsupported versions. For supported versions, see the [release trains diagram](#about-azure-local-releases) or the [Support versions](#supported-versions-of-azure-local) table.
+> Versions not updated within six months are no longer supported. Running an unsupported version may expose your environment to security vulnerabilities, compliance issues, or regulatory requirements associated with using an unsupported version. Microsoft doesn't guarantee or provide remediation for risks resulting from the continued use of unsupported versions. For supported versions, see the [release trains diagram](#about-azure-local-releases) or the [Supported versions](#supported-versions-of-azure-local) table.
 
 ### OS version 22H2
 
