@@ -157,7 +157,7 @@ This section addresses scenarios where you encounter the following issues:
 Identify the Hyper-V host that the VMs you're troubleshooting are hosted on. Once you identify the Hyper-V hosts, perform network tracing using [Start-SdnNetshTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnNetshTrace) and [Stop-SdnNetshTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Stop-SdnNetshTrace):
 
 ```powershell
-Start-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com' -Role:Server
+Start-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com' -Role 'Server'
 
 # repro your scenario
 Stop-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com'
@@ -174,14 +174,14 @@ After the tracing has completed in one of the scenarios listed previously, you m
 
 - Collect the traces and data by role:
     ```powershell
-    # if you running on node that is not network controller, add '-NetworkController NC_VMName'
+    # add '-NetworkController NC_VMName' if you are running this common on a node that is not a network controller
     # update the roles based on which components tracing was configured for. if unsure, collect for all of them
     Start-SdnDataCollection -Role [string[]]<NetworkController | Gateway | LoadBalancerMux | Server > -IncludeLogs -FromDate (Get-Date).AddHours(-1)
     ```
 
 - Collect the traces and data by computer name:
     ```powershell
-    # if you running on node that is not network controller, add '-NetworkController NC_VMName'
+    # add '-NetworkController NC_VMName' if you are running this common on a node that is not a network controller
     # add all the computers that tracing was captured for. diagnostics will automatically determine the role for each
     Start-SdnDataCollection -ComputerName 'machine01.contoso.com','machine02.contoso.com' -IncludeLogs -FromDate (Get-Date).AddHours(-1)
     ```
