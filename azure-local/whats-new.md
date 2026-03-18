@@ -43,6 +43,8 @@ This release includes various reliability improvements and bug fixes.
 
 - **Improved Secure Boot Certificate readiness**: Starting with this release, built‑in orchestration deploys the new Secure Boot 2023 certificates, helping you prepare for upcoming Secure Boot changes while minimizing risk during updates.
 
+- **Simplified machine provisioning**: Starting with this release, use simplified machine provisioning to install the OS and register your Azure Local machines together in a single streamlined process. For more information, see [Simplified machine provisioning](./deploy/simplified-machine-provisioning.md).
+
 ::: moniker-end
 
 ::: moniker range="=azloc-2602"
@@ -74,6 +76,8 @@ This release includes various reliability improvements and other bug fixes.
 - **Enhanced update workflow from the Azure portal**: Starting with this release, the update workflow from the Azure portal now provides richer, more detailed information.
 
 - **End of Windows Server Subscription and Extended Security Updates (ESU) purchases for OS version 20349.xxxx (22H2)**: If running OS version 20349.xxxx (version 22H2), you can no longer purchase Windows Server Subscription or ESU.
+
+- **Drift detection**: Starting with this release, the drift detection framework identifies configuration deviations, improves troubleshooting, and helps reduce configuration-related issues in your Azure Local environment. For more information, see [Drift detection](./manage/drift-detection.md).
 
 ::: moniker-end
 
