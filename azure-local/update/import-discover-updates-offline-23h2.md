@@ -55,7 +55,7 @@ For more information on the release cadence, see [Azure Local release informatio
 
 ### [OS build 25398.xxxx](#tab/OS-build-25398-xxxx)
 
-| OS Build | Download URI | SHA256 |
+| OS Build | Download URI | Notes / SHA256 |
 |--|--|--|
 | 25398.1913 | [11.2510.1002.93](https://azurestackreleases.download.prss.microsoft.com/dbazure/AzureLocal/CombinedSolutionBundle/11.2510.1002.93/CombinedSolutionBundle.11.2510.1002.93.zip) <br><br> Availability date: | E1B0B205A90A93827E14643927767DD2675710844FCA56EE3DF2C8FFD60622F9 <br><br> 2025-11-05 |
 | 25398.1849 | [11.2509.1001.21](https://azurestackreleases.download.prss.microsoft.com/dbazure/AzureLocal/CombinedSolutionBundle/11.2509.1001.21/CombinedSolutionBundle.11.2509.1001.21.zip) <br><br> Availability date: | D78D0B687E1AB9BE3C7EC0568CFEF2D346CDD421AB00DFE2A484060F0BAE52BF <br><br> 2025-09-22 |
