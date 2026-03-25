@@ -167,7 +167,7 @@ To view the progress of your update installation, and completion results, follow
     - You can select the links under **Details** to view more details and individual system results. For information on the check types, see [About readiness checks](#about-readiness-checks).
     - For failed readiness checks, review the details and remediation messages via the links under **Details**. To further troubleshoot, see [Troubleshoot updates](./update-troubleshooting-23h2.md#resume-an-update) before proceeding.
 
-6. On the **Install** tab, review the progress of the update installation.
+6. On the **Install updates** tab, review the progress of the update installation.
 
     [:::image type="content" source="./media/azure-update-manager/update-install-progress.png" alt-text="Screenshot to view update progress in Azure Update Manager.":::](media/azure-update-manager/update-install-progress.png#lightbox)
 
