@@ -53,7 +53,7 @@ For more information on Azure subscriptions and roles, see [Azure roles, Azure A
 
 |Level|Permissions|
 |-|-|
-|Tenant|[Application Developer](https://learn.microsoft.com/entra/identity/role-based-access-control/permissions-reference#application-developer)|
+|Tenant|[Application Developer](/entra/identity/role-based-access-control/permissions-reference#application-developer)|
 |Subscription|Contributor, User Access Administrator|
 
 For any subscriptions hosting resources used in migration, such as Azure Migrate project subscriptions and target Azure Local instance subscriptions, the **Microsoft.DataReplication** resource provider must be registered. For more information, see [register resource provider](/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1).
@@ -98,8 +98,8 @@ For any subscriptions hosting resources used in migration, such as Azure Migrate
 
 ## Considerations for migrating Hyper-V VMs to Azure Local
 
-- Azure Migrate will retain the Hyper-V generation of the VM during migration. If the source Hyper-V VM is a Generation 1 VM, the migrated VM on Azure Local will also be a Generation 1 VM. If the source Hyper-V VM is a Generation 2 VM, the migrated VM on Azure Local will also be a Generation 2 VM. For more information on Generation 1 VM limitations, see [Azure Local VM management](https://learn.microsoft.com/azure/azure-local/manage/azure-arc-vm-management-overview).
+- Azure Migrate will retain the Hyper-V generation of the VM during migration. If the source Hyper-V VM is a Generation 1 VM, the migrated VM on Azure Local will also be a Generation 1 VM. If the source Hyper-V VM is a Generation 2 VM, the migrated VM on Azure Local will also be a Generation 2 VM. For more information on Generation 1 VM limitations, see [Azure Local VM management](../manage/azure-arc-vm-management-overview.md).
 
 ## Next steps
 
-- [Complete the prerequisites](migrate-hyperv-prerequisites.md).
+- [Complete the prerequisites](./migrate-hyperv-prerequisites.md).

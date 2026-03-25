@@ -3,7 +3,7 @@ title: Discover and replicate Hyper-V VMs for migration to Azure Local using Azu
 description: Learn the discovery and replication process for Hyper-V VMs to Azure Local using Azure Migrate (preview).
 author: alkohli
 ms.topic: how-to
-ms.date: 10/01/2025
+ms.date: 03/25/2026
 ms.author: alkohli
 ms.custom: sfi-image-nochange
 ms.subservice: hyperconverged
@@ -57,13 +57,11 @@ This step applies only if you downloaded the .zip file. You use the *AzureMigrat
 
 ### Configure the appliance and discover VMs
 
-Once the source appliance is installed, you are ready to [Configure the appliance](/azure/migrate/how-to-set-up-appliance-hyper-v#configure-the-appliance).
-1. If needed, you can use a preconfigured Microsoft Entra ID application to register the source appliance. See [Register an Azure Migrate appliance with a preconfigured Microsoft Entra ID application](./migrate-faq.yml) for detailed instructions on how to set this up.
-After the appliance is configured, you start the VM discovery process.
+1. Once the source appliance is installed, you are ready to [Configure the appliance](/azure/migrate/how-to-set-up-appliance-hyper-v#configure-the-appliance). If needed, you can use a preconfigured Microsoft Entra ID application to register the source appliance. See [Register an Azure Migrate appliance with a preconfigured Microsoft Entra ID application](./migrate-faq.yml) for detailed instructions on how to set this up.
 
-Wait until you have a green checkmark indicating discovery is finished, then go to the Azure portal to review VM inventory.
+1. After the appliance is configured, you start the VM discovery process. Wait until you have a green checkmark indicating discovery is finished, then go to the Azure portal to review VM inventory.
 
-Ensure that all VMs you want to migrate are powered on and have [Hyper-V integration services](/windows-server/virtualization/hyper-v/manage/manage-hyper-v-integration-services) installed before or during the discovery process.
+1. Ensure that all VMs you want to migrate are powered on and have [Hyper-V integration services](/windows-server/virtualization/hyper-v/manage/manage-hyper-v-integration-services) installed before or during the discovery process.
 
 ## Step 2: Create and configure the target appliance
 
