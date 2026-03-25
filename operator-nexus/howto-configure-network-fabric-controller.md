@@ -37,7 +37,7 @@ The above architecture distributes workloads intelligently across three separate
 
 
 ### Total vCPUs Required: 228 
-For more details, please refer [link](https://learn.microsoft.com/en-us/azure/operator-nexus/reference-limits-and-quotas#network-fabric)
+For more details, please refer [link](https://learn.microsoft.com/en-us/azure/operator-nexus/reference-limits-and-quotas)
 
 This allocation ensures:
 - High availability through zone redundancy
