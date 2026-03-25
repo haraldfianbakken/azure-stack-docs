@@ -95,12 +95,12 @@ To install system updates using Azure Update Manager, follow these steps:
 
 8. On the **Review + install** page, verify your update deployment options, and then select **Install**.
 
-    [:::image type="content" source="./media/azure-update-manager/review-plus-install-1.png" alt-text="Screenshot to review and install system updates in Azure Update Manager.":::](media/azure-update-manager/review-plus-install-1.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/review-plus-install-1.png" alt-text="Screenshot to review and install updates for multiple systems in Azure Update Manager.":::](media/azure-update-manager/review-plus-install-1.png#lightbox)
 
 
     You should see a notification that confirms the installation of updates. If you don’t see the notification, select the **notification icon** in the top right taskbar.
 
-    [:::image type="content" source="./media/azure-update-manager/installation-notification.png" alt-text="Screenshot of the notification icon while installing system updates in Azure Update Manager.":::](media/azure-update-manager/installation-notification.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/installation-notification.png" alt-text="Screenshot of the update installation notification in Azure Update Manager.":::](media/azure-update-manager/installation-notification.png#lightbox)
 
 
 # [Azure Local resource page](#tab/azurelocalresourcepage)
@@ -125,12 +125,12 @@ To install updates on a single system from the resource page, follow these steps
 
 8. On the **Review + install** page, verify your update deployment options, and then select **Install**.
 
-    [:::image type="content" source="./media/azure-update-manager/review-plus-install-single-system.png" alt-text="Screenshot to review and install system updates in Azure Update Manager.":::](./media/azure-update-manager/review-plus-install-single-system.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/review-plus-install-single-system.png" alt-text="Screenshot to review and install updates for a single system in Azure Update Manager.":::](./media/azure-update-manager/review-plus-install-single-system.png#lightbox)
 
 
     You should see a notification that confirms the installation of updates. If you don’t see the notification, select the **notification icon** in the top right taskbar.
 
-    [![Screenshot of the notification icon while installing system updates in Azure Update Manager.](./media/azure-update-manager/installation-notification.png)](./media/azure-update-manager/installation-notification.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/installation-notification.png" alt-text="Screenshot of the update installation notification on the Azure Local resource page.":::](media/azure-update-manager/installation-notification.png#lightbox)
 
 ---
 
