@@ -163,7 +163,7 @@ To view the progress of your update installation, and completion results, follow
 
 4. On the **Download updates** tab, review the progress of the download and preparation.
 
-5. On the **Check readiness** tab, review the list of readiness checks and their results.
+5. On the **Validate that the system is ready** tab, review the list of readiness checks and their results.
     - You can select the links under **Details** to view more details and individual system results. For information on the check types, see [About readiness checks](#about-readiness-checks).
     - For failed readiness checks, review the details and remediation messages via the links under **Details**. To further troubleshoot, see [Troubleshoot updates](./update-troubleshooting-23h2.md#resume-an-update) before proceeding.
 
