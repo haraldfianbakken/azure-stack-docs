@@ -54,13 +54,10 @@ This section provides a detailed breakdown of the compute resources required for
 -   **Tenant AKS Cluster**
     -   VM SKU: _Standard D8s v3_
     -   Total vCPUs Required: **40**
-
-##### **SAW (Secure Access Workstation) Requirements**
-
--   **Infrastructure SAW VM**
+-   **Infrastructure VM**
     -   VM SKU: _Standard D2s v3_
     -   vCPUs: **2**
--   **Tenant SAW VM**
+-   **Tenant VM**
     -   VM SKU: _Standard D2s v3_
     -   vCPUs: **2**
 
@@ -86,10 +83,13 @@ The creation of the Network Cloud specific resources is subject to the following
 
 There are several Azure resources that are required to build up Network Fabric Controllers and Cluster Manager. The table here outlines the Azure services that Operators must ensure that they have adequate capacity available for creation for each Network Fabric Controller and Cluster Manager pair.
 
-| Resource Type	              | # of vCPUs |
-| --------------------------- | -------------------------|
-| Virtual Machine             |	32 (one of D4_v2, D8s_v3, D8s_v4, D8s_v5, D8s_v6), 120 (DS4_v2), 4 (D2s_v3) |
-| Standard DSv2 Family vCPUs  | quota limit 200; distributed across zones 1, 2, and 3 |
+|  | per CM* | per NFC** | Total # cores |
+| --- | --- | --- | --- |
+| Default VM family SKU | Standard_D4_v2  | Standard_D8s_v3 |  |
+| # cores needed (at steady-state) | 32 | 228 | 260 |
+| # cores needed (during upgrade) | up to 64 | 228 | 292 |
+| Alternative SKUs | Standard_D8s_v3, Standard_D8s_v4, Standard_D8s_v5, Standard_D8s_v6 | None |  |
+| Availability Zones within region | 3 AZs  <br> | 3 Azs (min) |  |
 
 > [!NOTE]
 > The number of vCPUs and the family SKUs required are subject to change.
