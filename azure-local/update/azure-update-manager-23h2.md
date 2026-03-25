@@ -57,7 +57,7 @@ To browse for available system updates using Azure Update Manager, follow these 
     > [!NOTE]
     > It can take up to 15 minutes for system values to update in the Azure portal.
 
-    [:::image type="content" source="./media/azure-update-manager/main-link.png" alt-text="Screenshot to browse for system updates in Azure Update Manager.":::](media/azure-update-manager/main-link.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/main-link.png" alt-text="Screenshot to browse for system updates in Azure Update Manager." lightbox="./media/azure-update-manager/main-link.png":::](media/azure-update-manager/main-link.png#lightbox)
 
 
 ## Install system updates
@@ -80,14 +80,14 @@ To install system updates using Azure Update Manager, follow these steps:
 
 3. Select one or more systems from the list, then select **Install now**.
 
-    [:::image type="content" source="./media/azure-update-manager/install-update.png" alt-text="Screenshot to install system updates in Azure Update Manager.":::](media/azure-update-manager/install-update.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/install-update.png" alt-text="Screenshot to install system updates in Azure Update Manager." lightbox="./media/azure-update-manager/install-update.png":::](media/azure-update-manager/install-update.png#lightbox)
 
 4. On the **Check readiness** page, review the list of readiness checks and their results.
 
     - You can select the links under **Details** to view more details and individual system results. For information on the check types, see [About readiness checks](#about-readiness-checks).
     - For failed readiness checks, review the details and remediation messages via the links under **Details**. To further troubleshoot, see [Troubleshoot updates](./update-troubleshooting-23h2.md) before proceeding.
 
-    [:::image type="content" source="./media/azure-update-manager/check-readiness.png" alt-text="Screenshot on the check readiness of updates in Azure Update Manager.":::](media/azure-update-manager/check-readiness.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/check-readiness.png" alt-text="Screenshot on the check readiness of updates in Azure Update Manager." lightbox="./media/azure-update-manager/check-readiness.png":::](media/azure-update-manager/check-readiness.png#lightbox)
 
 5. Select **Next**.
 
@@ -97,18 +97,18 @@ To install system updates using Azure Update Manager, follow these steps:
 
 7. Select **Next**.
 
-    [:::image type="content" source="./media/azure-update-manager/select-updates.png" alt-text="Screenshot to specify system updates in Azure Update Manager.":::](./media/azure-update-manager/select-updates.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/select-updates.png" alt-text="Screenshot to specify system updates in Azure Update Manager." lightbox="./media/azure-update-manager/select-updates.png":::](./media/azure-update-manager/select-updates.png#lightbox)
 
 <!--[!INCLUDE[azure-portal-install-updates](../includes/azure-portal-install-updates.md)]-->
 
 8. On the **Review + install** page, verify your update deployment options, and then select **Install**.
 
-    [:::image type="content" source="./media/azure-update-manager/review-plus-install-1.png" alt-text="Screenshot to review and install updates for multiple systems in Azure Update Manager.":::](media/azure-update-manager/review-plus-install-1.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/review-plus-install-1.png" alt-text="Screenshot to review and install updates for multiple systems in Azure Update Manager." lightbox="./media/azure-update-manager/review-plus-install-1.png":::](media/azure-update-manager/review-plus-install-1.png#lightbox)
 
 
     You should see a notification that confirms the installation of updates. If you don’t see the notification, select the **notification icon** in the top right taskbar.
 
-    [:::image type="content" source="./media/azure-update-manager/installation-notification.png" alt-text="Screenshot of the update installation notification in Azure Update Manager.":::](media/azure-update-manager/installation-notification.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/installation-notification.png" alt-text="Screenshot of the update installation notification in Azure Update Manager." lightbox="./media/azure-update-manager/installation-notification.png":::](media/azure-update-manager/installation-notification.png#lightbox)
 
 
 # [Azure Local resource page](#tab/azurelocalresourcepage)
@@ -132,7 +132,7 @@ To install updates on a single system from the resource page, follow these steps
 
 5. On the **Review + install** page, verify your update deployment options, and then select **Install**.
 
-    [:::image type="content" source="./media/azure-update-manager/review-plus-install-single-system.png" alt-text="Screenshot to review and install updates for a single system in Azure Update Manager.":::](./media/azure-update-manager/review-plus-install-single-system.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/review-plus-install-single-system.png" alt-text="Screenshot to review and install updates for a single system in Azure Update Manager." lightbox="./media/azure-update-manager/review-plus-install-single-system.png":::](./media/azure-update-manager/review-plus-install-single-system.png#lightbox)
 
 
     You should see a notification that confirms the installation of updates. If you don’t see the notification, select the **notification icon** in the top right taskbar.
@@ -158,7 +158,7 @@ To view the progress of your update installation, and completion results, follow
     - Select an **In progress** update to monitor a current updates progress.
     - Select a **Failed to update** or **Successfully updated** update to review historical results.
 
-    [:::image type="content" source="./media/azure-update-manager/update-progress.png" alt-text="Screenshot to view progress about system updates in Azure Update Manager.":::](media/azure-update-manager/update-progress.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/update-progress.png" alt-text="Screenshot to view progress about system updates in Azure Update Manager." lightbox="./media/azure-update-manager/update-progress.png":::](media/azure-update-manager/update-progress.png#lightbox)
 
 
 4. On the **Download updates** tab, review the progress of the download and preparation, and then select **Next**.
@@ -169,7 +169,7 @@ To view the progress of your update installation, and completion results, follow
 
 6. On the **Install** tab, review the progress of the update installation.
 
-    [:::image type="content" source="./media/azure-update-manager/update-install-progress.png" alt-text="Screenshot to view update progress in Azure Update Manager.":::](media/azure-update-manager/update-install-progress.png#lightbox)
+    [:::image type="content" source="./media/azure-update-manager/update-install-progress.png" alt-text="Screenshot to view update progress in Azure Update Manager." lightbox="./media/azure-update-manager/update-install-progress.png":::](media/azure-update-manager/update-install-progress.png#lightbox)
 
 
 ## Install hardware updates
