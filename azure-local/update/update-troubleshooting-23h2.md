@@ -42,7 +42,7 @@ This scenario occurs when preparing to install system updates in Azure Update Ma
 
 1. On the **Check readiness** tab, review the list of readiness checks and their results.
 
-    1. Select the **View details** links under **Details**.
+    1. Select the links under **Details**.
 
     1. When the details box opens, you can view more details, individual system results, and the **Remediation** for failing health checks.
 
