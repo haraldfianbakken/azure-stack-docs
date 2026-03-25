@@ -179,7 +179,7 @@ Follow these steps to find the solution version of your Azure Local instance:
 1. In the right pane, go to the **Properties** tab and then to **Updates**.
 1. Identify the solution version for your Azure Local instance.
 
-    :::image type="content" source="./media/azure-update-manager/get-solution-version-1.png" alt-text="Screenshot of the Overview page for your Azure Local resource in Azure portal." lightbox="./media/azure-update-manager/get-solution-version-1.png":::
+    :::image type="content" source="./media/azure-update-manager/get-solution-version-1.png" alt-text="Azure Local resource Overview page in Azure portal showing the Properties tab selected on the right pane with the Updates section displaying the solution version number 12.2505.1001.23." lightbox="./media/azure-update-manager/get-solution-version-1.png":::
 
 
 ## Next steps
