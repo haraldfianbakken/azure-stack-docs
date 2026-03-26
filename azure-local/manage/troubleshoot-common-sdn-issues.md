@@ -91,14 +91,14 @@ Here are the other datapoints recommended during reproduction of issue:
 - IP address for source and destination.
 
 After you have collected the above information, refer to one of the following scenarios to capture the SDN data path traces.
-- [Automated Data-Path Tracing](#automated-data-path-tracing) (**Recommended**)
-- [Troubleshoot Virtual Gateway (L3/GRE/IPsec)](#troubleshoot-virtual-gateway-l3greipsec)
+- [Automated datapath tracing](#automated-datapath-tracing) (**Recommended**)
+- [Troubleshoot virtual gateway (L3/GRE/IPsec)](#troubleshoot-virtual-gateway-l3greipsec)
 - [Troubleshoot Load Balancer VIP or Inbound/Outbound Network Address Translation (NAT)](#troubleshoot-load-balancer-vip-or-inboundoutbound-network-address-translation-nat)
 - [Troubleshoot East/West traffic flow](#troubleshoot-eastwest-traffic-flow)
 
-### Automated Data-Path Tracing
+### Automated datapath tracing
 
-The following command can be used to collect end-to-end trace files for troubleshooting related to a network interface. This command will configure the tracing on the appropriate Gateways, Hosts, and LoadBalancerMuxes based on your current configuration. Follow the prompts and instructions displayed on screen.
+To collect end-to-end trace files for troubleshooting related to a network interface, use the following command. This command configures the tracing on the appropriate gateways, hosts, and Load Balancer Muxes based on your current configuration. Follow the prompts and instructions displayed on screen.
 
 ```powershell
 $networkInterface = Get-SdnResource -NcUri 'https://nc.contoso.com' -ResourceRef '/networkInterfaces/{NAME}'
@@ -107,16 +107,16 @@ if ($networkInterface) {
 }
 ```
 
-Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs.
+For more information, see [Collect the datapath traces](#collect-the-datapath-traces).
 
-### Troubleshoot Virtual Gateway (L3/GRE/IPsec)
+### Troubleshoot virtual gateway (L3/GRE/IPsec)
 
 This section addresses scenarios where you encounter the following issues:
 
-- Unable to access VMs via Virtual Gateway from external location.
-- Unable to access resources via Virtual Gateway from virtual network associated with Virtual Gateway.
+Unable to access VMs via virtual gateway from external location.
+- Unable to access resources via virtual gateway from the associated virtual network.
 
-Run the following command to collect trace files for troubleshooting Virtual Gateway:
+To collect trace files to troubleshoot virtual gateway, run the following command:
 
 ```powershell
 $networkConnection = Get-SdnResource -NcUri 'https://nc.contoso.com' -ResourceRef '/virtualGateways/{NAME}/networkConnections/{NAME}'
@@ -125,7 +125,7 @@ if ($networkConnection) {
 }
 ```
 
-Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs.
+For more information, see [Collect the datapath traces](#collect-the-datapath-traces).
 
 ### Troubleshoot Load Balancer VIP or Inbound/Outbound Network Address Translation (NAT)
 
@@ -135,17 +135,17 @@ This section addresses scenarios where you encounter the following issues:
 - Unable to access a Load Balancer VIP from a VM deployed in separate virtual network or logical network.
 - Unable to access external (on-premises or internet) location from VM deployed on virtual network or logical network.
 
-In these scenarios, traffic flow isn't expected to route through a Virtual Gateway or Network Virtual Appliance (NVA) and is handled directly via the Load Balancer Muxes.
+In these scenarios, traffic flow isn't expected to route through a virtual gateway or Network Virtual Appliance (NVA) and is handled directly via the Load Balancer Muxes.
 
 The [Enable-SdnVipTrace](https://github.com/microsoft/SdnDiagnostics/wiki/Enable-SdnVipTrace) automates the process of enabling tracing on the datapath machines that the traffic traverses. Once tracing is enabled, the cmdlet pauses to allow you to reproduce the issue. After you reproduce the issue, press any key to continue to disable the traces.
 
-To automate enabling tracing on the datapath machines, run the following command:
+To automatically enable tracing on the datapath machines, run the following command:
 
 ```powershell
 Enable-SdnVipTrace -VirtualIP xx.xx.xx.xx -NcUri 'https://nc.contoso.com'
 ```
 
-Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs. Additionally, a `{VIP}_TraceMapping.json` file is generated under the working directory on your workstation the `Enable-SdnVipTrace` command was executed from. This file includes valuable information for analyzing the network traces that should be provided to Microsoft.
+Refer to [Collect the datapath traces](#collect-the-datapath-traces) to collect the logs. Additionally, a `{VIP}_TraceMapping.json` file is generated under the working directory on your workstation the `Enable-SdnVipTrace` command was executed from. This file includes valuable information for analyzing the network traces that should be provided to Microsoft.
 
 ### Troubleshoot East/West traffic flow
 
@@ -163,9 +163,9 @@ Start-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com
 Stop-SdnNetshTrace -ComputerName 'machine01.contoso.com','machine02.contoso.com'
 ```
 
-Refer to [Collect the data-path traces](#collect-the-data-path-traces) to collect the logs.
+For more information, see [Collect the datapath traces](#collect-the-datapath-traces).
 
-### Collect the data-path traces
+### Collect the datapath traces
 
 After the tracing has completed in one of the scenarios listed previously, you must collect the data. This can then be shared with Microsoft support for analysis. You can use [Start-SdnDataCollection](https://github.com/microsoft/SdnDiagnostics/wiki/Start-SdnDataCollection), which will automatically collect the traces, in conjunction to configuration data points and log files generated on the systems.
 
@@ -174,15 +174,15 @@ After the tracing has completed in one of the scenarios listed previously, you m
 
 - Collect the traces and data by role:
     ```powershell
-    # add '-NetworkController NC_VMName' if you are running this common on a node that is not a network controller
-    # update the roles based on which components tracing was configured for. if unsure, collect for all of them
+    # add '-NetworkController NC_VMName' if you are running this command on a node that is not a network controller
+    # add all the computers that captured tracing. The diagnostics automatically determines the role for each computer.
     Start-SdnDataCollection -Role [string[]]<NetworkController | Gateway | LoadBalancerMux | Server > -IncludeLogs -FromDate (Get-Date).AddHours(-1)
     ```
 
 - Collect the traces and data by computer name:
     ```powershell
-    # add '-NetworkController NC_VMName' if you are running this common on a node that is not a network controller
-    # add all the computers that tracing was captured for. diagnostics will automatically determine the role for each
+    # add '-NetworkController NC_VMName' if you are running this command on a node that is not a network controller
+    # add all the computers that captured tracing. The diagnostics automatically determines the role for each computer.
     Start-SdnDataCollection -ComputerName 'machine01.contoso.com','machine02.contoso.com' -IncludeLogs -FromDate (Get-Date).AddHours(-1)
     ```
 
