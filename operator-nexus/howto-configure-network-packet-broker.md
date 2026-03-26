@@ -128,7 +128,7 @@ az networkfabric tap show --name <tap-name> --resource-group <rg-name> --fabric-
 
 ## Step 4: Enable or Disable a Network TAP
 
-After creating a TAP, **enable it** to start the packet brokering process. You can disable it at any time to stop forwarding traffic.
+After creating a TAP, it is necessary enable it to start the NPB NNI's packet brokering process. You can disable it at any time to stop forwarding traffic.
 
 **CLI example:**
 
@@ -155,6 +155,8 @@ az networkfabric tap update-admin-state \
 * Multiple TAPs can be configured to monitor different sources simultaneously.
 
 * Updates to TAP rules or neighbor groups can be applied dynamically without disrupting other flows.
+
+* NPB NNIs are disabled until a TAP rule is created and enabled.
 
 ## Common errors for NPB
 
