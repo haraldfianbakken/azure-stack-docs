@@ -11,7 +11,7 @@ ms.custom: azure-operator-nexus, template-include
 
 # Azure Operator Nexus Fabric runtime upgrade template
 
-This how-to guide provides a step-by-step template for upgrading an Azure Operator Nexus Fabric instance. Use this template to manage a reproducible end-to-end upgrade through Azure APIs and standard operating procedures. Regularly update your system to maintain integrity and access the latest product improvements.
+This how-to guide provides a step-by-step template for upgrading an Azure Operator Nexus Fabric instance. Use this template to manage a reproducible end-to-end upgrade through Azure APIs and standard operating procedures. Regularly update your system to maintain integrity and access the latest product improvements. 
 
 ## Overview
 <details>

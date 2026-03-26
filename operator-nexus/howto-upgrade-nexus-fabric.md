@@ -19,15 +19,15 @@ If you don't perform the *required* pre-validation checks and meet the condition
 
 The following information can help you better understand the process:
 
-**Runtime bundle components**: These components require operator consent for upgrades that might affect traffic behavior or necessitate device reboots. Network Fabric is designed to apply updates while also maintaining continuous data traffic flow.
+Runtime bundle components require operator consent for upgrades that might affect traffic behavior or necessitate device reboots. Network Fabric is designed to apply updates while also maintaining continuous data traffic flow.
 
 Runtime changes are categorized as follows:
 
-**Device operating system updates**: These updates are necessary to support new features or resolve problems.
+- **Device operating system updates**: These updates are necessary to support new features or resolve problems.
 
-**Base configuration updates**: These initial settings are applied during device bootstrapping.
+- **Base configuration updates**: These initial settings are applied during device bootstrapping.
 
-**Configuration structure updates**: These updates are generated based on user input for configurations (like isolation domains and ACLs). These updates accommodate new features without altering user input.
+- **Configuration structure updates**: These updates are generated based on user input for configurations (like isolation domains and ACLs). These updates accommodate new features without altering user input.
 
 Follow these instructions in this article for a consistent, scalable, and secure approach to upgrading your Network Fabric components.
 
@@ -54,7 +54,7 @@ Before you initiate the Network Fabric runtime upgrade process, validate these r
 
 ## Recommended pre-upgrade checks
 
-Before you initiate the Network Fabric runtime upgrade process, we *recommend* that you validate these resource states before you trigger the Network Fabric upgrade. Problems with these resources won't prevent the upgrade, but you should still check them before and after the upgrade to confirm that the state remains consistent.
+Before you initiate the Network Fabric runtime upgrade process, we *recommend* that you validate these resource states before you trigger the Network Fabric upgrade. Problems with these resources won't prevent the upgrade, but you should still check them before and after the upgrade to confirm that the state remains consistent. 
 
 | Network Fabric resource | Expectation |
 | --- | --- |
@@ -64,9 +64,11 @@ Before you initiate the Network Fabric runtime upgrade process, we *recommend* t
 
 ### Check the Network Fabric status
 
+Run the following command:
+
 `az networkfabric fabric show -g xxxxxx --resource-name xxxxxxx`
 
-Excerpts of the expected output:
+Here are excerpts of the expected output:
 
 `**"administrativeState": "Enabled",**`
 
@@ -103,9 +105,9 @@ Here's a sample command for the Azure CLI:
 
 `az networkfabric device upgrade --version 7.1.0 -g xxxx --resource-name xxx-CompRack1-TOR1 --debug`
 
-#### Per-device pre-validation
+#### Pre-validate each device
 
-Use the Azure portal or the Azure CLI to validate each of the Network Fabric device resource states. Confirm that they are in the following states:
+Use the Azure portal or the Azure CLI to validate the resource states of each Network Fabric device. Confirm that they are in the following states:
 
 | Check | Expectation | Outcome and guidance |
 | --- | --- | --- |
@@ -141,7 +143,7 @@ Follow these steps:
 
 1. Perform mid-validations on the aggregate rack management switches to validate that the upgrade succeeded.
 
-#### Mid-validation
+#### Perform mid-validation checks
 
 | Check | Expectation | Outcome and guidance |
 | --- | --- | --- |
