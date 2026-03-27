@@ -29,7 +29,7 @@ When you purchase network switches, contact your switch vendor and ensure that t
 
 ## Validated network switches by vendor
 
-Select a vendor tab to see validated switches for each of the Azure Local traffic types. You can find these network classifications [here](host-network-requirements.md#network-traffic-types).
+To see validated switches for each of the Azure Local traffic types, select and expand a vendor in the following list. You can find these network classifications [here](host-network-requirements.md#network-traffic-types).
 
 If your switch isn't included, contact your switch vendor to ensure that your switch model and the version of the switch's operating system supports the requirements in the next section.
 
