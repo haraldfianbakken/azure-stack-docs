@@ -17,8 +17,6 @@ If you don't perform the *required* pre-validation checks and meet the condition
 
 ## Overview
 
-The following information can help you better understand the process:
-
 Runtime bundle components require operator consent for upgrades that might affect traffic behavior or necessitate device reboots. Network Fabric is designed to apply updates while also maintaining continuous data traffic flow.
 
 Runtime changes are categorized as follows:
@@ -29,7 +27,7 @@ Runtime changes are categorized as follows:
 
 - **Configuration structure updates**: These updates are generated based on user input for configurations (like isolation domains and ACLs). These updates accommodate new features without altering user input.
 
-Follow these instructions in this article for a consistent, scalable, and secure approach to upgrading your Network Fabric components.
+Follow the instructions in this article for a consistent, scalable, and secure approach to upgrading your Network Fabric components.
 
 ## <a name = "required-preupgrade-validations"></a> Required pre-upgrade validations
 
@@ -37,14 +35,14 @@ Before you initiate the Network Fabric runtime upgrade process, validate these r
 
 | Check | Expectation | Post-upgrade check applicable? | Impacted runtime upgrade step (if pre-validation fails) |
 | --- | --- | --- | --- |
-| Check the NFC provisioning state. | Provisioning state must be **Succeeded**. | No | The Fabric upgrade start step fails. |
-| Check the administrative lock status of the Network Fabric resource. | The state must be **Unlocked**. For more: [Azure Operator Nexus: Use the administrative lock or unlock for Network Fabric](./howto-set-administrative-lock-or-unlock-for-network-fabric.md). | No | The Fabric upgrade start step fails. |
-| Check the Network Fabric resource states. | Validate the resource states:<br/>• Administrative state is **Enabled**. <br/>• Provisioning state is **Succeeded**. <br/>• Configuration state is **Provisioned**. | Yes | The Fabric upgrade start command fails. |
+| Check the NFC provisioning state. | Provisioning state must be **Succeeded**. | No | The Network Fabric upgrade start step fails. |
+| Check the administrative lock status of the Network Fabric resource. | The state must be **Unlocked**. For more: [Azure Operator Nexus: Use the administrative lock or unlock for Network Fabric](./howto-set-administrative-lock-or-unlock-for-network-fabric.md). | No | The Network Fabric upgrade start step fails. |
+| Check the Network Fabric resource states. | Validate the resource states:<br/>• Administrative state is **Enabled**. <br/>• Provisioning state is **Succeeded**. <br/>• Configuration state is **Provisioned**. | Yes | The Network Fabric upgrade start command fails. |
 | Check Fabric devices, including: network packet brokers (NPBs), top-of-rack switches (TORs), customer edge switches (CEs), and management switches (MGMTs). | Validate the resource states:<br/>• Administrative state is **Enabled**. <br/>• Provisioning state is **Succeeded**. <br/>• Configuration state is **Succeeded** or **Deferred Control**. | Yes | The device upgrade command fails for the corresponding device. |
 | Check the disk space of Network Fabric devices. | You need a minimum of 3 GB of free space within the `/mnt` directory of each network device that's being upgraded. | No | The device upgrade command fails for the corresponding device. |
 | Check the BGP summary validation. | Ensure that BGP sessions are established across all VRFs. (Show the `ip bgp summary vrf all` runro command on CEs.) | Yes | The CE device upgrade command fails due to a probable connectivity issue with the PE. |
 | Check the GNMI metrics emission. | Confirm that GNMI metrics are being emitted for subscribed paths. | Yes | The device upgrade command fails for the corresponding device due to a probable connectivity issue. |
-| Check the terminal server. | Confirm that the terminal server is accessible and running. | No | The Fabric upgrade start command fails. |
+| Check the terminal server. | Confirm that the terminal server is accessible and running. | No | The Network Fabric upgrade start command fails. |
 | Check the following elements:<br/>NetworkToNetworkConnect (NNI)<br/>Network interfaces referred in NNI<br/>Network monitor (BMP)<br/>ACLs and associated resources<br/>Ingress ACLs, CPU, and CP TP ACLs<br/>L2ISD resources<br/>L3ISD resources<br/>Route policies<br/>IPPrefixes<br/>IP communities<br/>IP extended communities | When the resource's administrative state is **Enabled**:<br/>• Provisioning state is **Succeeded**.<br/>• Configuration state is **Succeeded**.<br/><br/>When the resource's administrative state is **Disabled**, the resource has no impact on the runtime upgrade. | No | The Network Fabric upgrade start command fails. |
 | Check the internal and external networks referred in L3 ISD. | When the L3 ISD administrative state is **Enabled**:<br/>• The internal and external networks' administrative state is **Enabled**.<br/>• Provisioning state is **Succeeded**.<br/>• Configuration state is **Succeeded**.<br/><br/>When the L3 ISD administrative state is **Disabled**, the internal and external network resource has no impact on the runtime upgrade. | No | The Network Fabric upgrade start command fails. |
 | Check the network tap. | When the resource's administrative state is **Enabled**:<br/>• Provisioning state is **Succeeded**.<br/>• Configuration state is **Succeeded** or **Accepted**.<br/><br/>When the resource's administrative state in **Disabled**, the resource has no impact on the runtime upgrade. | No | The Network Fabric upgrade start command fails. |
