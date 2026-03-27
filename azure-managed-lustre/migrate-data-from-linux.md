@@ -55,6 +55,7 @@ The `--preserve-posix-properties` flag instructs AzCopy to preserve POSIX proper
 The `azcopy copy` command copies data from a source to a destination. Use `azcopy` 10.32.2 or later to perform a full data transfer from your on-premises file system to the blob container.
 
 ```bash
+# Requires AzCopy v10.32.2 or later. Verify with: azcopy --version
 azcopy copy '/path/to/local/directory' 'https://<storage-account>.blob.core.windows.net/<container>/<path>' \
     --preserve-posix-properties \
     --posix-properties-style amlfs \
@@ -72,6 +73,7 @@ Replace the following values:
 For example, to copy the `/data/hpc-workload` directory to a container named `lustre-data`:
 
 ```bash
+# Requires AzCopy v10.32.2 or later. Verify with: azcopy --version
 azcopy copy '/data/hpc-workload' 'https://mystorageaccount.blob.core.windows.net/lustre-data/' \
     --preserve-posix-properties \
     --posix-properties-style amlfs \
@@ -85,6 +87,7 @@ azcopy copy '/data/hpc-workload' 'https://mystorageaccount.blob.core.windows.net
 > - **Use the `--as-subdir=false` flag**: This flag tells AzCopy to copy only the *contents* of the source directory to the destination without creating the parent directory. For example:
 >
 >   ```bash
+>   # Requires AzCopy v10.32.2 or later. Verify with: azcopy --version
 >   azcopy copy '/data/hpc-workload' 'https://mystorageaccount.blob.core.windows.net/lustre-data/' \
 >       --preserve-posix-properties \
 >       --posix-properties-style amlfs \
@@ -104,6 +107,7 @@ azcopy copy '/data/hpc-workload' 'https://mystorageaccount.blob.core.windows.net
 The `azcopy sync` command synchronizes data between a source and a destination. Use this command for ongoing or incremental transfers where you want to keep the blob container synchronized with changes in your on-premises file system.
 
 ```bash
+# Requires AzCopy v10.32.2 or later. Verify with: azcopy --version
 azcopy sync '/path/to/local/directory' 'https://<storage-account>.blob.core.windows.net/<container>/<path>' \
     --preserve-posix-properties \
     --posix-properties-style amlfs \
@@ -113,6 +117,7 @@ azcopy sync '/path/to/local/directory' 'https://<storage-account>.blob.core.wind
 For example, to synchronize the `/data/hpc-workload` directory with a container named `lustre-data`:
 
 ```bash
+# Requires AzCopy v10.32.2 or later. Verify with: azcopy --version
 azcopy sync '/data/hpc-workload' 'https://mystorageaccount.blob.core.windows.net/lustre-data/' \
     --preserve-posix-properties \
     --posix-properties-style amlfs \
@@ -130,6 +135,7 @@ azcopy sync '/data/hpc-workload' 'https://mystorageaccount.blob.core.windows.net
 After the upload finishes, you can verify that the data was uploaded with the correct POSIX properties by listing the contents of the blob container:
 
 ```bash
+# Requires AzCopy v10.32.2 or later. Verify with: azcopy --version
 azcopy list 'https://<storage-account>.blob.core.windows.net/<container>/<path>' --properties
 ```
 
