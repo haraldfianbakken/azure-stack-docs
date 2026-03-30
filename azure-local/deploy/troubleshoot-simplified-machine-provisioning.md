@@ -154,11 +154,11 @@ This error has the following possible causes.
 
 ## Provisioned machine creation fails with the error message "DeviceOnboardingConflict"
 
-**Cause:** You didn't register the `MachineProvision` feature or the `Microsoft.OnboardingService` resource provider.
+**Cause:** You didn't register the `Microsoft.DeviceOnboarding/DefaultFeature` feature or the `Microsoft.DeviceOnboarding` resource provider.
 
 **Recommendation:**
 
-1. Register the `MachineProvision` feature and required resource providers as described in the [prerequisites](simplified-machine-provisioning.md#azure-prerequisites).
+1. Register the `Microsoft.DeviceOnboarding/DefaultFeature` feature and required resource providers as described in the [prerequisites](simplified-machine-provisioning.md#azure-prerequisites).
 
 1. Delete the provisioned machine. Select **Azure Arc** > **Operations** > **Machine provisioning (preview)** > **Provisioned machines**. Select the machine and then select **Delete**.
 
