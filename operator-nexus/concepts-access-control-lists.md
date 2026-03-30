@@ -32,7 +32,7 @@ You can apply both types of ACLs to NNIs or external network resources to filter
 |--------------------------------|-----------|-------------|
 | NNI                            | Yes       | All         |
 | ISD external network | Yes, on external network with option A | All         |
-| Network Fabric | Yes, for CP-Tps | All |
+| Network Fabric | Yes, for CP-TPs | All |
 
 ## Match configuration
 
