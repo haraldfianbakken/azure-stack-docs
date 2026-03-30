@@ -1,6 +1,6 @@
 ---
-title: 'Azure Operator Nexus: Apply ACLs to Network-to-Network Interconnects'
-description: Learn how to apply access control lists (ACLs) to network-to-network interconnects (NNIs) within Azure Operator Nexus Network Fabric.
+title: 'Azure Operator Nexus: Apply ACLs to Resources'
+description: Learn how to apply access control lists (ACLs) to network-to-network interconnects (NNIs), layer 3 External Networks, and Network Fabrics within Azure Operator Nexus Network Fabric.
 author: sushantjrao
 ms.author: sushrao
 ms.service: azure-operator-nexus
@@ -11,15 +11,12 @@ ms.custom: template-how-to, devx-track-azurecli
 
 # Access control list (ACL) management for NNI
 
-In Azure Operator Nexus Network Fabric, maintaining network security is paramount for ensuring a robust and secure infrastructure. Access control lists (ACLs) are crucial tools for enforcing network security policies. This article leads you through the process of applying ACLs to network-to-network interconnects (NNIs) within Azure Operator Nexus Network Fabric.
+In Azure Operator Nexus Network Fabric, maintaining network security is paramount for ensuring a robust and secure infrastructure. Access control lists (ACLs) are crucial tools for enforcing network security policies. This article leads you through the process of applying ACLs to network-to-network interconnects (NNIs), layer 3 isolation domains, and network fabric resources within Azure Operator Nexus Network Fabric.
 
-## Apply ACLs to NNIs in Azure Operator Nexus Network Fabric
+## Apply ACLs to resources in Azure Operator Nexus Network Fabric
 
-To maintain network security and regulate traffic flow within your Azure Operator Nexus Network Fabric network, applying ACLs to NNIs is essential. This article delineates the steps for effectively applying ACLs to NNIs.
+To maintain network security and regulate traffic flow within your Azure Operator Nexus Network Fabric network, applying ACLs to NNIs, L3 isolation domains, and network fabrics is essential. This article delineates the steps for effectively applying ACLs to these resources.
 
-#### Apply ACLs to NNIs
-
-Before you apply ACLs to NNIs, use the following commands to view ACL details.
 
 #### View ACL details
 
@@ -39,37 +36,74 @@ To list all ACLs within a resource group, use the following command:
 az networkfabric acl list --resource-group "<resource-group-name>"
 ```
 
+> [!NOTE]
+> - ACLs applied to network fabrics must be of type "ControlPlaneTrafficPolicy"
+> - ACLs applied to L3 external networks must be of type "Tenant" or have no type defined.
+> - ACLs applied to NNIs must be of type "Management" or have no type defined.
+
 This command presents a comprehensive list of ACLs along with their configuration states and other pertinent details.
 
-#### Apply an ingress ACL to an NNI
+
+
+#### Apply a control plane ACL to a network fabric
+Use the following command to apply an ACL to a network fabric.
+
+```azurecli
+az networkfabric fabric update  --resource-group "<resource-group-name>" --resource-name "<fabric-name> --control-plane-acls "<acl-resource-id>"
+```
+| Parameter        | Description                                    |
+|------------------|------------------------------------------------|
+|`--control-plane-acls` | Apply a control plane ACL by specifying its resource ID. This parameter only applies to ACLs applied to the network fabric. |
+
+#### Apply an ingress ACL to an NNI or L3 External Network
+Use the following command to apply an ingress ACL to an NNI:
 
 ```azurecli
 az networkfabric nni update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --fabric "<fabric-name>" --ingress-acl-id "<ingress-acl-resource-id>"
+```
+Use the following command to apply an ingress ACL to an L3 external network:
+
+```azurecli
+az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --l3domain "<l3domain-name>" --ingress-acl-id "<ingress-acl-resource-id>"
 ```
 
 | Parameter         | Description                                      |
 |-------------------|--------------------------------------------------|
 | `--ingress-acl-id` | Apply the ACL as ingress by specifying its resource ID.  |
 
-#### Apply an egress ACL to an NNI
+#### Apply an egress ACL to an NNI or L3 External Network
+Use the following command to apply an ingress ACL to an NNI:
 
 ```azurecli
 az networkfabric nni update --resource-group "example-rg" --resource-name "<nni-name>" --fabric "<fabric-name>" --egress-acl-id "<egress-acl-resource-id>"
+```
+Use the following command to applu an egress ACL to an L3 external network:
+```azurecli
+az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --l3domain "<l3domain-name>" --egress-acl-id "<egress-acl-resource-id>"
 ```
 
 | Parameter        | Description                                    |
 |------------------|------------------------------------------------|
 |`--egress-acl-id` | Apply the ACL as egress by specifying its resource ID. |
 
-#### Apply ingress and egress ACLs to NNIs
+#### Apply ingress and egress ACLs to an NNI or L3 External Network
+Use the following command to apply both an ingress ACL and an egress ACL to an NNI:
 
 ```azurecli
-az networkfabric nni update --resource-group "example-rg" --resource-name "<nni-name>" --fabric "<fabric-name>" --ingress-acl-id "<ingress-acl-resource-id>" --egress-acl-id ""<egress-acl-resource-id>""
+az networkfabric nni update --resource-group "example-rg" --resource-name "<nni-name>" --fabric "<fabric-name>" --ingress-acl-id "<ingress-acl-resource-id>" --egress-acl-id "<egress-acl-resource-id>"
+```
+Use the following command to apply both an ingress ACL and an egress ACL to an L3 external network:
+
+```azurecli
+az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --l3domain "<l3domain-name>" --ingress-acl-id "<ingress-acl-resource-id>" --egress-acl-id "<egress-acl-resource-id>"
 ```
 
 | Parameter         | Description                                                                                                    |
 |-------------------|----------------------------------------------------------------------------------------------------------------|
 | `--ingress-acl-id`, `--egress-acl-id` | To apply both ingress and egress ACLs simultaneously, create two new ACLs and include their respective resource IDs. |
+
+
+
 
 ## Related content
 

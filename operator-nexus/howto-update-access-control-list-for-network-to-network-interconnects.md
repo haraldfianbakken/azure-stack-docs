@@ -1,6 +1,6 @@
 ---
-title: Updating ACL for Network-to-Network Interconnects (NNI)
-description: Learn the process of updating ACLs associated for Network-to-Network Interconnects (NNI)
+title: Updating ACLs associated with resources
+description: Learn the process of updating ACLs associated with resources
 author: sushantjrao 
 ms.author: sushrao
 ms.service: azure-operator-nexus
@@ -9,9 +9,9 @@ ms.date: 04/18/2024
 ms.custom: template-how-to, devx-track-azurecli
 ---
 
-# Updating ACL on NNI or External Network
+# Updating ACL on NNI, External Network, or Network Fabrics
 
-The Nexus Network Fabric offers several methods for updating Access Control Lists (ACLs) applied on NNI or Isolation Domain External Networks. Below are two options:
+The Nexus Network Fabric offers several methods for updating Access Control Lists (ACLs) applied on NNI, Isolation Domain External Networks, or Network Fabrics. Below are two options:
 
 ## Option 1: Replace existing ACL
 
@@ -35,10 +35,19 @@ Use the `az networkfabric acl create` command to create the ACL with the desired
 az networkfabric acl create --resource-group "<resource-group>" --location "<location>" --resource-name "<acl-name>" --annotation "<annotation>" --configuration-type "<configuration-type>" --default-action "<default-action>" --match-configurations "<match-configurations>" --actions "<actions>"
 ```
 
-3. **Update the NNI or External Network by passing a resource ID to `--ingress-acl-id` and `--egress-acl-id` parameter.**
+3. **Update the NNI or External Network by passing a resource ID to `--ingress-acl-id` and `--egress-acl-id` parameter or the `--control-plane-acls` parameter.**
 
+Sample command for NNIs
 ```Azure CLI
 az networkfabric nni update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --fabric "<fabric-name>" --ingress-acl-id "<ingress-acl-resource-id>" --egress-acl-id "<egress-acl-resource-id>"
+```
+Sample command for external networks
+```Azure CLI
+`az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --l3domain "<l3domain-name>" --ingress-acl-id "<ingress-acl-resource-id>" --egress-acl-id "<egress-acl-resource-id>"`
+```
+Sample command for network fabrics
+```Azure CLI
+`az networkfabric fabric update  --resource-group "<resource-group-name>" --resource-name "<fabric-name> --control-plane-acls "<acl-resource-id>"`
 ```
 
 | Parameter            | Description                                                                                      |
@@ -48,6 +57,7 @@ az networkfabric nni update --resource-group "<resource-group-name>" --resource-
 | `--fabric`           | Name of the fabric where the NNI is provisioned.                                                     |
 | `--ingress-acl-id`   | Resource ID of the ingress access control list (ACL) for inbound traffic (null for no specific ACL). |
 | `--egress-acl-id`    | Resource ID of the egress access control list (ACL) for outbound traffic (null for no specific ACL). |
+|`--control-plane-acls` | Resource ID of a control plane access control list (ACL). This parameter only applies to ACLs applied to the network fabric. |
 
 > [!NOTE]
 > Based on requirements, either the Ingress, Egress, or both can be updated.
