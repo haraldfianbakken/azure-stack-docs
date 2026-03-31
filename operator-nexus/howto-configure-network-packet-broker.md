@@ -163,6 +163,7 @@ Error codes can be categorised into those arising either from initial validation
 
 ### Initial Validation Errors
 **ErrorCode: ResourceCreationValidateFailed**
+
 | Error Message                                                                                | User Action                                                                  |
 | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Network tap creation failed as the api request is not valid                                   | Fix the request following the error message and retry the operation.         |
@@ -173,6 +174,7 @@ Error codes can be categorised into those arising either from initial validation
 | Network tap creation failed as the network fabric resource is in Administrative locked state. | Remove the lock on fabric before proceeding with the tap creation operation. |
 
 **ErrorCode: ResourcePatchValidateFailed**
+
 | Error Message                                                                                      | User Action                                                          |
 | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | Network tap deletion failed as the Administrative state is Enabled in the request                   | Fix the request payload and retry the operation.                     |
@@ -182,6 +184,7 @@ Error codes can be categorised into those arising either from initial validation
 | Network tap patch failed as the api request is not valid                                            | Fix the request following the error message and retry the operation. |
 
 **ErrorCode: ResourceDeletionValidateFailed**
+
 | Error Message                                                                                | User Action                                                                  |
 | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Network tap deletion failed as the network fabric resource is in Administrative locked state. | Remove the lock on fabric before proceeding with the tap deletion operation. |
@@ -284,6 +287,7 @@ Error codes can be categorised into those arising either from initial validation
 | Network tap rule resync failed as the network fabric resource is in Administrative locked state.   | Remove the lock on fabric before proceeding with the tap rule resync operation.   |
 
 **ErrorCode: InvalidInput**
+
 | Error Message                                                                          | User Action                                                                                                          |
 | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | Network tap creation failed as the referenced destination resource is of invalid type. | Make sure the destination resource type is one of the following : [IsolationDomain, Direct] and retry the operation. |
