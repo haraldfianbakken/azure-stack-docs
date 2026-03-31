@@ -205,6 +205,7 @@ Error codes can be categorised into those arising either from initial validation
 
 
 **ErrorCode: BadRequest**
+
 | Error Message                                                                                                                                                              | User Action                                                                                                                                 |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Network tap creation failed as the referenced NPB resource is not available.                                                                                                | Make sure the NPB resource associated with the network tap exists.                                                                          |
@@ -274,6 +275,7 @@ Error codes can be categorised into those arising either from initial validation
 | Network tap post action failed as the internal request to get the associated Network fabric resource failed                                                                 | Retry the operation, then contact support if the error persists                                                                               |
 
 **ErrorCode: ResourceLocked**
+
 | Error Message                                                                                     | User Action                                                                       |
 | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | Network tap rule creation failed as the network fabric resource is in Administrative locked state. | Remove the lock on fabric before proceeding with the tap rule creation operation. |
@@ -295,6 +297,7 @@ Error codes can be categorised into those arising either from initial validation
 
 ### Other Errors
 **ErrorCode: Internal Server Error**
+
 | Error Message                                                                                                | User Action                                                                   |
 | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | Network tap creation failed due to some internal service error.                                               | Retry the operation, then contact support if the error persists                 |
@@ -311,6 +314,7 @@ Error codes can be categorised into those arising either from initial validation
 | Network tap deletion failed as the internal request to get the associated Network Fabric resource failed      | Retry the operation, then contact support if the error persists                 |
 
 **ErrorCode: TooManyRequests**
+
 | Error Message                                                                                                                        | User Action                   |
 | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
 | Network tap creation failed as the internal request to get the associated NPB resource got throttled.                                 | Wait and retry the operation. |
