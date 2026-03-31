@@ -15,7 +15,7 @@ In Azure Operator Nexus Network Fabric, maintaining network security is paramoun
 
 ## Apply ACLs to resources in Azure Operator Nexus Network Fabric
 
-To maintain network security and regulate traffic flow within your Azure Operator Nexus Network Fabric network, applying ACLs to NNIs, L3 isolation domains, and network fabrics is essential. This article delineates the steps for effectively applying ACLs to these resources.
+To maintain network security and regulate traffic flow within your Azure Operator Nexus Network Fabric network, applying ACLs to NNIs, L3 external networks, and network fabrics is essential. This article delineates the steps for effectively applying ACLs to these resources.
 
 
 #### View ACL details
@@ -55,37 +55,6 @@ az networkfabric fabric update  --resource-group "<resource-group-name>" --resou
 |------------------|------------------------------------------------|
 |`--control-plane-acls` | Apply a control plane ACL by specifying its resource ID. This parameter only applies to ACLs applied to the network fabric. |
 
-#### Apply an ingress ACL to an NNI or L3 External Network
-Use the following command to apply an ingress ACL to an NNI:
-
-```azurecli
-az networkfabric nni update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --fabric "<fabric-name>" --ingress-acl-id "<ingress-acl-resource-id>"
-```
-Use the following command to apply an ingress ACL to an L3 external network:
-
-```azurecli
-az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --l3domain "<l3domain-name>" --ingress-acl-id "<ingress-acl-resource-id>"
-```
-
-| Parameter         | Description                                      |
-|-------------------|--------------------------------------------------|
-| `--ingress-acl-id` | Apply the ACL as ingress by specifying its resource ID.  |
-
-#### Apply an egress ACL to an NNI or L3 External Network
-Use the following command to apply an ingress ACL to an NNI:
-
-```azurecli
-az networkfabric nni update --resource-group "example-rg" --resource-name "<nni-name>" --fabric "<fabric-name>" --egress-acl-id "<egress-acl-resource-id>"
-```
-Use the following command to applu an egress ACL to an L3 external network:
-```azurecli
-az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --l3domain "<l3domain-name>" --egress-acl-id "<egress-acl-resource-id>"
-```
-
-| Parameter        | Description                                    |
-|------------------|------------------------------------------------|
-|`--egress-acl-id` | Apply the ACL as egress by specifying its resource ID. |
-
 #### Apply ingress and egress ACLs to an NNI or L3 External Network
 Use the following command to apply both an ingress ACL and an egress ACL to an NNI:
 
@@ -95,7 +64,7 @@ az networkfabric nni update --resource-group "example-rg" --resource-name "<nni-
 Use the following command to apply both an ingress ACL and an egress ACL to an L3 external network:
 
 ```azurecli
-az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --l3domain "<l3domain-name>" --ingress-acl-id "<ingress-acl-resource-id>" --egress-acl-id "<egress-acl-resource-id>"
+az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<externalNetwork-name>" --l3domain "<l3domain-name>"  --peering-option "OptionA" --option-a-properties ingress-acl-id="<ingress-acl-resource-id>" egress-acl-id="<egress-acl-resource-id>"
 ```
 
 | Parameter         | Description                                                                                                    |
@@ -104,7 +73,40 @@ az networkfabric externalnetwork update --resource-group "<resource-group-name>"
 
 
 
+#### Apply only an ingress ACL to an NNI or L3 External Network
+Use the following command to apply an ingress ACL to an NNI:
+
+```azurecli
+az networkfabric nni update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --fabric "<fabric-name>" --ingress-acl-id "<ingress-acl-resource-id>"
+```
+Use the following command to apply an ingress ACL to an L3 external network:
+
+```azurecli
+az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<externalNetwork-name>" --l3domain "<l3domain-name>"  --peering-option "OptionA" --option-a-properties ingress-acl-id="<ingress-acl-resource-id>"
+```
+
+| Parameter         | Description                                      |
+|-------------------|--------------------------------------------------|
+| `--ingress-acl-id` | Apply the ACL as ingress by specifying its resource ID.  |
+
+#### Apply only an egress ACL to an NNI or L3 External Network
+Use the following command to apply an ingress ACL to an NNI:
+
+```azurecli
+az networkfabric nni update --resource-group "example-rg" --resource-name "<nni-name>" --fabric "<fabric-name>" --egress-acl-id "<egress-acl-resource-id>"
+```
+Use the following command to applu an egress ACL to an L3 external network:
+```azurecli
+az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<externalNetwork-name>" --l3domain "<l3domain-name>"  --peering-option "OptionA" --option-a-properties egress-acl-id="<egress-acl-resource-id>"
+```
+
+| Parameter        | Description                                    |
+|------------------|------------------------------------------------|
+|`--egress-acl-id` | Apply the ACL as egress by specifying its resource ID. |
+
+
+
 
 ## Related content
 
-- [Update ACLs on NNIs or an external network](howto-update-access-control-list.md)
+- [Update ACLs on NNIs, L3 external networks, and network fabrics](howto-update-access-control-list.md)
