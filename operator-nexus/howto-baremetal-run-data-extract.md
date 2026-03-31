@@ -814,7 +814,7 @@ The Output list the kernel crashdump files on the BMM. The kernel crashdump file
 Note this command only lists the kernel crashadump file names to download the full crashdump use `get-kernel-crashdump` command.
 
   > [!WARNING]
-  > To run `list-kernel-crashdump`, go to [Run a run-data-extracts-restricted command](#executing-a-run-data-extracts-restricted-command). This is only supported from NC4.10 and the `v20250701preview` API version.
+  > To run `list-kernel-crashdump`, go to [Run a run-data-extracts-restricted command](#executing-a-run-data-extracts-restricted-command). The minimum requirements for executing this command are NC4.10 and the `v20250701preview` API version.
 
 ### <a name = "get-crashdump-file"></a> Get kernel crashdump file
 You can use the `get-kernel-crashdump` command to get the kernel crashdump file downloaded from BMM to a storage account. The agrument to the command is list of crashdump file names, either one or more crashdumps can be downloaded at once with this command. 
