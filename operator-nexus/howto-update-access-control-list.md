@@ -43,7 +43,7 @@ az networkfabric nni update --resource-group "<resource-group-name>" --resource-
 ```
 Sample command for external networks
 ```Azure CLI
-`az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<nni-name>" --l3domain "<l3domain-name>" --ingress-acl-id "<ingress-acl-resource-id>" --egress-acl-id "<egress-acl-resource-id>"`
+az networkfabric externalnetwork update --resource-group "<resource-group-name>" --resource-name "<externalNetwork-name>" --l3domain "<l3domain-name>"  --peering-option "OptionA" --option-a-properties ingress-acl-id="<ingress-acl-resource-id>" egress-acl-id="<egress-acl-resource-id>"
 ```
 Sample command for network fabrics
 ```Azure CLI
