@@ -784,7 +784,7 @@ Script execution result can be downloaded from storage account using the command
 
 ### <a name = "list-crashdump-files"></a> List kernel crashdump files
 
-Bare metal machines (BMM) support the collection of kernel crash dumps. The latest 2 crash dumps are stored on the BMM. 
+Bare metal machines (BMM) support the collection of kernel crash dumps. The latest two crash dumps are stored on the BMM. 
 To list the available kernel crash dumps on a bare metal machine, run the following command
 
 ```azurecli
@@ -810,15 +810,15 @@ cli.azext_networkcloud.operations.custom_properties: Script execution result can
 az storage blob download --blob-url https://simdev4704108vm1sa.blob.core.windows.net/command-output-blob/runcommand-output-0c305f1f-22fe-4c3a-8757-2225c3a1f9d0.tar.gz --file runcommand-output-0c305f1f-22fe-4c3a-8757-2225c3a1f9d0.tar.gz --auth-mode login  > /dev/null 2>&1
 ```
 
-The Output list the kernel crashdump files on the BMM. The output of the command are also stored in the customer provided storage account.
-Note this command only lists the kernel crashadump file names to download the full crashdump use `get-kernel-crashdump` command.
+The output lists the kernel crashdump files on the BMM. The output of the command is also stored in the customer-provided storage account.
+Note that this command only lists the kernel crashdump file names. To download the full crashdump, use the `get-kernel-crashdump` command.
 
   > [!WARNING]
   > To run `list-kernel-crashdump`, go to [Run a run-data-extracts-restricted command](#executing-a-run-data-extracts-restricted-command). The minimum requirements for executing this command are NC4.10 and the `v20250701preview` API version.
 
 ### <a name = "get-crashdump-file"></a> Get kernel crashdump file
 
-You can use the `get-kernel-crashdump` command to get the kernel crashdump file downloaded from BMM to a storage account. The agrument to the command is list of crashdump file names, either one or more crashdumps can be downloaded at once with this command.
+You can use the `get-kernel-crashdump` command to download the kernel crashdump file from the BMM to a storage account. The argument to the command is a list of one or more crashdump file names that you want to download.
 
 ```azurecli
 az networkcloud baremetalmachine run-data-extracts-restricted \
@@ -826,7 +826,7 @@ az networkcloud baremetalmachine run-data-extracts-restricted \
   --resource-group <resource-group-name> \
   --limit-time-seconds 1200 \
   --commands '[{"command":"get-kernel-crashdump", "arguments":["<crashdump-filename-1>", "<crashdump-filename-2>"]}]' \
-  --subscription <sub-id> \
+  --subscription <sub-id>
 ```
 
 #### Output of the `get-kernel-crashdump` command
@@ -843,7 +843,7 @@ az storage blob download --blob-url https://simdev4704108vm1sa.blob.core.windows
 ```
 
   > [!WARNING]
-  > To run `list-kernel-crashdump`, go to [Run a run-data-extracts-restricted command](#executing-a-run-data-extracts-restricted-command). The minimum requirements for executing this command are NC4.10 and the `v20250701preview` API version.
+  > To run `get-kernel-crashdump`, go to [Run a run-data-extracts-restricted command](#executing-a-run-data-extracts-restricted-command). The minimum requirements for executing this command are NC4.10 and the `v20250701preview` API version.
 
 [!INCLUDE [command-output-view](./includes/run-commands/command-output-view.md)]
 
