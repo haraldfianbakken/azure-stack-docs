@@ -36,7 +36,7 @@ This scenario occurs when preparing to install system updates in Azure Update Ma
 
 1. In the system list, view the **Critical** state of **Update readiness**.
 
-    :::image type="content" source="./media/troubleshoot-updates/update-manager.png" alt-text="Screenshot of Update Manager page." lightbox="./media/troubleshoot-updates/update-manager.png":::
+    :::image type="content" source="media/troubleshoot-updates/update-manager.png" alt-text="Screenshot of Update Manager page." lightbox="media/troubleshoot-updates/update-manager.png":::
 
 1. Select one or more systems from the list, then select **Install now**.  
 
@@ -46,7 +46,7 @@ This scenario occurs when preparing to install system updates in Azure Update Ma
 
     1. When the details box opens, you can view more details, individual system results, and the **Remediation** for failing health checks.
 
-    :::image type="content" source="./media/troubleshoot-updates/install-updates.png" alt-text="Screenshot of Install updates page." lightbox="./media/troubleshoot-updates/install-updates.png":::
+    :::image type="content" source="media/troubleshoot-updates/install-updates.png" alt-text="Screenshot of Install updates page." lightbox="media/troubleshoot-updates/install-updates.png":::
 
     Follow the remediation instructions to resolve the failures.
 
@@ -65,7 +65,7 @@ This scenario occurs when installing and tracking system updates in Azure Update
 
     1. When the details box opens, you can view more details, individual system results, and the **Remediation** for failing health checks.
 
-    :::image type="content" source="./media/troubleshoot-updates/update-progress.png" alt-text="Screenshot of Update progress page." lightbox="./media/troubleshoot-updates/update-progress.png":::
+    :::image type="content" source="media/troubleshoot-updates/update-progress.png" alt-text="Screenshot of Update progress page." lightbox="media/troubleshoot-updates/update-progress.png":::
 
     Follow the remediation instructions to resolve the failures and then select the **Try again** button to retry the pre-update readiness checks and **Resume the update**.
 
@@ -367,7 +367,7 @@ To resume a previously failed update run, you can retry the update run via the A
 
 We highly recommend using the Azure portal, to browse to your failed update and select the **Try again** button. This functionality is available at the Download updates, Validate that the system is ready, and Install updates stages of an update run.
 
-:::image type="content" source="./media/troubleshoot-updates/try-again-update.png" alt-text="Screenshot of the retry failed update button." lightbox="./media/troubleshoot-updates/try-again-update.png":::
+:::image type="content" source="media/troubleshoot-updates/try-again-update.png" alt-text="Screenshot of the retry failed update button." lightbox="media/troubleshoot-updates/try-again-update.png":::
 
 If you're unable to successfully rerun a failed update or need to troubleshoot an error further, follow these steps:
 
@@ -375,14 +375,14 @@ If you're unable to successfully rerun a failed update or need to troubleshoot a
 
 2. When the details box opens, you can review the error details. For more information on collecting diagnostic logs, you can click on the **How to collect logs** link near the Open a support ticket button.
 
-    [:::image type="content" source="./media/troubleshoot-updates/download-error-logs.png" alt-text="Screenshot to download error logs.":::](media/troubleshoot-updates/download-error-logs.png#lightbox)
+    [:::image type="content" source="media/troubleshoot-updates/download-error-logs.png" alt-text="Screenshot to download error logs.":::](media/troubleshoot-updates/download-error-logs.png#lightbox)
 
 
     For more information on retrieving logs, see [Collect diagnostic logs for Azure Local](../manage/collect-logs.md).
 
 3. Additionally, you can select the **Open a support ticket** button, fill in the appropriate information, and attach your logs so that they're available to Microsoft Support.
 
-    [:::image type="content" source="./media/troubleshoot-updates/open-support-ticket.png" alt-text="Screenshot to open a support ticket.":::](media/troubleshoot-updates/open-support-ticket.png#lightbox)
+    [:::image type="content" source="media/troubleshoot-updates/open-support-ticket.png" alt-text="Screenshot to open a support ticket.":::](media/troubleshoot-updates/open-support-ticket.png#lightbox)
 
 
 For more information on creating a support ticket, see [Create a support request](/azure/azure-portal/supportability/how-to-create-azure-support-request#create-a-support-request).
