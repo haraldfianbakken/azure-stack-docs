@@ -185,9 +185,10 @@ Error codes can be categorised into those arising either from initial validation
 
 **ErrorCode: ResourceDeletionValidateFailed**
 
-| Error Message                                                                                | User Action                                                                  |
-| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Error Message  | User Action                                                                  |
+| -------------------------------- | -------------------------------------------- |
 | Network tap deletion failed as the network fabric resource is in Administrative locked state. | Remove the lock on fabric before proceeding with the tap deletion operation. |
+
 **ErrorCode: ResourcePostActionFailed**
 
 | Error Message                                                                | User Action                                                                        |
