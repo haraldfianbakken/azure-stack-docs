@@ -39,7 +39,7 @@ Here are some benefits of the Azure Update Manager:
 ## Prerequisites
 
 - An Azure Local system deployed and registered with Azure.
-- Make sure to apply updates via supported navigation paths in Azure portal. Microsoft supports updates only when applied through the **Azure Local resource page** or **Azure Update Manager > Resources > Azure Local**. Updates installed using third‑party tools are not supported.
+- Make sure to apply updates via supported navigation paths in Azure portal. Microsoft only supports updates applied from the **Azure Local** resource page or via the **Azure Update Manager > Resources > Azure Local**. Additionally, use of non-Microsoft tools to install updates isn't supported.
 
 For Azure Local, Azure Update Manager is supported only in the regions where Azure Local is supported. For more information, see [List of supported Azure Local regions](../concepts/system-requirements-23h2.md#azure-requirements).
 
@@ -48,7 +48,7 @@ For Azure Local, Azure Update Manager is supported only in the regions where Azu
 > [!IMPORTANT]
 >
 > - Microsoft only supports updates applied from the **Azure Local** resource page or via the **Azure Update Manager > Resources > Azure Local**.
-> - Use of 3rd party tools to install updates isn't supported.
+> - Use of non-Microsoft tools to install updates isn't supported.
 > - When you update to solution version 2601 or later, the infrastructure logical network appears in Azure. For more information, see [Infrastructure logical network as a component of Azure Local VM management](../manage/azure-arc-vm-management-overview.md#components-of-azure-local-vm-management).
 
 You can install updates from the Azure Local resource page or via the **Azure Update Manager > Resources > Azure Local page**. Select the appropriate tab to view the detailed steps.
@@ -151,7 +151,7 @@ Follow these steps to find the solution version of your Azure Local instance:
 1. In the right pane, go to the **Properties** tab and then to **Updates**.
 1. Identify the solution version for your Azure Local instance.
 
-    :::image type="content" source="media/azure-update-manager/get-solution-version-1.png" alt-text="Azure Local resource Overview page in Azure portal showing the Properties tab selected on the right pane with the Updates section displaying the solution version number 12.2505.1001.23." lightbox="media/azure-update-manager/get-solution-version-1.png":::
+    :::image type="content" source="./media/azure-update-manager/get-solution-version-1.png" alt-text="Screenshot of Azure Local resource Overview page showing the Properties tab and the solution version." lightbox="./media/azure-update-manager/get-solution-version-1.png":::
 
 ## Next steps
 
