@@ -1,6 +1,6 @@
 ---
-title: Review update phases of Azure Local, version 23H2
-description: Understand the various phases of solution updates applied to Azure Local, version 23H2.
+title: Understand Update Phases of Azure Local
+description: Understand the various phases of solution updates applied to Azure Local.
 author: ronmiab
 ms.author: robess
 ms.topic: concept-article
@@ -8,7 +8,7 @@ ms.date: 04/01/2026
 ms.subservice: hyperconverged
 ---
 
-# Review update phases of Azure Local
+# Understand update phases of Azure Local
 
 [!INCLUDE [applies-to](../includes/hci-applies-to-23h2.md)]
 
@@ -35,7 +35,7 @@ Each stage produces an `UpdateRun` resource that records step-by-step progress, 
 
 1. Meet prerequisites
 
-    Before preparation, the update might be in an `AdditionalContentRequired` state. This state indicates the update package requires partner content. This applies to SBE updates and combined Solution plus SBE updates. The installed SBE package from the partner doesn't support automatic download of that content.
+    Before preparation, the update might be in an `AdditionalContentRequired` state. This state indicates the update package requires hardware vendor content. This applies to Solution Builder Extension (SBE) updates and combined Solution plus SBE updates. The installed SBE package from the hardware vendor doesn't support automatic download of that content.
 
     If the update is in the `AdditionalContentRequired` state, you must import the content before you can begin preparation or installation. For more information, see [Update via PowerShell](update-via-powershell-23h2.md).
 
@@ -52,12 +52,12 @@ The download phase retrieves the update package from the configured update sourc
 
 During this phase, the Update object transitions to the `Downloading` state. On failure, the state becomes `DownloadFailed`.
 
-### SBE download connector (if applicable)
+#### SBE download connector (if applicable)
 
-SBE updates and some Solution updates require extra content from the hardware vendor's Solution Builder Extension (SBE). When the SBE provides a download connector, the Update Service delegates part of the download to the OEM-supplied logic:
+Some SBE and solution updates require extra content from the hardware vendor. If the SBE provides a download connector, the Update Service uses it to handle part of the download:
 
 - The Update Service checks whether the installed SBE supports a download connector.
-- If supported, an Orchestrator action plan invokes the SBE download action to retrieve OEM-specific packages such as firmware and drivers.
+- If supported, an Orchestrator action plan invokes the SBE download action to retrieve hardware vendor packages such as firmware and drivers.
 - The hardware vendor typically includes a download connectivity health check that must pass before the download starts.
 
 If download fails while using the SBE download connector, the update state becomes `DownloadFailed`. To see the detailed failure message, examine the preparation details in Azure Update Manager in the portal, or using the `UpdateRun` object from `Get-SolutionUpdateRun`.
@@ -127,14 +127,14 @@ Each step in the progress tree exposes the following properties:
 
 | Property | Type | Description |
 | --- | --- | --- |
-| Name | string | Name of the step or task. |
-| Description | string | Human-readable description. |
-| Status | string | `InProgress`, `Success`, or `Error`. |
-| StartTimeUtc | DateTime | When the step started executing. |
-| EndTimeUtc | DateTime | When the step completed or failed. |
-| ErrorMessage | string | Error details if the step failed. |
-| ExpectedExecutionTime | TimeSpan | Estimated duration for progress calculation. |
-| Steps | Step[] | Child steps forming the execution tree. |
+| Name | string | Name of the step or task |
+| Description | string | Human-readable description |
+| Status | string | `InProgress`, `Success`, or `Error` |
+| StartTimeUtc | DateTime | When the step started executing |
+| EndTimeUtc | DateTime | When the step completed or failed |
+| ErrorMessage | string | Error details if the step failed |
+| ExpectedExecutionTime | TimeSpan | Estimated duration for progress calculation |
+| Steps | Step[] | Child steps forming the execution tree |
 
 ### Monitor installation progress
 
