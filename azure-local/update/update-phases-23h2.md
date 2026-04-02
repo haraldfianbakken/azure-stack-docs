@@ -18,7 +18,7 @@ For more detailed information on progress reporting, see [Use Azure Update Manag
 
 ## Overview
 
-An Azure Local update follows a two-stage lifecycle:
+Azure Local updates follow a two-phase workflow:
 
 1. **Preparation**: Download content, validate and extract packages, and run health checks to confirm the cluster is ready.
 1. **Installation**: Apply the update across the cluster via an orchestrated action plan.
@@ -27,15 +27,21 @@ Each stage produces an `UpdateRun` resource that records step-by-step progress, 
 
 :::image type="content" source="media/update-phases-23h2/update-phases-actions.png" alt-text="Diagram of update process with Preparation phase and Installation phase steps." lightbox="media/update-phases-23h2/update-phases-actions.png":::
 
-## Preparation phases
+## Preparation workflow
 
-You can trigger preparation independently using `Start-SolutionUpdate -PrepareOnly`, which downloads and validates update content and runs health checks without starting installation. This allows you to pre-stage updates before a maintenance window or verify cluster readiness in advance.
+1. Trigger preparation (optional)
 
-Before preparation, the update might be in an `AdditionalContentRequired` state. This state indicates that the update package (either an SBE update or a combined Solution plus SBE update) requires partner content, and the installed SBE package from the partner doesn't support automatic download of the content.
+    Start the preparation phase independently by running `Start-SolutionUpdate -PrepareOnly`. This step downloads and validates update content and runs health checks without starting installation. Use it to pre‑stage updates or validate cluster readiness before a maintenance window.
 
-If the update is in the `AdditionalContentRequired` state, you must import the content before you can begin preparation or installation. For more information, see [Update via PowerShell](update-via-powershell-23h2.md).
+1. Meet prerequisites
 
-The preparation workflow moves through the following phases in order.
+    Before preparation, the update might be in an `AdditionalContentRequired` state. This state indicates the update package requires partner content. This applies to SBE updates and combined Solution plus SBE updates. The installed SBE package from the partner doesn't support automatic download of that content.
+
+    If the update is in the `AdditionalContentRequired` state, you must import the content before you can begin preparation or installation. For more information, see [Update via PowerShell](update-via-powershell-23h2.md).
+
+1. Run preparation phases
+
+    The preparation workflow moves through the following phases in order.
 
 ### Download
 
@@ -48,7 +54,7 @@ During this phase, the Update object transitions to the `Downloading` state. On 
 
 ### SBE download connector (if applicable)
 
-SBE updates and some Solution updates require additional content from the hardware vendor's Solution Builder Extension (SBE). When the SBE provides a download connector, the Update Service delegates part of the download to the OEM-supplied logic:
+SBE updates and some Solution updates require extra content from the hardware vendor's Solution Builder Extension (SBE). When the SBE provides a download connector, the Update Service delegates part of the download to the OEM-supplied logic:
 
 - The Update Service checks whether the installed SBE supports a download connector.
 - If supported, an Orchestrator action plan invokes the SBE download action to retrieve OEM-specific packages such as firmware and drivers.
@@ -58,20 +64,20 @@ If download fails while using the SBE download connector, the update state becom
 
 ### Validate and extract
 
-After all content is downloaded, the Update Service validates the hashes of the downloaded files and extracts the contents.
+After all content is downloaded, the Update Service validates file integrity and extracts the update files.
 
 If validation or extraction fails, the `UpdateRun` records the error and the Update state becomes `PreparationFailed`.
 
 ### Health check
 
-Before an update can be installed, a set of pre-update health checks validates that the cluster is in a healthy state and checks for issues that could interfere with successful update installation.
+Before installation, pre-update health checks run on the cluster. These checks validate that the cluster is in a healthy state. They also identify any issues that could interfere with a successful installation.
 
 Each health check has an assigned severity:
 
 | Severity | Effect |
 | --- | --- |
-| **Critical** | Blocks the update. You must remediate this before installation can proceed. |
-| **Warning** | Blocks the update by default. You can override this with `Start-SolutionUpdate -IgnoreWarnings`. |
+| **Critical** | Blocks the update. You must remediate these issues before installation can proceed. |
+| **Warning** | Blocks the update by default. You can override these issues with `Start-SolutionUpdate -IgnoreWarnings`. |
 | **Informational** | Advisory only. Doesn't block installation. |
 
 If the update was started in **prepare-only** mode, the Update transitions to the `ReadyToInstall` state on health check success. If critical or warning failures are detected (when `-IgnoreWarnings` isn't specified), the status becomes `HealthCheckFailed`.
@@ -85,7 +91,7 @@ Where-Object { ($_.Status -ne "Success") -and ($_.Severity -ne "Informational") 
 Format-List Title, Status, Severity, Description, Remediation
 ```
 
-For help troubleshooting health check failures, see [Troubleshoot updates](update-troubleshooting-23h2.md).
+For help with troubleshooting health check failures, see [Troubleshoot updates](update-troubleshooting-23h2.md).
 
 ## Monitor preparation using Get-SolutionUpdateRun
 
@@ -139,7 +145,7 @@ Due to the complex structure of the `UpdateRun` object, monitor update installat
 If you need to monitor the update using PowerShell, directly monitor the state of the underlying action plan.
 
 > [!NOTE]
-> The `Start-MonitoringActionplanInstanceToComplete` cmdlet should only be used after the system has installed the 2503 update. Before 2503, using this cmdlet to monitor update progress can introduce failures in the orchestration.
+> The `Start-MonitoringActionplanInstanceToComplete` cmdlet should only be used after the 2503 update is installed on the system. Before 2503, using this cmdlet to monitor update progress can introduce failures in the orchestration.
 
 ```powershell
 # Get the action plan instance ID from the update run, then monitor
@@ -170,7 +176,7 @@ After you review and mitigate the failure, or determine it's transient, resume t
 Get-SolutionUpdate | where State -eq "InstallationFailed" | Start-SolutionUpdate
 ```
 
-After calling this cmdlet, the update state transitions directly from `InstallationFailed` to `Installing`.
+After you run this cmdlet, the update state changes from `InstallationFailed` to `Installing`.
 
 ## Next steps
 
