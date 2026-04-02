@@ -166,6 +166,8 @@
               href: howto-configure-network-fabric-controller.md
             - name: Cluster Manager
               href: howto-cluster-manager.md
+            - name: Cluster Manager Relay Private Endpoint
+              href: howto-cluster-manager-relay-private-endpoint.md
             - name: Cluster Manager Template JSON Example
               href: clustermanager-jsonc-example.md
             - name: Cluster Manager Parameters JSON Example
@@ -290,6 +292,8 @@
           href: howto-enable-system-assigned-managed-identity-for-network-fabric-controller.md
         - name: How to enable System Assigned Managed Identity (SAMI) for the Network Fabric resource
           href: howto-enable-system-assigned-managed-identity-for-network-fabric-resource.md                   
+        - name: How-to usage guide for Customer Managed Key Vault
+          href: howto-usage-guide-for-customer-managed-key-vault.md
     - name: Cluster
       expanded: false
       items:
@@ -310,6 +314,8 @@
               href: howto-baremetal-run-data-extract.md
             - name: Running BareMetal actions directly with nexusctl
               href: howto-baremetal-nexusctl.md
+        - name: Cluster Inspect Action
+          href: howto-cluster-inspect-action.md
     - name: Nexus Kubernetes cluster
       expanded: false
       items:
@@ -323,6 +329,8 @@
           href: howto-kubernetes-cluster-aad-rbac.md
         - name: Upgrade Nexus Kubernetes cluster
           href: howto-kubernetes-cluster-upgrade.md
+        - name: Rotate NAKS certificates
+          href: howto-rotate-naks-certificates.md
         - name: Configure huge-pages for cluster virtual machines
           href: howto-kubernetes-cluster-huge-pages.md
         - name: Configure service load balancer
@@ -343,6 +351,8 @@
           href: howto-kubernetes-cluster-install-microsoft-defender.md
         - name: Kubernetes cluster features
           href: howto-kubernetes-cluster-features.md
+        - name: Managing ETCD Health in Nexus Kubernetes Cluster
+          href: howto-kubernetes-cluster-manage-data-store-health.md
     - name: Nexus Virtual Machine
       expanded: false
       items:
@@ -426,6 +436,8 @@
       items:
         - name: Troubleshoot Accepted Cluster Resource
           href: troubleshoot-accepted-cluster-hydration.md
+        - name: Troubleshoot Azure Prerequisites Validation
+          href: troubleshoot-azure-prerequisites-validation.md
         - name: Troubleshoot Control Plane Quorum
           href: troubleshoot-control-plane-quorum.md
         - name: Troubleshoot Cluster heartbeat connection status disconnected
@@ -443,14 +455,6 @@
           href: troubleshoot-dns-issues.md
         - name: Troubleshoot TWAMP (UDP) not working
           href: troubleshoot-twamp-udp-not-working.md
-        - name: Troubleshoot CPU and Memory Guide
-          href: troubleshoot-cpu-and-memory-guide.md
-        - name: Troubleshoot Temperature Guide
-          href: troubleshoot-temperature-guide.md
-        - name: Troubleshoot Power Supply Voltage Guide
-          href: troubleshoot-power-supply-voltage-guide.md
-        - name: Troubleshoot Packet Drops and Discards Guide
-          href: troubleshoot-packet-drops-and-discards-guide.md
 
     - name: Resource Health
       expanded: false
@@ -505,6 +509,8 @@
               href: troubleshoot-kubernetes-cluster-stuck-workloads-due-to-power-failure.md
         - name: Troubleshoot a Kubernetes Cluster Node in NotReady,Scheduling Disabled after Runtime Upgrade
           href: troubleshoot-kubernetes-cluster-node-cordoned.md
+        - name: Troubleshoot Nexus Kubernetes VM scheduling failures due to topology spread constraints
+          href: troubleshoot-kubernetes-cluster-vm-scheduling-topology-spread.md
         - name: Troubleshoot issues with Azure Arc enrollment for virtual machines with managed identities
           href: troubleshoot-virtual-machines-arc-enroll-with-managed-identities.md
 - name: FAQ

@@ -34,6 +34,8 @@ ms.lastreviewed: 12/07/2019
 
 > [!NOTE]
 > The maximum capacity of unmanaged disks (page blobs) is separate from the managed disk quota. You can set this value in **Maximum capacity (GB)** in **Storage quotas**.
+>
+> Unmanaged disks are no longer supported, migrate to managed disks. For details, see [Unmanaged disks deprecation](/azure/virtual-machines/unmanaged-disks-deprecation).
 
 ## Storage quota types
 

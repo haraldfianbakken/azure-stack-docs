@@ -3,62 +3,73 @@ title: Release Notes for Disconnected Operations for Azure Local
 description: Read about the known issues and fixed issues for disconnected operations for Azure Local.
 author: ronmiab
 ms.topic: concept-article
-ms.date: 01/05/2026
+ms.date: 02/23/2026
 ms.author: robess
 ms.reviewer: haraldfianbakken
 ai-usage: ai-assisted
-ms.subservice: hyperconverged
 ---
 
-# What's new in disconnected operations for Azure Local
+# Known issues in disconnected operations for Azure Local
 
-::: moniker range=">=azloc-2506"
+::: moniker range=">=azloc-2602"
 
-This article highlights what's new (features and improvements) and critical known issues with workarounds for disconnected operations in Azure Local. These release notes update continuously. We add critical issues and workarounds as they're identified. Review this information before you deploy disconnected operations with Azure Local.
+This article identifies critical known issues and their workarounds in disconnected operations for Azure Local.
 
-[!INCLUDE [IMPORTANT](../includes/disconnected-operations-preview.md)]
+These release notes are updated continuously to include critical issues and required workarounds. Review this information carefully before you deploy disconnected operations for Azure Local.
 
+## Known issues for version 2602
 
-## Features and improvements in 2601
- - Added support for the Azure Local 2601 ISO and its associated capabilities.
- - Added Zero Day Update (ZDU) capability for Azure Local.
- - Updated Azure CLI versions and extensions
- - Improved security and bug fixes.
+### Bootstrap or deployment fails due certificates being invalid (exception)
 
-## Features and improvements in 2512
- - Added support for the Azure Local 2512 ISO and its associated capabilities.
- - Added update capability for 2512.
- - Added registration UX to the Azure portal.
- - Improved security and bug fixes.
+In cases where the Certificate Revocation List (CRL) is empty or misconfigured, bootstrap validation will fail.
 
-## Features and improvements in 2511
- - Added support for the Azure Local 2511 ISO and its associated capabilities.
- - Bundled update uploader in OperationsModule.
- - Improved the log collection experience.
- - Added deployment automation capability for operator account during bootstrap.
-  - Enabled full end-to-end deployment automation.
- - Fixed empty groups not synchronizing for identity integration.
- - RBAC update and refresh (AKS Arc).
- - Added control plane awareness for Azure Local instance deployments.
+**Mitigation**: 
 
-## Features and improvements in 2509
+Verify that your Certificate Authority is configured correctly and ensure that your certificates include a CRL endpoint that is accessible from the nodes.
 
- - Added support for the Azure Local 2508 ISO and its associated capabilities.
- - Added support for System Center Operations Manager 2025 and fixed a management pack failure on newer System Center Operations Manager versions; continuing support for System Center Operations Manager 2022.
- - Enabled update scenario. 
- - Improved security.
- - Improved observability.
- - Enabled LDAPS and custom port configuration for LDAP binding.
- - Fixed Portal and UX issues.
- - Improved OperationsModule logging and error messages and added certificate validation and CSR generation.
- - Added external certificate rotation in OperationsModule. For example, `Set-ApplianceExternalEndpointCertificates`.
- - Enabled the use of a FQDN in the SAN of the management certificate.
+**Alternative mitigation**:
 
-## Known issues for disconnected operations for Azure Local
+If you can't reconfigure your Certificate Authority (Enterprise PKI), you can bypass CRL checks during bootstrap. Run the following steps on each Azure Local node:
+
+```powershell
+Write-Host "Updating Windows MAE Config for the Bootsrap service"
+$basePath = "C:\windows\system32\bootstrap"
+
+Write-Host "Looking for config file under $basePath"
+$contentDir = Get-ChildItem -Path $basePath -Filter "content_*" -Directory -ErrorAction SilentlyContinue | Sort-Object Name -Descending | Select-Object -First 1
+if (-not $contentDir) {
+    Write-Warning "Could not find content_* directory under $basePath"
+    return
+}
+Write-Host "Found content directory: $($contentDir.FullName)"
+
+$ConfigPath = Join-Path $contentDir.FullName "Microsoft.Azure.Edge.Bootstrap.ManagementService\windows.mae.config.json"
+if (-not (Test-Path $ConfigPath)) {
+    Write-Warning "Config file $ConfigPath not found"
+    return
+}
+Write-Host "Config file found at $ConfigPath"
+
+$configContent = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
+$configContent.ManagementSettings.CheckCertificateRevocationList = $false
+Write-Host "Updated existing CheckCertificateRevocationList property to false"
+
+Stop-Service -Name "BootstrapManagementService" -Force -ErrorAction Stop
+Write-Host "BootstrapManagementService stopped successfully"
+
+$configContent | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigPath -Force
+Write-Host "Successfully saved modified config"
+
+Write-Host "Starting BootstrapManagementService..."
+Start-Service -Name "BootstrapManagementService"
+Write-Host "Waiting 60 seconds for service to fully initialize..."
+Start-Sleep -Seconds 60
+Write-Host "Successfully started BootstrapManagementService"  
+```
 
 ### Cloud deployment fails and transitions into a failed state
 
-In Azure Local 2601, a known issue in disconnected operations for Azure Local may cause HIMDS services to stop functioning due to IRVM services taking longer than expected to start. This timing issue can result in the cloud deployment transitioning to a failed state, often accompanied by unclear or non-descriptive error messages.
+In version 2602, a known issue in disconnected operations for Azure Local causes the Hybrid Instance Metadata Service (HIMDS) to stop functioning because the control plane services take longer than expected to start. This timing issue can result in failed deployments accompanied by unclear or non-descriptive error messages.
 
 **Workaround**:
 
@@ -68,15 +79,42 @@ Perform the following steps on all nodes:
 1. Extract the Zip file to the path: `C:\AzureLocal\HimdsWatchDog`.
 1. Run the `Install-HIMDS-Watchdog.ps1` command.
 1. Verify if the scheduled task is created by running:
-   
+
    ```powershell
-   `Get-ScheduledTask -TaskName HIMDS`.
+   Get-ScheduledTask -TaskName HIMDS 
    ```
 
 1. After the cloud deployment is complete, delete the task on each node by running:
-   ```powershell
+
+    ```powershell
    Unregister-ScheduledTask -TaskName HIMDSWatchdog
    ```
+### Portal issues
+
+#### Policy
+
+There's a known issue with the Azure Policy portal interface in this release. As a workaround, use the Azure CLI or Azure PowerShell.
+
+#### SSH keys
+
+There's a known issue in the Azure portal that prevents creating SSH keys during the creation of Linux VMs or Azure Kubernetes Service (AKS) clusters.
+
+**Mitigation**:
+
+Use command-line tools to generate an SSH key and include the key during the VM or AKS creation process.
+ 
+### Additional cluster deployments fail as Host Guardian certificates aren't available
+
+When deploying additional Azure Local cluster after successfully deploying the dedicated management cluster, they fail.
+
+**Mitigation**:
+
+Copy the following certs from the first node of the management cluster and paste it in all Azure local nodes (workload clusters) at path `C:\Users\Administrator\AppData\Roaming\AzureLocal\`.
+
+Make sure that the following files are present on each Azure Local node before you deploy a new workload cluster:
+
+- `C:\Users\Administrator\AppData\Roaming\AzureLocal\AzsVmHostGuardian-IRVM01-encryption.pfx`
+- `C:\Users\Administrator\AppData\Roaming\AzureLocal\AzsVmHostGuardian-IRVM01-signing.pfx`
 
 ### Control plane deployment stuck and times out without completing
 
@@ -86,15 +124,292 @@ In rare cases, deployments may time out, and services might not reach 100% conve
 
 Redeploy the disconnected operations appliance. If the issue persists after 2–3 clean redeployments, collect logs and open a support ticket.
 
+### Generating certificates gets stuck
+
+When running the Operations module or using a script-based approach to generate certificates, the process may hang if executed through a Remote Desktop session.
+
+**Mitigation**:
+
+Make sure that the Remote Desktop session isn't mapping smart cards. If smart card mapping is enabled, running the scripts to generate certificates can cause `certreq` to hang.
+
+### Set-MgmtClusterDenyPolicy.ps1 script is missing
+
+**Mitigation**: Generate the file using the below script:
+
+```powershell
+<#
+.SYNOPSIS
+    Denies resource creation on a management cluster Custom Location via Azure Policy.
+
+.DESCRIPTION
+    This script creates an Azure Policy definition with a deny effect targeting the management
+    cluster's Custom Location and assigns it at subscription scope. It uses Azure PowerShell cmdlets
+    to create both the policy definition and assignment.
+
+    The policy blocks any resource creation where the extendedLocation targets the specified
+    management cluster Custom Location. Due to the single-CL-per-subscription design constraint,
+    the policy definition and assignment use hardcoded names. Re-running the script with a
+    different Custom Location ID will overwrite the previous assignment.
+
+.PARAMETER SubscriptionId
+    The Azure subscription GUID where the policy definition and assignment will be created.
+    If omitted (and -AllSubscriptions is not set), the script runs against the current
+    Azure PowerShell subscription context.
+
+.PARAMETER MgmtClusterCustomLocationId
+    The fully-qualified ARM resource ID of the management cluster Custom Location to deny
+    resource creation against.
+
+.PARAMETER AllSubscriptions
+    When set, the script applies the deny policy to every enabled subscription the caller
+    has access to. If both -AllSubscriptions and -SubscriptionId are provided,
+    -AllSubscriptions takes precedence and -SubscriptionId is ignored.
+
+.EXAMPLE
+    .\Set-MgmtClusterDenyPolicy.ps1 `
+        -SubscriptionId "a1b2c3d4-e5f6-7890-abcd-ef1234567890" `
+        -MgmtClusterCustomLocationId "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/my-rg/providers/Microsoft.ExtendedLocation/customLocations/my-custom-location"
+
+.EXAMPLE
+    .\Set-MgmtClusterDenyPolicy.ps1 `
+        -AllSubscriptions `
+        -MgmtClusterCustomLocationId "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/my-rg/providers/Microsoft.ExtendedLocation/customLocations/my-custom-location"
+
+.NOTES
+    Rollback commands:
+        Remove-AzPolicyAssignment -Name 'deny-resource-creation-on-mgmt-cluster-assignment' -Scope '/subscriptions/{subId}'
+        Remove-AzPolicyDefinition -Name 'deny-resource-creation-on-mgmt-cluster' -SubscriptionId '{subId}' -Force
+
+    Requires active Azure PowerShell session (Connect-AzAccount) and Resource Policy Contributor role.
+#>
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $false)]
+    [ValidatePattern('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')]
+    [string]$SubscriptionId,
+
+    [Parameter(Mandatory = $true)]
+    [ValidatePattern('^/subscriptions/[0-9a-fA-F-]+/resourceGroups/[^/]+/providers/Microsoft\.ExtendedLocation/customLocations/[^/]+$')]
+    [string]$MgmtClusterCustomLocationId,
+
+    [Parameter(Mandatory = $false)]
+    [switch]$AllSubscriptions
+)
+
+# Validate required Az modules
+$modAccounts = Get-Module -ListAvailable -Name Az.Accounts | Sort-Object Version -Descending | Select-Object -First 1
+if (-not $modAccounts -or $modAccounts.Version -lt [version]'2.13.0') {
+    throw "Az.Accounts module >= 2.13.0 is required. Install via: Install-Module -Name Az.Accounts -MinimumVersion 2.13.0"
+}
+
+$modResources = Get-Module -ListAvailable -Name Az.Resources | Sort-Object Version -Descending | Select-Object -First 1
+if (-not $modResources -or $modResources.Version -lt [version]'6.12.0') {
+    throw "Az.Resources module >= 6.12.0 is required. Install via: Install-Module -Name Az.Resources -MinimumVersion 6.12.0"
+}
+
+# Check authentication
+$azContext = Get-AzContext
+if (-not $azContext) {
+    throw "Not connected to Azure. Run 'Connect-AzAccount' first."
+}
+
+# ---------------------------------------------------------------------------
+# Determine subscription list
+# ---------------------------------------------------------------------------
+
+$subscriptions = @()
+
+if ($AllSubscriptions) {
+    if (-not [string]::IsNullOrEmpty($SubscriptionId)) {
+        Write-Warning "Both -AllSubscriptions and -SubscriptionId were provided. -AllSubscriptions takes precedence; -SubscriptionId will be ignored."
+    }
+    Write-Host "Retrieving all enabled subscriptions..."
+    try {
+        $subs = Get-AzSubscription -ErrorAction Stop | Where-Object { $_.State -eq 'Enabled' }
+    } catch {
+        throw "Failed to retrieve subscription list. $($_.Exception.Message)"
+    }
+    $subscriptions = @($subs)
+    if ($subscriptions.Count -eq 0) {
+        throw "No enabled subscriptions found for the current account."
+    }
+    Write-Host "Found $($subscriptions.Count) enabled subscription(s)." -ForegroundColor Cyan
+} elseif ([string]::IsNullOrEmpty($SubscriptionId)) {
+    # No SubscriptionId provided — resolve from current Azure PowerShell context
+    $currentCtx = Get-AzContext
+    if (-not $currentCtx -or [string]::IsNullOrEmpty($currentCtx.Subscription.Id)) {
+        throw "Failed to determine the current subscription context. Provide -SubscriptionId or run 'Set-AzContext' first."
+    }
+    Write-Host "No SubscriptionId provided. Using current subscription context: $($currentCtx.Subscription.Name) ($($currentCtx.Subscription.Id))"
+    $subscriptions = @([PSCustomObject]@{ Id = $currentCtx.Subscription.Id; Name = $currentCtx.Subscription.Name })
+} else {
+    $subscriptions = @([PSCustomObject]@{ Id = $SubscriptionId; Name = $SubscriptionId })
+}
+
+# ---------------------------------------------------------------------------
+# Prepare policy JSON definitions (inline)
+# ---------------------------------------------------------------------------
+
+$policyRuleJson = @'
+{
+  "if": {
+    "allOf": [
+      {
+        "field": "extendedLocation.name",
+        "equals": "[parameters('customLocationId')]"
+      },
+      {
+        "field": "extendedLocation.type",
+        "equals": "CustomLocation"
+      }
+    ]
+  },
+  "then": {
+    "effect": "deny"
+  }
+}
+'@
+
+$policyParamJson = @'
+{
+  "customLocationId": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Custom Location Resource ID",
+      "description": "The full ARM resource ID of the Custom Location to deny resource creation against (e.g., /subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.ExtendedLocation/customLocations/{name})"
+    }
+  }
+}
+'@
+
+# ---------------------------------------------------------------------------
+# Process each subscription
+# ---------------------------------------------------------------------------
+
+$results  = @()
+$failures = @()
+
+foreach ($sub in $subscriptions) {
+    $currentSubId   = $sub.Id
+    $currentSubName = $sub.Name
+
+    Write-Host "`n===== Processing subscription: $currentSubName ($currentSubId) =====" -ForegroundColor Cyan
+
+    # --- Set subscription context ---
+    try {
+        Set-AzContext -SubscriptionId $currentSubId -ErrorAction Stop | Out-Null
+    } catch {
+        $msg = "Failed to set subscription context to '$currentSubId'. $($_.Exception.Message)"
+        Write-Error $msg
+        $failures += [PSCustomObject]@{ SubscriptionId = $currentSubId; SubscriptionName = $currentSubName; Error = $msg }
+        if (-not $AllSubscriptions) { throw $msg }
+        continue
+    }
+
+    # --- Create policy definition ---
+    Write-Host "  Creating policy definition 'deny-resource-creation-on-mgmt-cluster'..."
+    try {
+        $definition = New-AzPolicyDefinition `
+            -Name 'deny-resource-creation-on-mgmt-cluster' `
+            -DisplayName 'Deny resource creation on management cluster Custom Location' `
+            -Description 'Blocks resource creation when extendedLocation targets the management cluster Custom Location' `
+            -Policy $policyRuleJson `
+            -Parameter $policyParamJson `
+            -Mode 'All' `
+            -Metadata '{"category":"Management Cluster"}' `
+            -SubscriptionId $currentSubId `
+            -ErrorAction Stop
+    } catch {
+        $msg = "Failed to create policy definition in subscription '$currentSubId'. $($_.Exception.Message)"
+        Write-Error $msg
+        $failures += [PSCustomObject]@{ SubscriptionId = $currentSubId; SubscriptionName = $currentSubName; Error = $msg }
+        if (-not $AllSubscriptions) { throw $msg }
+        continue
+    }
+
+    if ($null -eq $definition -or [string]::IsNullOrEmpty($definition.Id)) {
+        $msg = "Policy definition was created in subscription '$currentSubId' but returned unexpected output."
+        Write-Error $msg
+        $failures += [PSCustomObject]@{ SubscriptionId = $currentSubId; SubscriptionName = $currentSubName; Error = $msg }
+        if (-not $AllSubscriptions) { throw $msg }
+        continue
+    }
+
+    # --- Create policy assignment ---
+    $scope = "/subscriptions/$currentSubId"
+
+    Write-Host "  Creating policy assignment 'deny-resource-creation-on-mgmt-cluster-assignment'..."
+    try {
+        $assignment = New-AzPolicyAssignment `
+            -Name 'deny-resource-creation-on-mgmt-cluster-assignment' `
+            -DisplayName 'Deny resource creation on management cluster Custom Location' `
+            -PolicyDefinition $definition `
+            -Scope $scope `
+            -PolicyParameterObject @{ customLocationId = $MgmtClusterCustomLocationId } `
+            -EnforcementMode 'Default' `
+            -ErrorAction Stop
+    } catch {
+        $msg = "Failed to create policy assignment in subscription '$currentSubId'. $($_.Exception.Message)"
+        Write-Error $msg
+        $failures += [PSCustomObject]@{ SubscriptionId = $currentSubId; SubscriptionName = $currentSubName; Error = $msg }
+        if (-not $AllSubscriptions) { throw $msg }
+        continue
+    }
+
+    if ($null -eq $assignment) {
+        $msg = "Policy assignment was created in subscription '$currentSubId' but returned unexpected output."
+        Write-Error $msg
+        $failures += [PSCustomObject]@{ SubscriptionId = $currentSubId; SubscriptionName = $currentSubName; Error = $msg }
+        if (-not $AllSubscriptions) { throw $msg }
+        continue
+    }
+
+    Write-Host "  Policy successfully created and assigned." -ForegroundColor Green
+
+    $results += [PSCustomObject]@{
+        SubscriptionName            = $currentSubName
+        SubscriptionId              = $currentSubId
+        DefinitionName              = $definition.Name
+        DefinitionId                = $definition.PolicyDefinitionId
+        AssignmentName              = $assignment.Name
+        AssignmentId                = $assignment.PolicyAssignmentId
+        Scope                       = $scope
+        MgmtClusterCustomLocationId = $MgmtClusterCustomLocationId
+    }
+}
+
+# ---------------------------------------------------------------------------
+# Summary
+# ---------------------------------------------------------------------------
+
+Write-Host "`n===== Summary =====" -ForegroundColor Cyan
+Write-Host "  Succeeded: $($results.Count) subscription(s)" -ForegroundColor Green
+if ($failures.Count -gt 0) {
+    Write-Host "  Failed:    $($failures.Count) subscription(s)" -ForegroundColor Red
+    foreach ($f in $failures) {
+        Write-Host "    - $($f.SubscriptionName) ($($f.SubscriptionId))" -ForegroundColor Red
+    }
+}
+
+if ($results.Count -gt 0) {
+    Write-Output $results
+}
+
+if ($failures.Count -gt 0 -and $results.Count -eq 0) {
+    throw "All subscriptions failed. See errors above."
+}
+
+```
+
 ### SSL/TLS error using management endpoint (OperationsModule)
 
-When you use a cmdlet that uses the management endpoint (for example, Get-ApplianceHealthState) you receive an error "threw and exception : The request was aborted: Could not create SSL/TLS secure channel.. Retrying"
+When you use a cmdlet that uses the management endpoint (for example, Get-ApplianceHealthState) you receive an error "threw and exception: The request was aborted: Could not create SSL/TLS secure channel.. Retrying"
 
-**Mitigation:** 
+**Mitigation:**
 
 For 2511, do not use `Set-DisconnectedOperationsClientContext`. Instead use `$context = New-DisconnectedOperationsClientContext` and pass the `$context` to the respective cmdlets.
 
-### Arc bootstrap fails on node (Invoke-AzStackHCIArcInitialization) on Original Equipment Manufacturer (OEM) provided images 
+### Arc bootstrap fails on node (Invoke-AzStackHCIArcInitialization) on Original Equipment Manufacturer (OEM) provided images
 
 If you are running an OEM image, make sure that you are on the correct OS baseline.
 
@@ -138,12 +453,12 @@ Follow these steps:
       
       # Continue with Invoke-AzStackHCIArcInitialization.
       ```
-      acquire
- 1. Review the [version compatibility](disconnected-operations-acquire.md#review-disconnected-operations-for-azure-local-compatible-versions) table.
+
+1. Review the [version compatibility](disconnected-operations-acquire.md#review-disconnected-operations-for-azure-local-compatible-versions) table.
 
 ### Cloud deployment validation fails during the portal experience
 
-Solution Builder extension (SBE) validation fails when trying to reach an *aka.ms* link to download. 
+Solution Builder extension (SBE) validation fails when trying to reach an *aka.ms* link to download.
 
 **Workaround**:
 
@@ -176,13 +491,14 @@ Solution Builder extension (SBE) validation fails when trying to reach an *aka.m
        ApplicableUpdate = $applicableUpdate.OuterXml
    }
    ```
-1. Copy the newly modified file to c:\CloudDeployment\Setup\Common\ExtractOEMContent.ps1 on the first machine.
-1. Copy the downloaded, unmodified file to c:\CloudDeployment\Setup\Common\En-US\ExtractOEMContent.Strings.psd1 on the first machine.
+
+1. Copy the newly modified file to `C:\CloudDeployment\Setup\Common\ExtractOEMContent.ps1` on the first machine.
+1. Copy the downloaded, unmodified file to `C:\CloudDeployment\Setup\Common\En-US\ExtractOEMContent.Strings.psd1` on the first machine.
 1. Resume cloud deployment.
 
 ### Cloud deployment (validation or deployment) gets stuck
 
-During the validate or cloud deployment flow, the first machine (seed node) restarts, which causes the control plane appliance to restart. Sometimes this process takes longer than expected, causing HIMDS to stop because it can't connect to the HIS endpoint. This issue can cause the deployment flow to stop responding.
+During the validate or cloud deployment flow, the first machine (seed node) restarts, which causes the control plane appliance to restart. Sometimes this process takes longer than expected, causing Hybrid Instance Metadata Service (HIMDS) to stop because it can't connect to the HIS endpoint. This issue can cause the deployment flow to stop responding.
 
 **Mitigation**:
 
@@ -197,8 +513,8 @@ During the validate or cloud deployment flow, the first machine (seed node) rest
    ```powershell
    Start-Service HIMDS
    ```
-   
-1. Check the logs in the first mode at *C:\CloudDeployment\Logs*.
+
+1. Check the logs in the first mode at `C:\CloudDeployment\Logs`.
 1. Review the appropriate log file:
    - Validate stage: Check the latest file with a name starting with *EnvironmentValidator*.
    - Deploy stage: Check the latest file with a name starting with *CloudDeployment*.
@@ -213,8 +529,8 @@ If the portal and log file are out of sync, restart the LCM Controller service t
 **Mitigation on the first machine:**
 
 1. Find the following files:
-   - For the **Validate** stage: `c:\ECEStore\efb61d70-47ed-8f44-5d63-bed6adc0fb0f\559dd25c-9d86-dc72-4bea-b9f364d103f8`
-   - For the **Deploy** stage: `c:\ECEStore\efb61d70-47ed-8f44-5d63-bed6adc0fb0f\086a22e3-ef1a-7b3a-dc9d-f407953b0f84`
+   - For the **Validate** stage: `C:\ECEStore\efb61d70-47ed-8f44-5d63-bed6adc0fb0f\559dd25c-9d86-dc72-4bea-b9f364d103f8`
+   - For the **Deploy** stage: `C:\ECEStore\efb61d70-47ed-8f44-5d63-bed6adc0fb0f\086a22e3-ef1a-7b3a-dc9d-f407953b0f84`
 1. Update the attribute **EndTimeUtc** located in the first line of the file to a future time based on the machine's current time. For example, \<Action Type="CloudDeployment" StartTimeUtc="2025-04-09T08:01:51.9513768Z" Status="Success" EndTimeUtc="2025-04-10T23:30:45.9821393Z">.
 1. Save the file and close it.
 1. LCM sends the notification to HCI RP within 5-10 minutes.
@@ -229,10 +545,10 @@ If the portal and log file are out of sync, restart the LCM Controller service t
 
 ### Failed to deploy disconnected operations Appliance (Appliance.Operations failure)
 
-Some special characters in the management TLS cert password, external certs password, or observability configuration secrets from the OperationsModule can cause the deployment to fail with an error output: *Appliance.Operations operation [options]* 
- 
- **Mitigation**: 
- 
+Some special characters in the management TLS cert password, external certs password, or observability configuration secrets from the OperationsModule can cause the deployment to fail with an error output: *Appliance.Operations operation [options]*
+
+ **Mitigation**:
+
  Do not use special characters like single or double quotes in the passwords.
 
 ### Resources disappear from portal
@@ -257,7 +573,7 @@ The disconnected operations appliance uses 78 GB of memory. If your node has les
 
 In virtual environments, deployments can time out, and services might not reach 100% convergence, even after 8 hours.
 
-**Mitigation:** 
+**Mitigation:**
 
 Redeploy the disconnected operations appliance a few times. If you're using a physical environment and the problem continues, collect logs and open a support ticket.
 
@@ -265,7 +581,7 @@ Redeploy the disconnected operations appliance a few times. If you're using a ph
 
 Role-Based Access Control (RBAC) permissions on a newly created Azure Key Vault can take up to 20 minutes to propagate. If you create the Key Vault in the local portal and quickly try to finish the cloud deployment, you might encounter permission issues when validating the cluster.
 
-**Mitigation**: 
+**Mitigation**:
 
 Wait 20 minutes after you create the Azure Key Vault to finish deploying the cluster, or create the Key Vault ahead of time. 
 
@@ -274,7 +590,7 @@ If you create the Key Vault ahead of time, make sure you assign:
 - Managed identity for each node
 - The Key Vault admin
 - The user deploying to the cloud explicit roles on the Key Vault:
- - **Key Vault Secrets Officer** and **Key Vault Data Access Administrator**.
+  - **Key Vault Secrets Officer** and **Key Vault Data Access Administrator**.
 
 Here's an example script. Modify and use this script to create the Key Vault ahead of time:
 
@@ -330,7 +646,7 @@ Write-Verbose "Wait 20 min before running cloud deployment from portal"
 
 After you start, restart, or stop the Azure Local VM, the power action buttons are disabled and the status isn't reflected properly.
 
-**Mitigation**: 
+**Mitigation**:
 
 Use Azure Command-Line Interface (CLI) to add or edit tags for the resource.
 
@@ -338,7 +654,7 @@ Use Azure Command-Line Interface (CLI) to add or edit tags for the resource.
 
 After you stop an Azure Local VM, the start, restart, and delete buttons in the Azure portal are disabled.
 
-**Mitigation**: 
+**Mitigation**:
 
 Refresh your browser and the page.
 
@@ -346,7 +662,7 @@ Refresh your browser and the page.
 
 When you delete a VM from the portal, you might see these messages ***Delete associated resource failed*** and ***Failed to delete the associated resource 'name' of type 'Network interface'***.
 
-**Mitigation**: 
+**Mitigation**:
 
 After you delete the VM, use CLI to delete the associated network interface. Run this command:
 
@@ -364,7 +680,7 @@ AKS deployments fails in fully air-gapped scenarios. No mitigation is available 
 
 In this release, you can only use an existing public key when creating an AKS cluster.
 
-**Mitigation**: 
+**Mitigation**:
 
 To create an SSH key, use the following command-line tool and paste the public key in the UI:
 
@@ -377,7 +693,7 @@ ssh-keygen -t rsa
 
 Updating or scaling a node pool from the portal is unsupported in this preview release.
 
-**Mitigation**: 
+**Mitigation**:
 
 Use CLI to update or scale a node pool.
 
@@ -386,11 +702,19 @@ az aksarc nodepool update
 az aksarc nodepool scale
 ```
 
+#### Scale limitation
+
+In the current Azure Local disconnected operations scale envelope, running more than 20 workload clusters can affect control plane stability. Under sustained load, the disconnected operations control plane may become less responsive over time, which can impact manageability and reliability at higher cluster counts.
+
+**Mitigation**:
+
+Until the supported scale range is expanded, Microsoft recommends limiting the number of workload clusters to 20 or fewer to maintain stable and reliable disconnected operations.
+
 #### Kubernetes cluster list empty under Azure Local (Kubernetes clusters)
 
 When you navigate to Azure Local and click **Kubernetes clusters**, you might see an empty list of clusters.
 
-**Mitigation**: 
+**Mitigation**:
 
 Navigate to **Kubernetes** > **Azure Arc** in the left menu or use the search bar. Your clusters should appear in the list.
 
@@ -398,7 +722,7 @@ Navigate to **Kubernetes** > **Azure Arc** in the left menu or use the search ba
 
 After you update to a newer version of Kubernetes, you might see a stuck notification that says, `Save Kubernetes service`.
 
-**Mitigation**: 
+**Mitigation**:
 
 Navigate to the **Cluster View** page and refresh it. Check whether the state shows upgrading or completed. If the update completed successfully, you can ignore the notification.
 
@@ -422,7 +746,7 @@ Arc extensions are unsupported in this preview release.
 
 After successfully deleting an AKS cluster from portal, the resource continues to show.
 
-**Mitigation**: 
+**Mitigation**:
 
 Use CLI to delete and clean up the cluster. Run this command:
 
@@ -444,7 +768,7 @@ After you restart a node or the control plane VM, the system might take up to an
 
 After you create a new subscription as an operator, the subscription appears in the list as non-clickable and displays ***no access*** for the owner.
 
-**Mitigation**: 
+**Mitigation**:
 
 Refresh your browser window.
 
@@ -452,11 +776,11 @@ Refresh your browser window.
 
 If you're signed in as an operator, you might see a timeout screen and be unable to view, list, or create subscriptions.
 
-**Cause**: 
+**Cause**:
 
 This issue happens when a subscription owner is deleted or isn't synced from the source identity system to the local control plane. When you try to view subscriptions, the process fails because the owner's identity isn't available.
 
-**Mitigation**: 
+**Mitigation**:
 
 If the portal doesn't work, use Azure CLI or REST API to create and list subscriptions. To assign a different owner, use the REST API and enter the `subscriptionOwnerId` parameter when you create the subscription.
 
@@ -466,7 +790,7 @@ If the portal doesn't work, use Azure CLI or REST API to create and list subscri
 
 When you use the `az cloud` commands, such as `az cloud register`, `az cloud show`, or `az cloud set`, you might encounter issues if you use uppercase letters in the cloud name.
 
-**Mitigation**: 
+**Mitigation**:
 
 Only use lowercase letters for cloud names in `az cloud` subcommands, such as `register`, `show`, or `set`.
 
@@ -474,7 +798,7 @@ Only use lowercase letters for cloud names in `az cloud` subcommands, such as `r
 
 Azure CLI doesn't support providing `subscriptionOwnerId` for new subscriptions. This makes the operator the default owner of newly created subscriptions without a way of changing the owner currently.
 
-**Mitigation**: 
+**Mitigation**:
 
 Use `az rest` to create subscriptions with a different owner if required to automate directly with different owner
 
@@ -484,7 +808,7 @@ Use `az rest` to create subscriptions with a different owner if required to auto
 
 When you select **Signout**, the request doesn't work.
 
-**Mitigation**: 
+**Mitigation**:
 
 Close your browser, then go to the Portal URL.
 
@@ -503,10 +827,14 @@ The following scenarios are unsupported in the preview release.
 
 If you test these scenarios, these systems must trust your custom CA and you need to pass `-custom-ca-cert` when Arc-enabling them.
 
+## Related content
+
+- [Disconnected operations for Azure Local](./disconnected-operations-overview.md).
+
 ::: moniker-end
 
-::: moniker range="<=azloc-2505"
+::: moniker range="<=azloc-2601"
 
-This feature is available only in Azure Local 2506.
+This feature is available only in Azure Local 2602 or later.
 
 ::: moniker-end
