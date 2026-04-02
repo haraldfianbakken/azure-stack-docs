@@ -1,5 +1,5 @@
 ---
-title: Support tool for Azure Local deployments
+title: Support Tool for Azure Local Hyperconverged Deployments
 description: This article provides guidance on the Support Diagnostic Tool for Azure Local.
 author: alkohli
 ms.author: alkohli
@@ -166,7 +166,7 @@ For detailed analysis, view the HTML report at:
 ## Questions or feedback?
 
 Do you have an issue? Would you like to share feedback with us about the Azure Local Support Diagnostic Tool?
-We Listen! To submit feedback, contact [azlocaldiagfeedback@microsoft.com](mailto:azlocaldiagfeedback@microsoft.com).
+To submit feedback, contact [azlocaldiagfeedback@microsoft.com](mailto:azlocaldiagfeedback@microsoft.com).
 
 Release notes: [AzureLocal-Supportability-GH](https://github.com/Azure/AzureLocal-Supportability/tree/main/TSG/CSSTools/ReleaseNotes)
 
