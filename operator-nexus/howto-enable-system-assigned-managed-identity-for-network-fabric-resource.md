@@ -14,7 +14,7 @@ ms.custom: template-how-to
 This guide explains how to enable System Assigned Managed Identity (SAMI) for the Network Fabric resource, including new-resource and existing-resource paths, identity transition rules, lock/commit considerations, and role requirements.
 
 
-## Identity Model and Constraints
+## Identity model and constraints
 
 ### Supported identity modes on Network Fabric resource
 - `SystemAssigned`
@@ -32,18 +32,18 @@ This guide explains how to enable System Assigned Managed Identity (SAMI) for th
 
 ## Prerequisites
 
-1. Azure CLI logged in to correct subscription/tenant.
-2. `managednetworkfabric` extension installed and current.
-3. Network Fabric resource lifecycle checks before identity updates:
-- `provisioningState = Succeeded`
-- resource is not locked for the intended operation
-4. Version guidance:
-- Commit v2 workflow capabilities require Network Fabric resource version and API support (for example `2024-06-15-preview` or newer APIs for lock and commit v2 flows).
+- Azure CLI logged in to correct subscription/tenant.
+- `managednetworkfabric` extension installed and current.
+- Network Fabric resource lifecycle checks before identity updates:
+  - `provisioningState = Succeeded`
+  - resource is not locked for the intended operation
+- Version guidance:
+  - Commit v2 workflow capabilities require Network Fabric resource version and API support (for example `2024-06-15-preview` or newer APIs for lock and commit v2 flows).
 - For latest identity visibility in your environment, use `2025-07-15` when available.
 
-## For New Resources
+## For new resources
 
-### 1) Create Network Fabric Resource with SAMI only
+### 1. Create Network Fabric Resource with SAMI only
 
 ```bash
 az networkfabric fabric create \
@@ -65,7 +65,7 @@ This guide shows the minimum arguments relevant to SAMI enablement, not the comp
 | `--location` | Deployment region. | `eastus2euap` |
 | `--mi-system-assigned` | Enables SAMI. | flag only |
 
-### 2) Create Network Fabric Resource with UAMI only
+### 2. Create Network Fabric Resource with UAMI only
 
 ```bash
 az networkfabric fabric create \
@@ -87,7 +87,7 @@ az networkfabric fabric create \
 > ```
 > See [Bring Your Own Storage for Network Fabric](https://learn.microsoft.com/azure/operator-nexus/howto-configure-bring-your-own-storage-network-fabric) for full BYoS guidance.
 
-### 3) Create Network Fabric Resource with SAMI + UAMI
+### 3. Create Network Fabric Resource with SAMI + UAMI
 
 ```bash
 az networkfabric fabric create \
@@ -107,9 +107,9 @@ az networkfabric fabric create \
 > [!NOTE]
 > When UAMI is configured for storage access in a SAMI+UAMI topology, include `--storage-account-config` as described in the UAMI-only new-resource section above.
 
-## For Existing Resources
+## For existing resources
 
-### 1) Add SAMI when Network Fabric Resource has no identity
+### 1. Add SAMI when Network Fabric Resource has no identity
 
 ```bash
 az networkfabric fabric update \
@@ -138,7 +138,7 @@ After:
 }
 ```
 
-### 2) Add SAMI when Network Fabric Resource already has UAMI
+### 2. Add SAMI when Network Fabric Resource already has UAMI
 
 ```bash
 az networkfabric fabric update \
@@ -176,7 +176,7 @@ After:
 }
 ```
 
-### 3) Add UAMI when Network Fabric Resource already has SAMI
+### 3. Add UAMI when Network Fabric Resource already has SAMI
 
 ```bash
 az networkfabric fabric update \
@@ -227,13 +227,13 @@ After:
 If direct CLI update is not possible, reach out to support personnel to perform the SAMI PATCH on the Network Fabric resource.
 
 Provide the following details to support personnel:
-1. Subscription ID
-2. Network Fabric resource ID
+- Subscription ID
+- Network Fabric resource ID
 
 > [!NOTE]
 > Managed Identity Operator role assignment might be required during this operation when identity assignment requires `Microsoft.ManagedIdentity/userAssignedIdentities/assign/action` on attached user-assigned managed identities.
 
-## Managed Identity Operator (MIO) Permission Matrix
+## Managed Identity Operator (MIO) permission matrix
 
 This requirement is actor-based.
 
@@ -248,20 +248,20 @@ When a Network Fabric identity operation attaches or preserves user-assigned man
 ### Typical remediation
 Grant `Managed Identity Operator` on each configured user-assigned managed identity to the actor that issues the PATCH (support personnel for support-assisted path, caller principal for manual path).
 
-## Lock and Commit Notes (Commit Workflow v2 alignment)
+## Lock and commit notes (Commit workflow v2 alignment)
 
 Lock and commit version 2 are needed to safely apply pending configuration changes.
 
 After a successful Network Fabric identity PATCH, the Network Fabric resource moves to `PendingCommit` state. At that point, the required flow is to lock the fabric and then commit the fabric.
 
-1. **Why lock is needed:** lock prevents conflicting updates while configuration is being committed.
-2. **Why commit is needed:** commit applies pending changes and transitions configuration toward a stable `Provisioned` state.
-3. **Required execution order:**
->- First, perform identity PATCH and confirm the Network Fabric resource is in `PendingCommit`.
->- Second, acquire lock.
->- Third, trigger commit.
->- Fourth, verify commit completion and resulting state.
->- Fifth, unlock if lock remains set after a failed or interrupted flow.
+- **Why lock is needed:** lock prevents conflicting updates while configuration is being committed.
+- **Why commit is needed:** commit applies pending changes and transitions configuration toward a stable `Provisioned` state.
+- **Required execution order:**
+  - First, perform identity PATCH and confirm the Network Fabric resource is in `PendingCommit`.
+  - Second, acquire lock.
+  - Third, trigger commit.
+  - Fourth, verify commit completion and resulting state.
+  - Fifth, unlock if lock remains set after a failed or interrupted flow.
 
 ## Verification
 
@@ -281,7 +281,7 @@ az networkfabric fabric show \
 - lifecycle states are healthy for your operation path.
 - lock state is understood before commit operations.
 
-## Identity Transition Quick Table
+## Identity transition quick table
 
 | Current | Requested outcome | CLI shape |
 |---|---|---|
@@ -291,7 +291,7 @@ az networkfabric fabric show \
 | SAMI + UAMI | retain both | include both flags as needed |
 | any | None | invalid |
 
-## Common Errors and Fixes
+## Common errors and fixes
 
 ### Error: LinkedAuthorizationFailed
 - Symptom: identity assignment fails during PATCH.
@@ -306,15 +306,15 @@ az networkfabric fabric show \
 - Symptom: request rejected or operation fails validation.
 - Fix: use valid transition payload shape; avoid `None`; preserve SAMI when required.
 
-## Post-change Checklist
+## Post-change checklist
 
-1. Network Fabric resource identity reflects expected type.
-2. SAMI `principalId` is present when SAMI is enabled.
-3. If support-assisted existing-resource PATCH was used, verify commit outcome and resulting config state.
-4. Confirm no residual lock if operation failed mid-flow.
-5. For UAMI-linked paths, validate MIO role assignments for the actor.
+- Network Fabric resource identity reflects expected type.
+- SAMI `principalId` is present when SAMI is enabled.
+- If support-assisted existing-resource PATCH was used, verify commit outcome and resulting config state.
+- Confirm no residual lock if operation failed mid-flow.
+- For UAMI-linked paths, validate MIO role assignments for the actor.
 
-## Frequently Asked Questions
+## Frequently asked questions
 
 **Q: What identity types are supported for the Network Fabric resource?**  
 A: `SystemAssigned`, `UserAssigned`, and `SystemAssigned,UserAssigned`. Identity type `None` is not supported.
