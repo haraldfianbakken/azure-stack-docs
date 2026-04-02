@@ -785,7 +785,7 @@ Script execution result can be downloaded from storage account using the command
 ### <a name = "list-crashdump-files"></a> List kernel crashdump files
 
 Bare metal machines (BMM) support the collection of kernel crash dumps. The latest two crash dumps are stored on the BMM. 
-To list the available kernel crash dumps on a bare metal machine, run the following command
+To list the available kernel crash dumps on a bare metal machine, run the following command:
 
 ```azurecli
 az networkcloud baremetalmachine run-data-extracts-restricted \
