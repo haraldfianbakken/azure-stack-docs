@@ -25,7 +25,7 @@ Azure Local updates follow a two-phase workflow:
 
 Each stage produces an `UpdateRun` resource that records step-by-step progress, timing, and any errors encountered. You can query the details of this run on the **Update Progress** page in Azure Update Manager or by using the `Get-SolutionUpdateRun` cmdlet in PowerShell.
 
-:::image type="content" source="media/update-phases-23h2/update-phases-actions.png" alt-text="Diagram of update process with Preparation phase and Installation phase steps." lightbox="media/update-phases-23h2/update-phases-actions.png":::
+:::image type="content" source="media/update-phases/update-phases-actions.png" alt-text="Diagram of update process with Preparation phase and Installation phase steps." lightbox="media/update-phases/update-phases-actions.png":::
 
 ## Preparation workflow
 
@@ -145,7 +145,7 @@ Each step in the progress tree exposes the following properties:
 
 Because the `UpdateRun` object has a complex structure, we recommend you monitor update installation status through the Azure portal.
 
-:::image type="content" source="media/update-phases-23h2/update-run-structure.png" alt-text="Screenshot of the UpdateRun structure." lightbox="media/update-phases-23h2/update-run-structure.png":::
+:::image type="content" source="media/update-phases/update-run-structure.png" alt-text="Screenshot of the UpdateRun structure." lightbox="media/update-phases/update-run-structure.png":::
 
 To monitor the update in PowerShell, monitor the state of the underlying action plan directly.
 
