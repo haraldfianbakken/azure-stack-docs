@@ -94,7 +94,7 @@ Where-Object { ($_.Status -ne "Success") -and ($_.Severity -ne "Informational") 
 Format-List Title, Status, Severity, Description, Remediation
 ```
 
-For help troubleshooting health check failures, see [Troubleshoot updates](update-troubleshooting-23h2.md).
+For help with troubleshooting health check failures, see [Troubleshoot updates](update-troubleshooting-23h2.md).
 
 ## Monitor the preparation phase
 
@@ -116,7 +116,7 @@ The update is able to enter the installation phase when you run `Start-SolutionU
 When you start the update this way, installation begins:
 
 - **Immediately** - if you have recently executed the preparation phase and the update was already in the `ReadyToInstall` state.
-- **After preparation completes** - if the the update wasn't already prepared and is only in the `Ready` state.
+- **After preparation completes** - if the update wasn't already prepared and is only in the `Ready` state.
 
 ### Start installation
 
