@@ -27,7 +27,7 @@ Each stage produces an `UpdateRun` resource that records step-by-step progress, 
 
 :::image type="content" source="media/update-phases/update-phases-actions.png" alt-text="Diagram of update process with Preparation phase and Installation phase steps." lightbox="media/update-phases/update-phases-actions.png":::
 
-## Preparation workflow
+## Preparation phase
 
 1. Meet prerequisites
 
