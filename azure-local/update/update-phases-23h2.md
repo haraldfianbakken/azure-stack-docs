@@ -96,7 +96,7 @@ Format-List Title, Status, Severity, Description, Remediation
 
 For help troubleshooting health check failures, see [Troubleshoot updates](update-troubleshooting-23h2.md).
 
-## Monitor preparation using Get-SolutionUpdateRun
+## Monitor the preparation phase
 
 Monitor the preparation phase using the `Get-SolutionUpdateRun` cmdlet.
 
