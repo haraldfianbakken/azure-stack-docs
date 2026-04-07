@@ -154,7 +154,7 @@ Follow these steps:
 
 #### Status displayed as null
 
-The following sample output snippet shows a null status. This status indicates that the required `iso` for the guest agent is missing.
+The following example output snippet shows a null status. This status indicates that the required `iso` for the guest agent is missing.
 
 ```output
 "instanceView": {
