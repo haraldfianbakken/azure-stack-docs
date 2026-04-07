@@ -3,7 +3,7 @@ title: "Azure Operator Nexus: Configure the network packet broker"
 description: Learn commands to create, view network packet broker's TAPRule.
 author: RaghvendraMandawale
 ms.author: rmandawale
-ms.service: Azure-operator-nexus
+ms.service: azure-operator-nexus
 ms.topic: how-to
 ms.date: 10/20/2023
 ms.custom: template-how-to, devx-track-Azurecli
