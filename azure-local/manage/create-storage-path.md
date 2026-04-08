@@ -230,11 +230,11 @@ Follow these steps in Azure portal of your Azure Local.
 
 When creating Azure Local virtual machines, VM images, or data disks, you can choose how these resources are placed across the storage paths on the cluster. 
 
-When using the Azure Portal, you can select "Choose manually" or "Choose automatically" option when creating an Azure Local virtual machine, image, or data disk. 
+When using the Azure portal, you can select **Choose manually** or **Choose automatically** options when creating an Azure Local virtual machine, image, or data disk. 
 
-To manually select a storage path, select the "Choose manually" option for Storage path. Then, select a storage path from the dropdown. The resource will be created under the selected storage path.
+To manually select a storage path, select the **Choose manually** option for **Storage path**. Choose from the dropdown which storage path and the resource will be created under the selected storage path.
 
-To automatically select a storage path, select the "Choose automatically" option for Storage path. In this case, the system automatically chooses a storage path on which to place the resource from the storage paths available on the cluster using a round-robin placement approach.
+To automatically select a storage path, select the **Choose automatically** option for **Storage path**. In this case, the system automatically chooses a storage path on which to place the resource from the storage paths available on the cluster using a round-robin placement approach.
 > [!NOTE]
 > When you select a storage path when creating an Azure Local virtual machine, that storage path is used to place the VM's OS disk and configuration files. This selection does not imply that all data disks attached to the VM are placed under the same storage path. Data disks are placed based on their own storage path selection at creation time. 
 ---
