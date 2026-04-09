@@ -33,7 +33,7 @@ Follow the instructions in this article for a consistent, scalable, and secure a
 
 Before initiating the Network Fabric runtime upgrade, Users have the option to validate all the resource readiness prechecks as part of the upgrade workflow. These proactive validation steps help identify configuration or readiness issues early, reducing the risk of upgrade failures and minimizing potential service interruptions.
 
-Starting with the 2604.1 release, an opt‑in enforcement mechanism is available to mandate pre‑upgrade validations. This enforcement is enabled through a support‑assisted Geneva action and is governed by a fabric instance–level persistent feature flag.
+Starting with the 2604.1 release, an opt‑in enforcement mechanism is available to mandate pre‑upgrade validations. This enforcement is enabled through a support ticket and is governed by a fabric instance–level persistent feature flag.
 
 When the feature flag is enabled, any pre‑upgrade validation failure will block the upgrade until the identified issues are remediated.
 
